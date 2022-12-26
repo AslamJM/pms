@@ -1,4 +1,4 @@
-import { shopModel, Shop } from 'models/shops';
+import { shopModel, Shop } from '../models/shops';
 import { FilterQuery, UpdateQuery } from 'mongoose';
 
 export const getSingleShop = (id: string) => {
