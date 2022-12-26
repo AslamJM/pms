@@ -8,8 +8,10 @@ export class Shop {
   address: string;
   @prop({ required: true })
   region: string;
-  @prop({ ref: () => Payment })
+  @prop({ ref: 'Payment', default: [] })
   payments: Ref<Payment>[];
 }
 
-export const shopModel = getModelForClass(Shop);
+export const shopModel = getModelForClass(Shop, {
+  schemaOptions: { timestamps: true },
+});

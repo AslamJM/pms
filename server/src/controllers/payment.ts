@@ -7,7 +7,8 @@ import {
   deletePayment,
 } from '../services/payment';
 import { Payment } from '../models/payment';
-import { FilterQuery, UpdateQuery } from 'mongoose';
+import { UpdateQuery } from 'mongoose';
+import { addPayment } from '../services/shop';
 
 export const createPaymentController = async (
   req: Request<{}, {}, { input: Payment }>,
@@ -16,6 +17,7 @@ export const createPaymentController = async (
   const { input } = req.body;
   try {
     const created = await createPayment(input);
+    await addPayment(created.shop._id, created._id);
     return res.status(200).json({
       message: 'payment created successfully',
       payment: created,
@@ -63,11 +65,11 @@ export const deletePaymentController = async (
 };
 
 export const updatePaymentController = async (
-  req: Request<{ id: string }, {}, {}, { input: UpdateQuery<Payment> }>,
+  req: Request<{ id: string }, {}, { input: UpdateQuery<Payment> }>,
   res: Response
 ) => {
   const { id } = req.params;
-  const { input } = req.query;
+  const { input } = req.body;
   try {
     const payment = await updatePayment(id, input);
     return res.status(200).json({
@@ -81,13 +83,9 @@ export const updatePaymentController = async (
   }
 };
 
-export const queryPaymentController = async (
-  req: Request<{}, {}, {}, { input: FilterQuery<Payment> }>,
-  res: Response
-) => {
-  const { input } = req.query;
+export const queryPaymentController = async (req: Request, res: Response) => {
   try {
-    const payments = await queryPayments(input);
+    const payments = await queryPayments(req.query);
     return res.status(200).json({
       shops: payments,
     });

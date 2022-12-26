@@ -8,8 +8,10 @@ export class Collector {
   phone: string;
   @prop()
   email: string;
-  @prop({ ref: () => Payment })
+  @prop({ ref: 'Payment', default: [] })
   payments: Ref<Payment>[];
 }
 
-export const collectorModel = getModelForClass(Collector);
+export const collectorModel = getModelForClass(Collector, {
+  schemaOptions: { timestamps: true },
+});

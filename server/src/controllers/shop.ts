@@ -63,11 +63,11 @@ export const deleteShopController = async (
 };
 
 export const updateShopController = async (
-  req: Request<{ id: string }, {}, {}, { input: UpdateQuery<Shop> }>,
+  req: Request<{ id: string }, {}, { input: UpdateQuery<Shop> }>,
   res: Response
 ) => {
   const { id } = req.params;
-  const { input } = req.query;
+  const { input } = req.body;
   try {
     const shop = await updateShop(id, input);
     return res.status(200).json({
@@ -81,13 +81,9 @@ export const updateShopController = async (
   }
 };
 
-export const queryShopController = async (
-  req: Request<{}, {}, {}, { input: FilterQuery<Shop> }>,
-  res: Response
-) => {
-  const { input } = req.query;
+export const queryShopController = async (req: Request, res: Response) => {
   try {
-    const shops = await queryShops(input);
+    const shops = await queryShops(req.query);
     return res.status(200).json({
       shops: shops,
     });

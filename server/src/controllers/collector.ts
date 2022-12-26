@@ -63,11 +63,11 @@ export const deleteCollectorController = async (
 };
 
 export const updateCollectorController = async (
-  req: Request<{ id: string }, {}, {}, { input: UpdateQuery<Collector> }>,
+  req: Request<{ id: string }, {}, { input: UpdateQuery<Collector> }>,
   res: Response
 ) => {
   const { id } = req.params;
-  const { input } = req.query;
+  const { input } = req.body;
   try {
     const collector = await updateCollector(id, input);
     return res.status(200).json({
@@ -81,13 +81,9 @@ export const updateCollectorController = async (
   }
 };
 
-export const queryCollectorController = async (
-  req: Request<{}, {}, {}, { input: FilterQuery<Collector> }>,
-  res: Response
-) => {
-  const { input } = req.query;
+export const queryCollectorController = async (req: Request, res: Response) => {
   try {
-    const collectors = await queryCollectors(input);
+    const collectors = await queryCollectors(req.query);
     return res.status(200).json({
       collectors: collectors,
     });
