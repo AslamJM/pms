@@ -10,14 +10,15 @@ import HomeIcon from "@mui/icons-material/Home";
 import PaidIcon from "@mui/icons-material/Paid";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import FollowTheSignsIcon from "@mui/icons-material/FollowTheSigns";
+import { NavLink } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 200;
 
 const listItems = [
-  { title: "Home", icon: <HomeIcon /> },
-  { title: "Payments", icon: <PaidIcon /> },
-  { title: "Shops", icon: <StorefrontIcon /> },
-  { title: "Collectors", icon: <FollowTheSignsIcon /> },
+  { title: "Home", icon: <HomeIcon />, to: "/" },
+  { title: "Payments", icon: <PaidIcon />, to: "/payments" },
+  { title: "Shops", icon: <StorefrontIcon />, to: "/shops" },
+  { title: "Collectors", icon: <FollowTheSignsIcon />, to: "/collectors" },
 ];
 
 const SideNav = () => {
@@ -38,12 +39,22 @@ const SideNav = () => {
       <List>
         {listItems.map((item) => (
           <>
-            <ListItem key={item.title} disablePadding>
-              <ListItemButton>
-                <ListItemIcon>{item.icon}</ListItemIcon>
-                <ListItemText primary={item.title} />
-              </ListItemButton>
-            </ListItem>
+            <NavLink
+              to={item.to}
+              style={({ isActive }) => {
+                return {
+                  color: isActive ? "#f27521" : "#000000",
+                  textDecoration: "none",
+                };
+              }}
+            >
+              <ListItem key={item.title} disablePadding>
+                <ListItemButton>
+                  <ListItemIcon>{item.icon}</ListItemIcon>
+                  <ListItemText primary={item.title} />
+                </ListItemButton>
+              </ListItem>
+            </NavLink>
             <Divider />
           </>
         ))}
