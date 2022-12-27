@@ -8,7 +8,11 @@ import {
 } from '../services/payment';
 import { Payment } from '../models/payment';
 import { UpdateQuery } from 'mongoose';
-import { addPayment } from '../services/shop';
+import { addPayment, removePayment } from '../services/shop';
+import {
+  addPaymentToCollector,
+  removePaymentFromCollector,
+} from '../services/collector';
 
 export const createPaymentController = async (
   req: Request<{}, {}, { input: Payment }>,
@@ -18,6 +22,7 @@ export const createPaymentController = async (
   try {
     const created = await createPayment(input);
     await addPayment(created.shop._id, created._id);
+    await addPaymentToCollector(created.collector._id, created._id);
     return res.status(200).json({
       message: 'payment created successfully',
       payment: created,
@@ -53,6 +58,8 @@ export const deletePaymentController = async (
   const { id } = req.params;
   try {
     const payment = await deletePayment(id);
+    removePayment(payment?.shop._id, payment?._id);
+    removePaymentFromCollector(payment?.collector._id, payment?._id);
     return res.status(200).json({
       message: 'payment deleted successfully',
       payment: payment,

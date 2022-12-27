@@ -1,5 +1,5 @@
 import { collectorModel, Collector } from '../models/collector';
-import { FilterQuery, UpdateQuery } from 'mongoose';
+import { FilterQuery, Types, UpdateQuery } from 'mongoose';
 
 export const getSingleCollector = (id: string) => {
   return collectorModel.findById(id).populate('payments');
@@ -21,4 +21,24 @@ export const updateCollector = (id: string, input: UpdateQuery<Collector>) => {
 
 export const deleteCollector = (id: string) => {
   return collectorModel.findByIdAndDelete(id);
+};
+
+export const addPaymentToCollector = async (
+  id: Types.ObjectId,
+  payment: Types.ObjectId
+) => {
+  const collector = await collectorModel.findById(id);
+  collector?.payments.push(payment);
+  await collector?.save();
+};
+
+export const removePaymentFromCollector = async (
+  id: Types.ObjectId,
+  payment: Types.ObjectId
+) => {
+  await collectorModel.findByIdAndUpdate(id, {
+    $pull: {
+      payments: payment,
+    },
+  });
 };

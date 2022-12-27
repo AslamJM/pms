@@ -31,3 +31,14 @@ export const addPayment = async (
   shop?.payments.push(payment);
   await shop?.save();
 };
+
+export const removePayment = async (
+  id: Types.ObjectId,
+  payment: Types.ObjectId
+) => {
+  await shopModel.findByIdAndUpdate(id, {
+    $pull: {
+      payments: payment,
+    },
+  });
+};
