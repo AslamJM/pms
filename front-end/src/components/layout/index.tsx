@@ -10,7 +10,7 @@ const Layout = ({ children }: { children: React.ReactNode }) => {
       <Navbar />
       <Box sx={{ display: "flex" }}>
         <SideNav />
-        <div>
+        <div style={{ padding: "20px", flexGrow: 1 }}>
           <Toolbar />
           <>{children}</>
         </div>
