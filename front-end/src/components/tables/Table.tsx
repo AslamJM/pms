@@ -8,7 +8,7 @@ import TableHead from "@mui/material/TableHead";
 import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 
-interface IColumn {
+export interface IColumn {
   id: string;
   label: string;
   minWidth?: number;
@@ -48,8 +48,8 @@ const CustomTable = ({ count, columns, children }: Props) => {
                   {col.label}
                 </TableCell>
               ))}
-              <TableCell>EDIT</TableCell>
-              <TableCell>DELETE</TableCell>
+              <TableCell>Edit</TableCell>
+              <TableCell>Delete</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>{children}</TableBody>
