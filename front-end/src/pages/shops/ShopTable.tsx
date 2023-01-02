@@ -1,4 +1,16 @@
 import CustomTable, { IColumn } from "../../components/tables/Table";
+import { useQuery } from "react-query";
+import CircularLoader from "../../components/loader/CircularLoader";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DeleteIcon from "@mui/icons-material/Delete";
+import { shopClient } from "../../api/shops";
+import { useShopContext } from "../../context/ShopContext";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import { useState } from "react";
+import dayjs from "dayjs";
+import Typography from "@mui/material/Typography";
+import Box from "@mui/material/Box";
 
 const columns: IColumn[] = [
   { id: "name", label: "Name" },
@@ -8,9 +20,83 @@ const columns: IColumn[] = [
 ];
 
 const ShopTable = () => {
+  const [page, setPage] = useState(0);
+  const [rowsPerPage, setRowsPerPage] = useState(10);
+
+  const { getAllShops } = shopClient;
+  const { shops, setAllShops } = useShopContext();
+
+  const { data, isLoading } = useQuery(
+    "all shops",
+    async () => await getAllShops(),
+    {
+      onSuccess: (data) => setAllShops(data.shops),
+    }
+  );
+
+  if (isLoading) {
+    return <CircularLoader />;
+  }
+
+  if (shops.length === 0) {
+    return (
+      <Box>
+        <Typography variant="h3" color="GrayText" align="center">
+          You have no shops to display
+        </Typography>
+      </Box>
+    );
+  }
+
   return (
-    <CustomTable columns={columns} count={0}>
-      <></>
+    <CustomTable
+      columns={columns}
+      count={shops.length}
+      page={page}
+      rowsPerPage={rowsPerPage}
+      setPage={setPage}
+      setRowsPerPage={setRowsPerPage}
+    >
+      {shops
+        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+        .map((row, setkey) => {
+          return (
+            <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
+              {columns.map((col, index) => {
+                if (col.id === "lastPayment") {
+                  const lastPayment = row.payments[0].paymentDate;
+
+                  return (
+                    <TableCell key={index}>
+                      {dayjs(new Date(lastPayment)).format("DD/MM/YYYY")}
+                    </TableCell>
+                  );
+                }
+                return (
+                  <TableCell key={index} align={col.align}>
+                    {row[col.id as keyof Omit<typeof row, "_id" | "payments">]}
+                  </TableCell>
+                );
+              })}
+              <TableCell>
+                <BorderColorIcon
+                  color="success"
+                  sx={{
+                    cursor: "pointer",
+                  }}
+                  fontSize="medium"
+                />
+              </TableCell>
+              <TableCell>
+                <DeleteIcon
+                  color="error"
+                  sx={{ cursor: "pointer" }}
+                  fontSize="medium"
+                />
+              </TableCell>
+            </TableRow>
+          );
+        })}
     </CustomTable>
   );
 };

@@ -9,6 +9,8 @@ import {
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Formik } from "formik";
+import { useMutation } from "react-query";
+import { shopClient } from "../../../api/shops";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import { FORM_MODEL } from "./data";
 
@@ -21,11 +23,21 @@ const initialValues = {
 const REGIONS = ["region a", "region b", "region c", "region d"];
 
 const AddShopForm = () => {
-  const { setAddModalOpen } = useGlobalContext();
+  const { setAddModalOpen, setLoading, setSnackMessage, setSnackOpen } =
+    useGlobalContext();
+  const { createShop } = shopClient;
 
   return (
-    <Formik initialValues={initialValues} onSubmit={() => {}}>
-      {({ values, handleChange, handleSubmit }) => (
+    <Formik
+      initialValues={initialValues}
+      onSubmit={(values) => {
+        const { isLoading, mutate } = useMutation(
+          async () => await createShop({ ...values, payments: [] })
+        );
+        if (isLoading) setLoading(true);
+      }}
+    >
+      {({ handleChange, handleSubmit }) => (
         <form onSubmit={handleSubmit}>
           <Grid container rowGap={1} columnGap={1}>
             <Grid xs={5}>

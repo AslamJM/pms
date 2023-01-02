@@ -38,7 +38,7 @@ const SideNav = () => {
       <Toolbar />
       <List>
         {listItems.map((item) => (
-          <>
+          <div key={item.title}>
             <NavLink
               to={item.to}
               style={({ isActive }) => {
@@ -56,7 +56,7 @@ const SideNav = () => {
               </ListItem>
             </NavLink>
             <Divider />
-          </>
+          </div>
         ))}
       </List>
     </Drawer>

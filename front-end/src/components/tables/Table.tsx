@@ -20,23 +20,31 @@ type Props = {
   columns: IColumn[];
   children: React.ReactNode;
   count: number;
+  page: number;
+  rowsPerPage: number;
+  setPage: React.Dispatch<React.SetStateAction<number>>;
+  setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
 };
 
-const CustomTable = ({ count, columns, children }: Props) => {
-  const [page, setPage] = useState(0);
-  const [rowsPerPage, setRowsPerPage] = useState(10);
-
+const CustomTable = ({
+  count,
+  columns,
+  children,
+  page,
+  setPage,
+  setRowsPerPage,
+  rowsPerPage,
+}: Props) => {
+  //handle pagination
   const handleChangePage = (event: unknown, newPage: number) => {
     setPage(newPage);
   };
-
   const handleChangeRowsPerPage = (
     event: React.ChangeEvent<HTMLInputElement>
   ) => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-
   return (
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer>

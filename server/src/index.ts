@@ -10,9 +10,9 @@ app.use(cors());
 
 app.get('/ping', (_, res) => res.send('ping'));
 
-app.use('/shops', shopRouter);
-app.use('/payments', paymentRouter);
-app.use('/collectors', collectorRouter);
+app.use('/api/shops', shopRouter);
+app.use('/api/payments', paymentRouter);
+app.use('/api/collectors', collectorRouter);
 
 const createServer = async () => {
   await connectDB();
