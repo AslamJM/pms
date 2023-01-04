@@ -6,7 +6,6 @@ export const apiClient = axios.create({
     "Content-type": "application/json",
   },
 });
-import { useGlobalContext } from "../context/GlobalContext";
 
 export interface IPayment {
   _id: string;
@@ -62,9 +61,11 @@ const deleteOne = async <T>(route: string, params: string) => {
   return response.data;
 };
 
-const createOne = async <T, K>(route: string, input: K) => {
+const createOne = async <T, K>(route: string, body: K) => {
   const response = await apiClient.post<T>(route, {
-    input,
+    input: {
+      ...body,
+    },
   });
   return response.data;
 };

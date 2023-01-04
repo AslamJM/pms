@@ -5,9 +5,11 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { shopClient } from "../../api/shops";
 import { useShopContext } from "../../context/ShopContext";
+import { useGlobalContext } from "../../context/GlobalContext";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { useState } from "react";
+import DeleteShopModel from "./modals/DeleteShopModal";
 import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
@@ -22,9 +24,9 @@ const columns: IColumn[] = [
 const ShopTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-
+  const { setDeleteModalOpen } = useGlobalContext();
   const { getAllShops } = shopClient;
-  const { shops, setAllShops } = useShopContext();
+  const { shops, setAllShops, setSelectedShop } = useShopContext();
 
   const { data, isLoading } = useQuery(
     "all shops",
@@ -49,55 +51,77 @@ const ShopTable = () => {
   }
 
   return (
-    <CustomTable
-      columns={columns}
-      count={shops.length}
-      page={page}
-      rowsPerPage={rowsPerPage}
-      setPage={setPage}
-      setRowsPerPage={setRowsPerPage}
-    >
-      {shops
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((row, setkey) => {
-          return (
-            <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
-              {columns.map((col, index) => {
-                if (col.id === "lastPayment") {
-                  const lastPayment = row.payments[0].paymentDate;
+    <>
+      <DeleteShopModel />
+      <CustomTable
+        columns={columns}
+        count={shops.length}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        setPage={setPage}
+        setRowsPerPage={setRowsPerPage}
+      >
+        {shops
+          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          .map((row, setkey) => {
+            return (
+              <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
+                {columns.map((col, index) => {
+                  if (col.id === "lastPayment") {
+                    const lastPayment =
+                      row.payments.length !== 0
+                        ? row.payments[0].paymentDate
+                        : null;
 
+                    if (!lastPayment) {
+                      return (
+                        <TableCell key={index} sx={{ textAlign: "center" }}>
+                          -----
+                        </TableCell>
+                      );
+                    }
+
+                    return (
+                      <TableCell key={index} sx={{ textAlign: "center" }}>
+                        {dayjs(new Date(lastPayment)).format("DD/MM/YYYY")}
+                      </TableCell>
+                    );
+                  }
                   return (
-                    <TableCell key={index}>
-                      {dayjs(new Date(lastPayment)).format("DD/MM/YYYY")}
+                    <TableCell key={index} align={col.align}>
+                      {
+                        row[
+                          col.id as keyof Omit<typeof row, "_id" | "payments">
+                        ]
+                      }
                     </TableCell>
                   );
-                }
-                return (
-                  <TableCell key={index} align={col.align}>
-                    {row[col.id as keyof Omit<typeof row, "_id" | "payments">]}
-                  </TableCell>
-                );
-              })}
-              <TableCell>
-                <BorderColorIcon
-                  color="success"
-                  sx={{
-                    cursor: "pointer",
-                  }}
-                  fontSize="medium"
-                />
-              </TableCell>
-              <TableCell>
-                <DeleteIcon
-                  color="error"
-                  sx={{ cursor: "pointer" }}
-                  fontSize="medium"
-                />
-              </TableCell>
-            </TableRow>
-          );
-        })}
-    </CustomTable>
+                })}
+                <TableCell>
+                  <BorderColorIcon
+                    color="success"
+                    sx={{
+                      cursor: "pointer",
+                    }}
+                    fontSize="medium"
+                  />
+                </TableCell>
+                <TableCell>
+                  <DeleteIcon
+                    color="error"
+                    sx={{ cursor: "pointer" }}
+                    fontSize="medium"
+                    onClick={() => {
+                      //setSelectedShop(row);
+                      setDeleteModalOpen(true);
+                    }}
+                  />
+                </TableCell>
+              </TableRow>
+            );
+          })}
+      </CustomTable>
+    </>
   );
 };
 

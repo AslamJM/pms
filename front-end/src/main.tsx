@@ -7,22 +7,25 @@ import Home from "./pages/home";
 import Payments from "./pages/payments";
 import Shops from "./pages/shops";
 import GlobalContextProvider from "./context/GlobalContext";
+import CollectorContextProvider from "./context/CollectorContext";
 import ShopContextProvider from "./context/ShopContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <GlobalContextProvider>
       <ShopContextProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route element={<App />}>
-              <Route path="/" element={<Home />} />
-              <Route path="/payments" element={<Payments />} />
-              <Route path="/shops" element={<Shops />} />
-              <Route path="/collectors" element={<Collectors />} />
-            </Route>
-          </Routes>
-        </BrowserRouter>
+        <CollectorContextProvider>
+          <BrowserRouter>
+            <Routes>
+              <Route element={<App />}>
+                <Route path="/" element={<Home />} />
+                <Route path="/payments" element={<Payments />} />
+                <Route path="/shops" element={<Shops />} />
+                <Route path="/collectors" element={<Collectors />} />
+              </Route>
+            </Routes>
+          </BrowserRouter>
+        </CollectorContextProvider>
       </ShopContextProvider>
     </GlobalContextProvider>
   </React.StrictMode>

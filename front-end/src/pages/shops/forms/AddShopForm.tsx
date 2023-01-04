@@ -9,10 +9,10 @@ import {
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Formik } from "formik";
-import { useMutation } from "react-query";
+import { useMutation, useQueryClient } from "react-query";
+import { IShop } from "../../../api/client";
 import { shopClient } from "../../../api/shops";
 import { useGlobalContext } from "../../../context/GlobalContext";
-import { FORM_MODEL } from "./data";
 
 const initialValues = {
   name: "",
@@ -26,32 +26,63 @@ const AddShopForm = () => {
   const { setAddModalOpen, setLoading, setSnackMessage, setSnackOpen } =
     useGlobalContext();
   const { createShop } = shopClient;
+  const { isLoading, mutate } = useMutation(
+    async (input: Omit<IShop, "_id">) => await createShop(input)
+  );
+
+  const queryClient = useQueryClient();
 
   return (
     <Formik
       initialValues={initialValues}
-      onSubmit={(values) => {
-        const { isLoading, mutate } = useMutation(
-          async () => await createShop({ ...values, payments: [] })
-        );
+      onSubmit={(values, { resetForm }) => {
         if (isLoading) setLoading(true);
+        mutate(
+          { ...values, payments: [] },
+          {
+            onSuccess: (data) => {
+              queryClient.invalidateQueries("all shops");
+
+              setLoading(false);
+              setSnackMessage(data.message);
+              setSnackOpen(true);
+            },
+            onError: (error: any) => {
+              console.log(error);
+              setSnackMessage(error.message);
+              setSnackOpen(true);
+            },
+            onSettled: () => {
+              setLoading(false);
+              setAddModalOpen(false);
+              resetForm();
+            },
+          }
+        );
       }}
     >
-      {({ handleChange, handleSubmit }) => (
+      {({ handleChange, handleSubmit, values }) => (
         <form onSubmit={handleSubmit}>
           <Grid container rowGap={1} columnGap={1}>
-            <Grid xs={5}>
+            <Grid item xs={6}>
               <FormControl fullWidth>
-                <TextField name={FORM_MODEL.name} label="Name" fullWidth />
+                <TextField
+                  name="name"
+                  label="Name"
+                  fullWidth
+                  value={values.name}
+                  onChange={handleChange}
+                />
               </FormControl>
             </Grid>
-            <Grid xs={5}>
+            <Grid item xs={6}>
               <FormControl fullWidth>
                 <InputLabel>select region</InputLabel>
                 <Select
                   onChange={handleChange}
                   fullWidth
-                  name={FORM_MODEL.region}
+                  name="region"
+                  value={values.region}
                 >
                   {REGIONS.map((item, index) => (
                     <MenuItem key={index} value={item}>
@@ -62,12 +93,14 @@ const AddShopForm = () => {
               </FormControl>
             </Grid>
 
-            <Grid xs={12}>
+            <Grid item xs={12}>
               <FormControl fullWidth>
                 <TextField
-                  name={FORM_MODEL.address}
+                  name="address"
                   label="Address"
                   fullWidth
+                  value={values.address}
+                  onChange={handleChange}
                 />
               </FormControl>
             </Grid>
