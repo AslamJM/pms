@@ -7,6 +7,7 @@ import {
 } from "@mui/material";
 import { Formik } from "formik";
 import { useGlobalContext } from "../../../context/GlobalContext";
+import CircularProgress from "@mui/material/CircularProgress";
 import { FORM_MODEL } from "./data";
 import { useMutation, useQueryClient } from "react-query";
 import { ICollector } from "../../../api/client";
@@ -94,7 +95,7 @@ const AddCollectorForm = () => {
           </Grid>
           <DialogActions>
             <Button variant="contained" type="submit">
-              add
+              {isLoading ? <CircularProgress /> : "add"}
             </Button>
             <Button
               onClick={() => setAddModalOpen(false)}

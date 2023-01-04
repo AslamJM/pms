@@ -40,7 +40,7 @@ function collectorReducer(
     case "SET_SELECTED_COLLECTOR":
       return {
         ...state,
-        collectors: action.payload,
+        selectedCollector: action.payload,
       };
     default:
       return state;
@@ -69,6 +69,7 @@ export default function CollectorContextProvider({
   children,
 }: React.PropsWithChildren<{}>) {
   const globalState = useCollectorReducer();
+
   return (
     <collectorContext.Provider value={globalState}>
       {children}

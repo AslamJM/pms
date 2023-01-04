@@ -36,6 +36,11 @@ export interface IShop {
   payments: IPayment[];
 }
 
+export interface ICompany {
+  _id: string;
+  name: string;
+}
+
 // client queries
 const getAll = async <T>(route: string) => {
   const response = await apiClient.get<T>(route);

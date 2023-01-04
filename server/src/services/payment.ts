@@ -10,7 +10,11 @@ export const createPayment = (input: Payment) => {
 };
 
 export const queryPayments = (query: FilterQuery<Payment>) => {
-  return paymentModel.find(query).populate('collector').populate('shop');
+  return paymentModel
+    .find(query)
+    .populate('collector')
+    .populate('shop')
+    .populate('company');
 };
 
 export const updatePayment = (id: string, input: UpdateQuery<Payment>) => {

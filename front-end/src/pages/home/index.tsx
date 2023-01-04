@@ -1,5 +1,9 @@
+import { useGlobalContext } from "../../context/GlobalContext";
+
 const Home = () => {
-  return <div></div>;
+  const { companies } = useGlobalContext();
+
+  return <div>{JSON.stringify(companies)}</div>;
 };
 
 export default Home;

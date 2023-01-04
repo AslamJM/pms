@@ -94,7 +94,7 @@ export const queryPaymentController = async (req: Request, res: Response) => {
   try {
     const payments = await queryPayments(req.query);
     return res.status(200).json({
-      shops: payments,
+      payments: payments,
     });
   } catch (error: any) {
     return res.status(500).json({

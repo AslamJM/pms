@@ -13,6 +13,7 @@ import DeleteShopModel from "./modals/DeleteShopModal";
 import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
+import Chip from "@mui/material/Chip";
 
 const columns: IColumn[] = [
   { id: "name", label: "Name" },
@@ -26,9 +27,9 @@ const ShopTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { setDeleteModalOpen } = useGlobalContext();
   const { getAllShops } = shopClient;
-  const { shops, setAllShops, setSelectedShop } = useShopContext();
+  const { setAllShops, setSelectedShop } = useShopContext();
 
-  const { data, isLoading } = useQuery(
+  const { data, isLoading, isError } = useQuery(
     "all shops",
     async () => await getAllShops(),
     {
@@ -40,7 +41,11 @@ const ShopTable = () => {
     return <CircularLoader />;
   }
 
-  if (shops.length === 0) {
+  if (isError) {
+    return <div>an error occurred</div>;
+  }
+
+  if (data?.shops.length === 0) {
     return (
       <Box>
         <Typography variant="h3" color="GrayText" align="center">
@@ -55,13 +60,13 @@ const ShopTable = () => {
       <DeleteShopModel />
       <CustomTable
         columns={columns}
-        count={shops.length}
+        count={data?.shops.length!}
         page={page}
         rowsPerPage={rowsPerPage}
         setPage={setPage}
         setRowsPerPage={setRowsPerPage}
       >
-        {shops
+        {data?.shops
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map((row, setkey) => {
             return (
@@ -75,8 +80,8 @@ const ShopTable = () => {
 
                     if (!lastPayment) {
                       return (
-                        <TableCell key={index} sx={{ textAlign: "center" }}>
-                          -----
+                        <TableCell key={index}>
+                          <Chip label="no payments yet" variant="outlined" />
                         </TableCell>
                       );
                     }
@@ -112,7 +117,7 @@ const ShopTable = () => {
                     sx={{ cursor: "pointer" }}
                     fontSize="medium"
                     onClick={() => {
-                      //setSelectedShop(row);
+                      setSelectedShop(row);
                       setDeleteModalOpen(true);
                     }}
                   />

@@ -1,10 +1,17 @@
 import { useState } from "react";
 import CustomTable, { IColumn } from "../../components/tables/Table";
 import { useCollectorContext } from "../../context/CollectorContext";
+import { useGlobalContext } from "../../context/GlobalContext";
 import { useQuery } from "react-query";
 import { collectorClient } from "../../api/collectors";
 import CircularLoader from "../../components/loader/CircularLoader";
-import { Box, TableCell, TableRow, Typography } from "@mui/material";
+import {
+  Box,
+  IconButton,
+  TableCell,
+  TableRow,
+  Typography,
+} from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
 import dayjs from "dayjs";
@@ -18,18 +25,28 @@ const columns: IColumn[] = [
 const CollectorTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { collectors, setAllCollectors } = useCollectorContext();
+  const { collectors, setAllCollectors, setSelectedCollector } =
+    useCollectorContext();
   const { getAllCollectors } = collectorClient;
+  const { setDeleteModalOpen } = useGlobalContext();
 
-  const { data, isLoading } = useQuery("all collectors", getAllCollectors, {
-    onSuccess: (data) => setAllCollectors(data.collectors),
-  });
+  const { data, isLoading, isError } = useQuery(
+    "all collectors",
+    getAllCollectors,
+    {
+      onSuccess: (data) => setAllCollectors(data.collectors),
+    }
+  );
 
   if (isLoading) {
     return <CircularLoader />;
   }
 
-  if (collectors.length === 0) {
+  if (isError) {
+    return <div>an error occurred</div>;
+  }
+
+  if (data?.collectors.length === 0) {
     return (
       <Box>
         <Typography variant="h3" color="GrayText" align="center">
@@ -42,13 +59,13 @@ const CollectorTable = () => {
   return (
     <CustomTable
       columns={columns}
-      count={collectors.length}
+      count={data?.collectors.length!}
       page={page}
       rowsPerPage={rowsPerPage}
       setPage={setPage}
       setRowsPerPage={setRowsPerPage}
     >
-      {collectors
+      {data?.collectors
         .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
         .map((row, setkey) => {
           return (
@@ -61,20 +78,29 @@ const CollectorTable = () => {
                 );
               })}
               <TableCell>
-                <BorderColorIcon
-                  color="success"
-                  sx={{
-                    cursor: "pointer",
-                  }}
-                  fontSize="medium"
-                />
+                <IconButton>
+                  <BorderColorIcon
+                    color="success"
+                    sx={{
+                      cursor: "pointer",
+                    }}
+                    fontSize="medium"
+                  />
+                </IconButton>
               </TableCell>
               <TableCell>
-                <DeleteIcon
-                  color="error"
-                  sx={{ cursor: "pointer" }}
-                  fontSize="medium"
-                />
+                <IconButton
+                  onClick={() => {
+                    setSelectedCollector(row);
+                    setDeleteModalOpen(true);
+                  }}
+                >
+                  <DeleteIcon
+                    color="error"
+                    sx={{ cursor: "pointer" }}
+                    fontSize="medium"
+                  />
+                </IconButton>
               </TableCell>
             </TableRow>
           );

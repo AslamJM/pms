@@ -1,5 +1,7 @@
 import React, { createContext, useContext, useReducer } from "react";
-
+import { useQuery } from "react-query";
+import { ICompany } from "../api/client";
+import { getAllCompanies } from "../api/company";
 export interface IAction {
   type:
     | "SET_SNACKBAR"
@@ -7,7 +9,8 @@ export interface IAction {
     | "SET_EDIT_OPEN"
     | "SET_DELETE_OPEN"
     | "SET_LOADING"
-    | "SET_ADD_OPEN";
+    | "SET_ADD_OPEN"
+    | "SET_COMPANIES";
 
   payload: any;
 }
@@ -25,6 +28,8 @@ export interface IGlobalState {
   setAddModalOpen: (value: boolean) => void;
   loading: boolean;
   setLoading: (value: boolean) => void;
+  companies: ICompany[];
+  setComapnies: (value: ICompany[]) => void;
 }
 
 const initialState: IGlobalState = {
@@ -40,6 +45,8 @@ const initialState: IGlobalState = {
   setAddModalOpen: () => {},
   loading: false,
   setLoading: () => {},
+  companies: [],
+  setComapnies: () => {},
 };
 
 const globalContext = createContext(initialState);
@@ -81,6 +88,11 @@ function globalReducer(state: IGlobalState, action: IAction): IGlobalState {
         ...state,
         addModalOpen: action.payload,
       };
+    case "SET_COMPANIES":
+      return {
+        ...state,
+        companies: action.payload,
+      };
     default:
       return state;
   }
@@ -106,6 +118,9 @@ function useGlobalReducer() {
   const setAddModalOpen = (value: boolean) => {
     dispatch({ type: "SET_ADD_OPEN", payload: value });
   };
+  const setComapnies = (value: ICompany[]) => {
+    dispatch({ type: "SET_COMPANIES", payload: value });
+  };
   return {
     ...state,
     setSnackOpen,
@@ -114,6 +129,7 @@ function useGlobalReducer() {
     setDeleteModalOpen,
     setAddModalOpen,
     setLoading,
+    setComapnies,
   };
 }
 
@@ -121,6 +137,9 @@ export default function GlobalContextProvider({
   children,
 }: React.PropsWithChildren<{}>) {
   const globalState = useGlobalReducer();
+  const { data } = useQuery("all companies", getAllCompanies, {
+    onSuccess: (data) => globalState.setComapnies(data.companies),
+  });
   return (
     <globalContext.Provider value={globalState}>
       {children}

@@ -6,6 +6,7 @@ import {
   Select,
   FormControl,
   InputLabel,
+  CircularProgress,
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Formik } from "formik";
@@ -107,7 +108,7 @@ const AddShopForm = () => {
           </Grid>
           <DialogActions>
             <Button variant="contained" type="submit">
-              add
+              {isLoading ? <CircularProgress /> : "add"}
             </Button>
             <Button
               onClick={() => setAddModalOpen(false)}

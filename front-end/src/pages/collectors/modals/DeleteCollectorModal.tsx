@@ -4,24 +4,25 @@ import DialogContentText from "@mui/material/DialogContentText";
 import DialogActions from "@mui/material/DialogActions";
 import Button from "@mui/material/Button";
 import { useGlobalContext } from "../../../context/GlobalContext";
-import { useShopContext } from "../../../context/ShopContext";
+import { useCollectorContext } from "../../../context/CollectorContext";
 import { useMutation, useQueryClient } from "react-query";
-import { shopClient } from "../../../api/shops";
-import CircularProgress from "@mui/material/CircularProgress";
+import { collectorClient } from "../../../api/collectors";
 
-const DeleteShopModel = () => {
+const DeleteCollectorModel = () => {
   const { setDeleteModalOpen, setLoading, setSnackMessage, setSnackOpen } =
     useGlobalContext();
-  const { deleteShop } = shopClient;
-  const { selectedShop } = useShopContext();
+  const { deleteCollector } = collectorClient;
+  const { selectedCollector } = useCollectorContext();
+
+  console.log(selectedCollector);
 
   const queryClient = useQueryClient();
 
   const { isLoading, mutate } = useMutation(
-    async () => await deleteShop(selectedShop?._id!),
+    async () => await deleteCollector(selectedCollector?._id!),
     {
       onSuccess: (data) => {
-        queryClient.invalidateQueries("all shops");
+        queryClient.invalidateQueries("all collectors");
         setLoading(false);
         setSnackMessage(data.message);
         setSnackOpen(true);
@@ -39,10 +40,10 @@ const DeleteShopModel = () => {
   );
 
   return (
-    <Modal title="delete shop" type="delete">
+    <Modal title="delete collector" type="delete">
       <DialogContent>
         <DialogContentText>
-          Do you want to delete this shop from your list?
+          Do you want to delete this collector from your list?
         </DialogContentText>
         <DialogActions>
           <Button
@@ -57,7 +58,7 @@ const DeleteShopModel = () => {
             onClick={() => mutate()}
             disabled={isLoading}
           >
-            {isLoading ? <CircularProgress /> : "delete"}
+            delete
           </Button>
         </DialogActions>
       </DialogContent>
@@ -65,4 +66,4 @@ const DeleteShopModel = () => {
   );
 };
 
-export default DeleteShopModel;
+export default DeleteCollectorModel;

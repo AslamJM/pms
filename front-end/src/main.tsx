@@ -9,24 +9,37 @@ import Shops from "./pages/shops";
 import GlobalContextProvider from "./context/GlobalContext";
 import CollectorContextProvider from "./context/CollectorContext";
 import ShopContextProvider from "./context/ShopContext";
+import { QueryClient, QueryClientProvider } from "react-query";
+
+const queryClient = new QueryClient({
+  // defaultOptions: {
+  //   queries: {
+  //     refetchOnWindowFocus: false,
+  //     refetchOnMount: false,
+  //     retry: false,
+  //   },
+  // },
+});
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
-    <GlobalContextProvider>
-      <ShopContextProvider>
-        <CollectorContextProvider>
-          <BrowserRouter>
-            <Routes>
-              <Route element={<App />}>
-                <Route path="/" element={<Home />} />
-                <Route path="/payments" element={<Payments />} />
-                <Route path="/shops" element={<Shops />} />
-                <Route path="/collectors" element={<Collectors />} />
-              </Route>
-            </Routes>
-          </BrowserRouter>
-        </CollectorContextProvider>
-      </ShopContextProvider>
-    </GlobalContextProvider>
+    <QueryClientProvider client={queryClient}>
+      <GlobalContextProvider>
+        <ShopContextProvider>
+          <CollectorContextProvider>
+            <BrowserRouter>
+              <Routes>
+                <Route element={<App />}>
+                  <Route path="/" element={<Home />} />
+                  <Route path="/payments" element={<Payments />} />
+                  <Route path="/shops" element={<Shops />} />
+                  <Route path="/collectors" element={<Collectors />} />
+                </Route>
+              </Routes>
+            </BrowserRouter>
+          </CollectorContextProvider>
+        </ShopContextProvider>
+      </GlobalContextProvider>
+    </QueryClientProvider>
   </React.StrictMode>
 );

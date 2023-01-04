@@ -38,7 +38,7 @@ function shopReducer(state: IShopState, action: IAction): IShopState {
     case "SET_SELECTED_SHOP":
       return {
         ...state,
-        shops: action.payload,
+        selectedShop: action.payload,
       };
     default:
       return state;
