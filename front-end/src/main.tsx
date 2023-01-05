@@ -10,6 +10,7 @@ import CompanyPage from "./pages/companies";
 import GlobalContextProvider from "./context/GlobalContext";
 import CollectorContextProvider from "./context/CollectorContext";
 import ShopContextProvider from "./context/ShopContext";
+import PaymentContextProvider from "./context/PaymentContext";
 import { QueryClient, QueryClientProvider } from "react-query";
 
 const queryClient = new QueryClient({
@@ -28,17 +29,19 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
       <GlobalContextProvider>
         <ShopContextProvider>
           <CollectorContextProvider>
-            <BrowserRouter>
-              <Routes>
-                <Route element={<App />}>
-                  <Route path="/" element={<Home />} />
-                  <Route path="/payments" element={<Payments />} />
-                  <Route path="/shops" element={<Shops />} />
-                  <Route path="/collectors" element={<Collectors />} />
-                  <Route path="/companies" element={<CompanyPage />} />
-                </Route>
-              </Routes>
-            </BrowserRouter>
+            <PaymentContextProvider>
+              <BrowserRouter>
+                <Routes>
+                  <Route element={<App />}>
+                    <Route path="/" element={<Home />} />
+                    <Route path="/payments" element={<Payments />} />
+                    <Route path="/shops" element={<Shops />} />
+                    <Route path="/collectors" element={<Collectors />} />
+                    <Route path="/companies" element={<CompanyPage />} />
+                  </Route>
+                </Routes>
+              </BrowserRouter>
+            </PaymentContextProvider>
           </CollectorContextProvider>
         </ShopContextProvider>
       </GlobalContextProvider>

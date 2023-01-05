@@ -22,27 +22,43 @@ type UpdateResponse = {
   message: string;
 };
 
+interface PaymentCreateInput {
+  invoice: string;
+  shop: string;
+  amount: number;
+  paidAmount: number;
+  free: number;
+  discount: number;
+  returnAmount: number;
+  dueAmount: number;
+  paymentDate: Date;
+  dueDate: Date;
+  paymentStatus: string;
+  paymentMethod: string;
+  collector: string;
+}
+
 const { getAll, getOne, deleteOne, updateOne, createOne } = apiMethods;
 
 const getAllpayments = async () =>
   await getAll<GetAllResponse>(paymentRoutes.get);
 
-const getOnePayments = (id: string) =>
+const getOnePayment = (id: string) =>
   getOne<GetOneResponse>(paymentRoutes.getOne, id);
 
-const updatePayments = (id: string, input: Partial<IPayment>) =>
+const updatePayment = (id: string, input: Partial<IPayment>) =>
   updateOne<UpdateResponse, Partial<IPayment>>(paymentRoutes.update, id, input);
 
-const deletePayments = (id: string) =>
+const deletePayment = (id: string) =>
   deleteOne<GetOneResponse>(paymentRoutes.delete, id);
 
-const createPayments = (input: Omit<IPayment, "_id">) =>
-  createOne<GetOneResponse, Omit<IPayment, "_id">>(paymentRoutes.create, input);
+const createPayment = (input: PaymentCreateInput) =>
+  createOne<GetOneResponse, PaymentCreateInput>(paymentRoutes.create, input);
 
 export const paymentClient = {
   getAllpayments,
-  getOnePayments,
-  updatePayments,
-  createPayments,
-  deletePayments,
+  getOnePayment,
+  updatePayment,
+  createPayment,
+  deletePayment,
 };

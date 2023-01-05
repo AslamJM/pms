@@ -9,9 +9,13 @@ export const apiClient = axios.create({
 
 export interface IPayment {
   _id: string;
+  invoice: string;
   shop: IShop;
   amount: number;
   paidAmount: number;
+  free: number;
+  discount: number;
+  returnAmount: number;
   dueAmount: number;
   paymentDate: Date;
   dueDate: Date;

@@ -6,24 +6,32 @@ import {
   FormControl,
   InputLabel,
   Box,
+  CircularProgress,
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Formik } from "formik";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import DatePicker from "../../../components/datepicker";
-import { FORM_MODEL, PAYMENT_METHOD, PAYMENT_STATUS } from "./data";
+import {
+  FORM_MODEL,
+  PAYMENT_METHOD,
+  PAYMENT_STATUS,
+  parseToNumber,
+} from "./data";
+import { paymentClient } from "../../../api/payments";
 import { useShopContext } from "../../../context/ShopContext";
 import { useCollectorContext } from "../../../context/CollectorContext";
+import { useMutation, useQueryClient } from "react-query";
+import { useEffect, useState } from "react";
 
-//need to change initial values
 const initialValues = {
   shop: "",
-  amount: 0,
-  paidAmount: 0,
-  dueAmount: 0,
-  free: 0,
-  discount: 0,
-  returnAmount: 0,
+  amount: "",
+  paidAmount: "",
+  dueAmount: "",
+  free: "",
+  discount: "",
+  returnAmount: "",
   collector: "",
   company: "",
   invoice: "",
@@ -37,15 +45,82 @@ const initialValues = {
 const REGIONS = ["region a", "region b", "region c", "region d"];
 
 const AddPaymentForm = () => {
-  const { setAddModalOpen, companies } = useGlobalContext();
+  const [due, setDue] = useState("");
+  const [famount, setAmount] = useState("");
+  const [ffree, setFree] = useState("");
+  const [fdiscount, setDiscount] = useState("");
+  const [fpaid, setPaid] = useState("");
+  const [freturn, setReturn] = useState("");
+
+  const {
+    setAddModalOpen,
+    companies,
+    setLoading,
+    setSnackMessage,
+    setSnackOpen,
+  } = useGlobalContext();
   const { shops } = useShopContext();
   const { collectors } = useCollectorContext();
 
+  const queryClient = useQueryClient();
+
+  const { isLoading, mutate } = useMutation(paymentClient.createPayments);
+
+  useEffect(() => {
+    setDue(
+      (
+        parseToNumber(famount) -
+        parseToNumber(fpaid) -
+        parseToNumber(ffree) -
+        parseToNumber(fdiscount) -
+        parseToNumber(freturn)
+      ).toString()
+    );
+  }, [famount, ffree, freturn, fdiscount, fpaid]);
+
   return (
-    <Formik initialValues={initialValues} onSubmit={() => {}}>
+    <Formik
+      initialValues={initialValues}
+      onSubmit={(values, { resetForm }) => {
+        const { dueDate, paymentDate } = values;
+
+        mutate(
+          {
+            ...values,
+            amount: Number(famount),
+            free: Number(ffree),
+            discount: Number(fdiscount),
+            paidAmount: Number(fpaid),
+            dueAmount: Number(due),
+            returnAmount: Number(freturn),
+            paymentDate: new Date(paymentDate),
+            dueDate: new Date(dueDate),
+          },
+          {
+            onSuccess: (data) => {
+              queryClient.invalidateQueries("all payments");
+
+              setLoading(false);
+              setSnackMessage(data.message);
+              setSnackOpen(true);
+            },
+            onError: (error: any) => {
+              console.log(error);
+              setSnackMessage(error.message);
+              setSnackOpen(true);
+            },
+            onSettled: () => {
+              setLoading(false);
+              setAddModalOpen(false);
+              resetForm();
+            },
+          }
+        );
+      }}
+    >
       {({ values, handleChange, handleSubmit }) => (
         <form onSubmit={handleSubmit}>
-          <Box width="500px">
+          <Box>
             <Box display="flex" width="100%" my={2}>
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth>
@@ -72,6 +147,7 @@ const AddPaymentForm = () => {
                     onChange={handleChange}
                     fullWidth
                     name={FORM_MODEL.collector}
+                    value={values.collector}
                   >
                     {collectors.map((item, index) => (
                       <MenuItem key={index} value={item._id}>
@@ -87,6 +163,8 @@ const AddPaymentForm = () => {
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.invoice}
+                    value={values.invoice}
+                    onChange={handleChange}
                     label="Invoice No."
                     fullWidth
                   />
@@ -99,6 +177,7 @@ const AddPaymentForm = () => {
                     onChange={handleChange}
                     fullWidth
                     name={FORM_MODEL.company}
+                    value={values.company}
                   >
                     {companies.map((item, index) => (
                       <MenuItem key={index} value={item._id}>
@@ -116,12 +195,24 @@ const AddPaymentForm = () => {
                     name={FORM_MODEL.amount}
                     label="Amount"
                     fullWidth
+                    value={famount}
+                    onChange={(e) => {
+                      setAmount(e.target.value);
+                    }}
                   />
                 </FormControl>
               </Box>
               <Box sx={{ mx: 0.3 }} width="33%">
                 <FormControl fullWidth>
-                  <TextField name={FORM_MODEL.free} label="Free" fullWidth />
+                  <TextField
+                    name={FORM_MODEL.free}
+                    label="Free"
+                    fullWidth
+                    value={ffree}
+                    onChange={(e) => {
+                      setFree(e.target.value);
+                    }}
+                  />
                 </FormControl>
               </Box>
 
@@ -131,26 +222,49 @@ const AddPaymentForm = () => {
                     name={FORM_MODEL.discount}
                     label="Discount"
                     fullWidth
+                    value={fdiscount}
+                    onChange={(e) => {
+                      setDiscount(e.target.value);
+                    }}
                   />
                 </FormControl>
               </Box>
             </Box>
             <Box display="flex" width="100%" my={2}>
-              <Box sx={{ mx: 0.5 }} width="50%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.paidAmount}
                     label="Paid Amount"
                     fullWidth
+                    value={fpaid}
+                    onChange={(e) => {
+                      setPaid(e.target.value);
+                    }}
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="50%">
+              <Box sx={{ mx: 0.5 }} width="33%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.returnAmount}
+                    label="Return Amount"
+                    fullWidth
+                    value={freturn}
+                    onChange={(e) => {
+                      setReturn(e.target.value);
+                    }}
+                  />
+                </FormControl>
+              </Box>
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.dueAmount}
                     label="Due Amount"
                     fullWidth
+                    value={due}
+                    disabled
                   />
                 </FormControl>
               </Box>
@@ -163,6 +277,7 @@ const AddPaymentForm = () => {
                     onChange={handleChange}
                     fullWidth
                     name={FORM_MODEL.paymentMethod}
+                    value={values.paymentMethod}
                   >
                     {PAYMENT_METHOD.map((item, index) => (
                       <MenuItem key={index} value={item}>
@@ -179,6 +294,7 @@ const AddPaymentForm = () => {
                     onChange={handleChange}
                     fullWidth
                     name={FORM_MODEL.paymentStatus}
+                    value={values.paymentStatus}
                   >
                     {PAYMENT_STATUS.map((item, index) => (
                       <MenuItem key={index} value={item}>
@@ -207,7 +323,7 @@ const AddPaymentForm = () => {
           </Box>
           <DialogActions>
             <Button variant="contained" type="submit">
-              add
+              {isLoading ? <CircularProgress /> : "add"}
             </Button>
             <Button
               onClick={() => setAddModalOpen(false)}

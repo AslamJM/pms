@@ -8,10 +8,17 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { IPayment } from "../../api/client";
 import dayjs from "dayjs";
+import DeletePaymentModel from "./modals/DeletePaymentModal";
+import { useGlobalContext } from "../../context/GlobalContext";
+import { usePaymentContext } from "../../context/PaymentContext";
 
 const columns: IColumn[] = [
   { id: "shop", label: "Shop" },
   { id: "amount", label: "Amount" },
+  { id: "free", label: "Free" },
+  { id: "discount", label: "Discount" },
+  { id: "paidAmount", label: "paid" },
+  { id: "returnAmount", label: "return" },
   { id: "dueAmount", label: "due" },
   { id: "paymentStatus", label: "Status" },
   { id: "collector", label: "Collector" },
@@ -44,6 +51,9 @@ const PaymentTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
+  const { setDeleteModalOpen } = useGlobalContext();
+  const { setSelectedPayment } = usePaymentContext();
+
   const { getAllpayments } = paymentClient;
   const { data, isLoading, isError } = useQuery("all payments", getAllpayments);
 
@@ -66,51 +76,54 @@ const PaymentTable = () => {
   }
 
   return (
-    <CustomTable
-      columns={columns}
-      count={0}
-      page={page}
-      rowsPerPage={rowsPerPage}
-      setPage={setPage}
-      setRowsPerPage={setRowsPerPage}
-    >
-      {data?.payments
-        .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-        .map((rowPayment, setkey) => {
-          const row = createPaymentData(rowPayment);
-          return (
-            <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
-              {columns.map((col, index) => {
-                return (
-                  <TableCell key={index} align={col.align}>
-                    {row[col.id as keyof Omit<typeof row, "_id">]}
-                  </TableCell>
-                );
-              })}
-              <TableCell>
-                <BorderColorIcon
-                  color="success"
-                  sx={{
-                    cursor: "pointer",
-                  }}
-                  fontSize="medium"
-                />
-              </TableCell>
-              <TableCell>
-                <DeleteIcon
-                  color="error"
-                  sx={{ cursor: "pointer" }}
-                  fontSize="medium"
-                  onClick={() => {
-                    //setSelectedShop(row);
-                    //setDeleteModalOpen(true);
-                  }}
-                />
-              </TableCell>
-            </TableRow>
-          );
-        })}
-    </CustomTable>
+    <>
+      <DeletePaymentModel />
+      <CustomTable
+        columns={columns}
+        count={0}
+        page={page}
+        rowsPerPage={rowsPerPage}
+        setPage={setPage}
+        setRowsPerPage={setRowsPerPage}
+      >
+        {data?.payments
+          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          .map((rowPayment, setkey) => {
+            const row = createPaymentData(rowPayment);
+            return (
+              <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
+                {columns.map((col, index) => {
+                  return (
+                    <TableCell key={index} align={col.align}>
+                      {row[col.id as keyof Omit<typeof row, "_id">]}
+                    </TableCell>
+                  );
+                })}
+                <TableCell>
+                  <BorderColorIcon
+                    color="success"
+                    sx={{
+                      cursor: "pointer",
+                    }}
+                    fontSize="medium"
+                  />
+                </TableCell>
+                <TableCell>
+                  <DeleteIcon
+                    color="error"
+                    sx={{ cursor: "pointer" }}
+                    fontSize="medium"
+                    onClick={() => {
+                      setSelectedPayment(rowPayment);
+                      setDeleteModalOpen(true);
+                    }}
+                  />
+                </TableCell>
+              </TableRow>
+            );
+          })}
+      </CustomTable>
+    </>
   );
 };
 
