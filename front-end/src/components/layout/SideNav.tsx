@@ -10,6 +10,7 @@ import HomeIcon from "@mui/icons-material/Home";
 import PaidIcon from "@mui/icons-material/Paid";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import FollowTheSignsIcon from "@mui/icons-material/FollowTheSigns";
+import LocationCityIcon from "@mui/icons-material/LocationCity";
 import { NavLink } from "react-router-dom";
 
 const drawerWidth = 200;
@@ -19,6 +20,7 @@ const listItems = [
   { title: "Payments", icon: <PaidIcon />, to: "/payments" },
   { title: "Shops", icon: <StorefrontIcon />, to: "/shops" },
   { title: "Collectors", icon: <FollowTheSignsIcon />, to: "/collectors" },
+  { title: "Companies", icon: <LocationCityIcon />, to: "/companies" },
 ];
 
 const SideNav = () => {

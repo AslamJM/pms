@@ -6,6 +6,7 @@ import Collectors from "./pages/collectors";
 import Home from "./pages/home";
 import Payments from "./pages/payments";
 import Shops from "./pages/shops";
+import CompanyPage from "./pages/companies";
 import GlobalContextProvider from "./context/GlobalContext";
 import CollectorContextProvider from "./context/CollectorContext";
 import ShopContextProvider from "./context/ShopContext";
@@ -34,6 +35,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                   <Route path="/payments" element={<Payments />} />
                   <Route path="/shops" element={<Shops />} />
                   <Route path="/collectors" element={<Collectors />} />
+                  <Route path="/companies" element={<CompanyPage />} />
                 </Route>
               </Routes>
             </BrowserRouter>

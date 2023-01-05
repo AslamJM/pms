@@ -1,9 +1,6 @@
 import CustomTable, { IColumn } from "../../components/tables/Table";
-import { useQuery } from "react-query";
-import CircularLoader from "../../components/loader/CircularLoader";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
-import { shopClient } from "../../api/shops";
 import { useShopContext } from "../../context/ShopContext";
 import { useGlobalContext } from "../../context/GlobalContext";
 import TableRow from "@mui/material/TableRow";
@@ -26,26 +23,9 @@ const ShopTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { setDeleteModalOpen } = useGlobalContext();
-  const { getAllShops } = shopClient;
-  const { setAllShops, setSelectedShop } = useShopContext();
+  const { setSelectedShop, shops } = useShopContext();
 
-  const { data, isLoading, isError } = useQuery(
-    "all shops",
-    async () => await getAllShops(),
-    {
-      onSuccess: (data) => setAllShops(data.shops),
-    }
-  );
-
-  if (isLoading) {
-    return <CircularLoader />;
-  }
-
-  if (isError) {
-    return <div>an error occurred</div>;
-  }
-
-  if (data?.shops.length === 0) {
+  if (shops.length === 0) {
     return (
       <Box>
         <Typography variant="h3" color="GrayText" align="center">
@@ -60,13 +40,13 @@ const ShopTable = () => {
       <DeleteShopModel />
       <CustomTable
         columns={columns}
-        count={data?.shops.length!}
+        count={shops.length!}
         page={page}
         rowsPerPage={rowsPerPage}
         setPage={setPage}
         setRowsPerPage={setRowsPerPage}
       >
-        {data?.shops
+        {shops
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map((row, setkey) => {
             return (

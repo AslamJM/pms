@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useReducer } from "react";
+import { useQuery } from "react-query";
 import { ICollector } from "../api/client";
-
+import { collectorClient } from "../api/collectors";
 export interface IAction {
   type: "SET_ALL_COLLECTORS" | "SET_SELECTED_COLLECTOR";
   payload: any;
@@ -69,6 +70,14 @@ export default function CollectorContextProvider({
   children,
 }: React.PropsWithChildren<{}>) {
   const globalState = useCollectorReducer();
+
+  const { data, isLoading, isError } = useQuery(
+    "all collectors",
+    collectorClient.getAllCollectors,
+    {
+      onSuccess: (data) => globalState.setAllCollectors(data.collectors),
+    }
+  );
 
   return (
     <collectorContext.Provider value={globalState}>
