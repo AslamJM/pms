@@ -3,12 +3,14 @@ import {
   modelOptions,
   prop,
   Ref,
+  ReturnModelType,
   Severity,
 } from '@typegoose/typegoose';
 import { Shop } from './shops';
 import { Collector } from './collector';
 import { Company } from './company';
 import { PaymentMethod, PaymentStatus } from '../types/models';
+import dayjs from 'dayjs';
 
 @modelOptions({
   options: {
@@ -44,6 +46,21 @@ export class Payment {
   paymentStatus: PaymentStatus;
   @prop()
   paymentMethod: PaymentMethod;
+
+  public static async getPaymentsOfDay(
+    this: ReturnModelType<typeof Payment>,
+    date: string
+  ) {
+    return this.find({
+      paymentDate: {
+        $gte: dayjs(date).startOf('D').toISOString(),
+        $lte: dayjs(date).endOf('D').toISOString(),
+      },
+    })
+      .populate('collector')
+      .populate('shop')
+      .populate('company');
+  }
 }
 
 export const paymentModel = getModelForClass(Payment, {

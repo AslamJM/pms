@@ -90,4 +90,14 @@ export const queryPayments = async (params: any) => {
   return response.data;
 };
 
+export const getPaymentsForDate = async (params: { date: string }) => {
+  const response = await apiClient.get<{ payments: IPayment[] }>(
+    "/payments/date",
+    {
+      params,
+    }
+  );
+  return response.data;
+};
+
 export const apiMethods = { getAll, getOne, updateOne, deleteOne, createOne };

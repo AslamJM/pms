@@ -27,3 +27,7 @@ export const updatePayment = (id: string, input: UpdateQuery<Payment>) => {
 export const deletePayment = (id: string) => {
   return paymentModel.findByIdAndDelete(id);
 };
+
+export const getPaymentsOfSpecificDate = ({ date }: { date: string }) => {
+  return paymentModel.getPaymentsOfDay(date);
+};

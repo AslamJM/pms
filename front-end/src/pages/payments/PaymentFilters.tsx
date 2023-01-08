@@ -3,24 +3,32 @@ import FilterByCompany from "../../components/Filters/paymentFilters/FilterByCom
 import FilterByCollector from "../../components/Filters/paymentFilters/FilterByCollector";
 import FilterByStatus from "../../components/Filters/paymentFilters/FilterByStatus";
 import FilterByRegion from "../../components/Filters/paymentFilters/FilterByRegion";
+import PaymentDateFilter from "../../components/Filters/paymentFilters/PaymentDateFilter";
 import DateRangeFilter from "../../components/Filters/paymentFilters/DateRangeFilter";
 import Typography from "@mui/material/Typography";
 
 const PaymentFilters = () => {
   return (
     <>
-      <div style={{ display: "flex", marginBottom: 20 }}>
+      <div style={{ display: "flex", marginBottom: 10 }}>
         <FilterByShop />
         <FilterByCompany />
         <FilterByCollector />
         <FilterByStatus />
-        <FilterByRegion />
       </div>
-      <div>
-        <Typography variant="body1" sx={{ mb: 1 }}>
-          filter by date range
-        </Typography>
-        <DateRangeFilter></DateRangeFilter>
+      <div style={{ display: "flex", marginBottom: 10 }}>
+        <div>
+          <Typography variant="body1" sx={{ mb: 1 }}>
+            select date
+          </Typography>
+          <PaymentDateFilter />
+        </div>
+        <div>
+          <Typography variant="body1" sx={{ mb: 1 }}>
+            filter by date range
+          </Typography>
+          <DateRangeFilter></DateRangeFilter>
+        </div>
       </div>
     </>
   );

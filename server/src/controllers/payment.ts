@@ -5,6 +5,7 @@ import {
   queryPayments,
   updatePayment,
   deletePayment,
+  getPaymentsOfSpecificDate,
 } from '../services/payment';
 import { Payment } from '../models/payment';
 import { UpdateQuery } from 'mongoose';
@@ -93,6 +94,24 @@ export const updatePaymentController = async (
 export const queryPaymentController = async (req: Request, res: Response) => {
   try {
     const payments = await queryPayments(req.query);
+    return res.status(200).json({
+      payments: payments,
+    });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const getPaymentsOfSpecificDateController = async (
+  req: Request<{}, {}, {}, { date: string }>,
+  res: Response
+) => {
+  console.log(req.query);
+
+  try {
+    const payments = await getPaymentsOfSpecificDate(req.query);
     return res.status(200).json({
       payments: payments,
     });
