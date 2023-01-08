@@ -13,18 +13,9 @@ const Shops = () => {
   return (
     <div>
       <SnackBar />
-      <Box
-        display="flex"
-        alignItems="center"
-        justifyContent="space-between"
-        mb={2}
-      >
-        <AddButton title="add new shop" />
-        <Box display="flex">
-          <FilterByRegion />
-          <FilterByPaymentStatus />
-        </Box>
-      </Box>
+
+      <AddButton title="add new shop" />
+
       <AddShopModal />
       <ShopTable />
     </div>

@@ -11,6 +11,7 @@ export interface IPayment {
   _id: string;
   invoice: string;
   shop: IShop;
+  company: ICompany;
   amount: number;
   paidAmount: number;
   free: number;
@@ -76,6 +77,16 @@ const createOne = async <T, K>(route: string, body: K) => {
       ...body,
     },
   });
+  return response.data;
+};
+
+export const queryPayments = async (params: any) => {
+  const response = await apiClient.get<{ payments: IPayment[] }>(
+    "/payments/all",
+    {
+      params,
+    }
+  );
   return response.data;
 };
 

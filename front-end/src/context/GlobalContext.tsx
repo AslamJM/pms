@@ -10,7 +10,9 @@ export interface IAction {
     | "SET_DELETE_OPEN"
     | "SET_LOADING"
     | "SET_ADD_OPEN"
-    | "SET_COMPANIES";
+    | "SET_COMPANIES"
+    | "SET_PARAMS"
+    | "RESET_PARAMS";
 
   payload: any;
 }
@@ -30,6 +32,9 @@ export interface IGlobalState {
   setLoading: (value: boolean) => void;
   companies: ICompany[];
   setComapnies: (value: ICompany[]) => void;
+  params: any;
+  setParams: (value: any) => void;
+  resetParams: (value: any) => void;
 }
 
 const initialState: IGlobalState = {
@@ -47,6 +52,9 @@ const initialState: IGlobalState = {
   setLoading: () => {},
   companies: [],
   setComapnies: () => {},
+  params: {},
+  setParams: () => {},
+  resetParams: () => {},
 };
 
 const globalContext = createContext(initialState);
@@ -93,6 +101,16 @@ function globalReducer(state: IGlobalState, action: IAction): IGlobalState {
         ...state,
         companies: action.payload,
       };
+    case "SET_PARAMS":
+      return {
+        ...state,
+        params: { ...state.params, ...action.payload },
+      };
+    case "RESET_PARAMS":
+      return {
+        ...state,
+        params: action.payload,
+      };
     default:
       return state;
   }
@@ -121,6 +139,12 @@ function useGlobalReducer() {
   const setComapnies = (value: ICompany[]) => {
     dispatch({ type: "SET_COMPANIES", payload: value });
   };
+  const setParams = (value: any) => {
+    dispatch({ type: "SET_PARAMS", payload: value });
+  };
+  const resetParams = (value: any) => {
+    dispatch({ type: "RESET_PARAMS", payload: value });
+  };
   return {
     ...state,
     setSnackOpen,
@@ -130,6 +154,8 @@ function useGlobalReducer() {
     setAddModalOpen,
     setLoading,
     setComapnies,
+    setParams,
+    resetParams,
   };
 }
 

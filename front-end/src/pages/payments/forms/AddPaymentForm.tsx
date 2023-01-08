@@ -64,7 +64,7 @@ const AddPaymentForm = () => {
 
   const queryClient = useQueryClient();
 
-  const { isLoading, mutate } = useMutation(paymentClient.createPayments);
+  const { isLoading, mutate } = useMutation(paymentClient.createPayment);
 
   useEffect(() => {
     setDue(

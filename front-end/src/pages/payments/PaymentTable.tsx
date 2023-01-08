@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import CustomTable, { IColumn } from "../../components/tables/Table";
 import { paymentClient } from "../../api/payments";
 import CircularLoader from "../../components/loader/CircularLoader";
@@ -10,9 +10,11 @@ import { IPayment } from "../../api/client";
 import dayjs from "dayjs";
 import DeletePaymentModel from "./modals/DeletePaymentModal";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { queryPayments } from "../../api/client";
 import { usePaymentContext } from "../../context/PaymentContext";
 
 const columns: IColumn[] = [
+  { id: "invoice", label: "Invoice" },
   { id: "shop", label: "Shop" },
   { id: "amount", label: "Amount" },
   { id: "free", label: "Free" },
@@ -28,19 +30,31 @@ const columns: IColumn[] = [
 
 function createPaymentData(payment: IPayment) {
   const {
+    invoice,
     shop,
     amount,
+    free,
+    paidAmount,
+    discount,
+    returnAmount,
     dueAmount,
     paymentStatus,
+    company,
     dueDate,
     paymentDate,
     collector,
   } = payment;
   return {
+    invoice,
     shop: shop.name,
     amount,
+    free,
+    paidAmount,
+    discount,
+    returnAmount,
     dueAmount,
     paymentStatus,
+    company: company.name,
     collector: collector.name,
     paymentDate: dayjs(new Date(paymentDate)).format("DD/MM/YYYY"),
     dueDate: dayjs(new Date(dueDate)).format("DD/MM/YYYY"),
@@ -51,11 +65,21 @@ const PaymentTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const { setDeleteModalOpen } = useGlobalContext();
-  const { setSelectedPayment } = usePaymentContext();
+  const { setDeleteModalOpen, params } = useGlobalContext();
+  const { setSelectedPayment, payments, setAllPayments } = usePaymentContext();
 
   const { getAllpayments } = paymentClient;
-  const { data, isLoading, isError } = useQuery("all payments", getAllpayments);
+  const { data, isLoading, isError, refetch } = useQuery(
+    "all payments",
+    async () => await queryPayments(params),
+    {
+      onSuccess: (data) => setAllPayments(data.payments),
+    }
+  );
+
+  useEffect(() => {
+    refetch();
+  }, [params]);
 
   if (isLoading) {
     return <CircularLoader />;
@@ -65,7 +89,7 @@ const PaymentTable = () => {
     return <div>an error occurred</div>;
   }
 
-  if (data?.payments && data?.payments.length === 0) {
+  if (payments && payments.length === 0) {
     return (
       <Box>
         <Typography variant="h3" color="GrayText" align="center">
@@ -86,7 +110,7 @@ const PaymentTable = () => {
         setPage={setPage}
         setRowsPerPage={setRowsPerPage}
       >
-        {data?.payments
+        {payments
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map((rowPayment, setkey) => {
             const row = createPaymentData(rowPayment);
