@@ -14,8 +14,6 @@ const DeletePaymentModel = () => {
   const { deletePayment } = paymentClient;
   const { selectedPayment } = usePaymentContext();
 
-  console.log(selectedPayment);
-
   const queryClient = useQueryClient();
 
   const { isLoading, mutate } = useMutation(

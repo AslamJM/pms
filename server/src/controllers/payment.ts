@@ -108,8 +108,6 @@ export const getPaymentsOfSpecificDateController = async (
   req: Request<{}, {}, {}, { date: string }>,
   res: Response
 ) => {
-  console.log(req.query);
-
   try {
     const payments = await getPaymentsOfSpecificDate(req.query);
     return res.status(200).json({

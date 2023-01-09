@@ -1,5 +1,6 @@
 import { paymentModel, Payment } from '../models/payment';
 import { FilterQuery, UpdateQuery } from 'mongoose';
+import dayjs from 'dayjs';
 
 export const getSinglePayment = (id: string) => {
   return paymentModel.findById(id).populate('collector').populate('shop');
@@ -10,8 +11,23 @@ export const createPayment = (input: Payment) => {
 };
 
 export const queryPayments = (query: FilterQuery<Payment>) => {
+  let filterQuery;
+  const { paymentDate } = query;
+
+  if (paymentDate) {
+    filterQuery = {
+      ...query,
+      paymentDate: {
+        $gte: dayjs(paymentDate).startOf('D').toISOString(),
+        $lte: dayjs(paymentDate).endOf('D').toISOString(),
+      },
+    };
+  } else {
+    filterQuery = query;
+  }
+
   return paymentModel
-    .find(query)
+    .find(filterQuery)
     .populate('collector')
     .populate('shop')
     .populate('company');

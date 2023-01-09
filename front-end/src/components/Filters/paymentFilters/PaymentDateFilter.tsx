@@ -4,21 +4,32 @@ import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Box from "@mui/material/Box";
 import dayjs, { Dayjs } from "dayjs";
-import { getPaymentsForDate } from "../../../api/client";
-import { useQuery } from "react-query";
+import { getPaymentsForDate, IPayment } from "../../../api/client";
+import { useQuery, useQueryClient } from "react-query";
+import { useGlobalContext } from "../../../context/GlobalContext";
 import { usePaymentContext } from "../../../context/PaymentContext";
 import { useState } from "react";
 
 const PaymentDateFilter = () => {
   const [date, setDate] = useState<Dayjs | null>(dayjs());
-  const { setAllPayments } = usePaymentContext();
-  const {} = useQuery("get payments of date", async (params) =>
-    getPaymentsForDate(params)
-  );
+  //const { setAllPayments } = usePaymentContext();
+  const { setParams } = useGlobalContext();
 
-  const handleChange = (newValue: Dayjs | null) => {
+  const queryClient = useQueryClient();
+
+  const handleChange = async (newValue: Dayjs | null) => {
     setDate(newValue);
-    console.log(dayjs(date).startOf("D").toISOString());
+    // const data = await queryClient.fetchQuery(
+    //   "get payments of date",
+    //   async () => await getPaymentsForDate({ date: dayjs(date).toISOString() })
+    // );
+    // console.log(data);
+
+    // setAllPayments(data.payments);
+
+    console.log(dayjs(newValue).toISOString());
+
+    setParams({ paymentDate: dayjs(newValue).toISOString() });
   };
 
   return (
