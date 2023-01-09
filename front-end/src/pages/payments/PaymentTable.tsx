@@ -2,7 +2,14 @@ import { useEffect, useState } from "react";
 import CustomTable, { IColumn } from "../../components/tables/Table";
 import CircularLoader from "../../components/loader/CircularLoader";
 import { useQuery } from "react-query";
-import { Box, TableCell, TableRow, Typography } from "@mui/material";
+import {
+  Box,
+  Chip,
+  TableCell,
+  TableRow,
+  Tooltip,
+  Typography,
+} from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import ClearIcon from "@mui/icons-material/Clear";
 import CheckIcon from "@mui/icons-material/Check";
@@ -77,8 +84,6 @@ const PaymentTable = () => {
     }
   );
 
-  console.log(data?.payments);
-
   const verifyPayment = async (id: string) =>
     await apiClient.get<{ message: string }>(`/payments/verify/${id}`);
 
@@ -122,6 +127,27 @@ const PaymentTable = () => {
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
                 {columns.map((col, index) => {
+                  if (col.id === "paymentStatus") {
+                    return (
+                      <TableCell
+                        key={index}
+                        align={col.align}
+                        width={col.maxWidth}
+                      >
+                        <Chip
+                          label={row.paymentStatus}
+                          color={
+                            row.paymentStatus === "DUE"
+                              ? "error"
+                              : row.paymentStatus === "PAID"
+                              ? "success"
+                              : "secondary"
+                          }
+                          size="small"
+                        />
+                      </TableCell>
+                    );
+                  }
                   return (
                     <TableCell
                       key={index}
@@ -133,45 +159,67 @@ const PaymentTable = () => {
                   );
                 })}
 
-                {rowPayment.verfied === true ? (
+                {rowPayment.verified === true ? (
                   <TableCell
-                    sx={{ display: "flex", justifyContent: "space-between" }}
+                    sx={{
+                      display: "flex",
+                      flexDirection: "column",
+                      alignItems: "center",
+                    }}
                   >
-                    <IconButton>
-                      <BorderColorIcon color="primary" fontSize="small" />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        setSelectedPayment(rowPayment);
-                        setDeleteModalOpen(true);
-                      }}
-                    >
-                      <ClearIcon color="error" fontSize="small" />
-                    </IconButton>
+                    <Chip
+                      label="verified"
+                      color="success"
+                      variant="filled"
+                      size="small"
+                    />
+                    <Box display="flex" alignItems="center">
+                      <Tooltip title="edit">
+                        <IconButton>
+                          <BorderColorIcon color="primary" fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                      <Tooltip title="delete">
+                        <IconButton
+                          onClick={() => {
+                            setSelectedPayment(rowPayment);
+                            setDeleteModalOpen(true);
+                          }}
+                        >
+                          <ClearIcon color="error" fontSize="small" />
+                        </IconButton>
+                      </Tooltip>
+                    </Box>
                   </TableCell>
                 ) : (
                   <TableCell
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <IconButton>
-                      <BorderColorIcon color="primary" fontSize="small" />
-                    </IconButton>
-                    <IconButton
-                      onClick={() => {
-                        setSelectedPayment(rowPayment);
-                        setDeleteModalOpen(true);
-                      }}
-                    >
-                      <ClearIcon color="error" fontSize="small" />
-                    </IconButton>
-                    <IconButton
-                      onClick={async () => {
-                        await verifyPayment(rowPayment._id);
-                        await refetch();
-                      }}
-                    >
-                      <CheckIcon color="success" fontSize="small" />
-                    </IconButton>
+                    <Tooltip title="edit">
+                      <IconButton>
+                        <BorderColorIcon color="primary" fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="delete">
+                      <IconButton
+                        onClick={() => {
+                          setSelectedPayment(rowPayment);
+                          setDeleteModalOpen(true);
+                        }}
+                      >
+                        <ClearIcon color="error" fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
+                    <Tooltip title="verify">
+                      <IconButton
+                        onClick={async () => {
+                          await verifyPayment(rowPayment._id);
+                          await refetch();
+                        }}
+                      >
+                        <CheckIcon color="success" fontSize="small" />
+                      </IconButton>
+                    </Tooltip>
                   </TableCell>
                 )}
               </TableRow>

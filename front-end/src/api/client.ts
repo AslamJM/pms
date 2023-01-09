@@ -23,7 +23,7 @@ export interface IPayment {
   paymentStatus: string;
   paymentMethod: string;
   collector: ICollector;
-  verfied: boolean;
+  verified: boolean;
 }
 
 export interface ICollector {
