@@ -1,11 +1,16 @@
-import { Box, Button, TextField } from "@mui/material";
+import { Box, Button, Divider, TextField } from "@mui/material";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
+import { useGlobalContext } from "../../context/GlobalContext";
 import { createCompany } from "../../api/company";
+import Typography from "@mui/material/Typography/Typography";
 
 const CompanyPage = () => {
   const [company, setCompany] = useState("");
   const queryClient = useQueryClient();
+
+  const { companies } = useGlobalContext();
+
   const { mutate } = useMutation(
     async (name: string) => await createCompany(name),
     {
@@ -16,10 +21,14 @@ const CompanyPage = () => {
 
   return (
     <div>
-      <Box>
+      <Box display="flex" alignItems="center" justifyContent="center">
         <TextField
           value={company}
           onChange={(e) => setCompany(e.target.value)}
+          sx={{ mr: 1, flexGrow: 1 }}
+          size="medium"
+          fullWidth
+          placeholder="enter the company name to add"
         />
         <Button
           variant="contained"
@@ -29,9 +38,25 @@ const CompanyPage = () => {
             }
             mutate(company);
           }}
+          size="large"
         >
           add
         </Button>
+      </Box>
+      <Box>
+        <Typography variant="h5" sx={{ mt: 1, mb: 1 }}>
+          List of companies
+        </Typography>
+        <Divider />
+        {companies.length === 0 ? (
+          <Typography>you have no companies.</Typography>
+        ) : (
+          companies.map((c) => (
+            <Typography variant="body1" sx={{ my: 1 }}>
+              {c.name}
+            </Typography>
+          ))
+        )}
       </Box>
     </div>
   );

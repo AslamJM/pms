@@ -23,6 +23,7 @@ export interface IPayment {
   paymentStatus: string;
   paymentMethod: string;
   collector: ICollector;
+  verfied: boolean;
 }
 
 export interface ICollector {
@@ -61,7 +62,7 @@ const getOne = async <T>(route: string, params: string) => {
 
 const updateOne = async <T, K>(route: string, params: string, update: K) => {
   const response = await apiClient.patch<T>(`${route}/${params}`, {
-    input: update,
+    input: { ...update },
   });
   return response.data;
 };

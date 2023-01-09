@@ -5,11 +5,14 @@ import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Box from "@mui/material/Box";
 import dayjs, { Dayjs } from "dayjs";
 import { useState } from "react";
+import { useGlobalContext } from "../../../context/GlobalContext";
 import Button from "@mui/material/Button";
 
 const DateRangeFilter = () => {
   const [from, setFrom] = useState<Dayjs | null>(dayjs());
   const [to, setTo] = useState<Dayjs | null>(dayjs());
+
+  const { setParams } = useGlobalContext();
 
   const handleChangeFrom = (newValue: Dayjs | null) => {
     setFrom(newValue);
@@ -35,7 +38,11 @@ const DateRangeFilter = () => {
           onChange={handleChangeTo}
           renderInput={(params) => <TextField {...params} sx={{ mr: 1 }} />}
         />
-        <Button size="large" variant="contained">
+        <Button
+          size="large"
+          variant="contained"
+          onClick={() => setParams({ from, to })}
+        >
           Fetch Payments
         </Button>
       </Box>

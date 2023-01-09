@@ -6,13 +6,13 @@ import {
   queryPaymentController,
   updatePaymentController,
   deletePaymentController,
-  getPaymentsOfSpecificDateController,
+  verifyPaymentController,
 } from '../controllers/payment';
 
 router.post('/create', createPaymentController);
 router.patch('/update/:id', updatePaymentController);
 router.delete('/delete/:id', deletePaymentController);
-router.get('/date', getPaymentsOfSpecificDateController);
+router.get('/verify/:id', verifyPaymentController);
 router.get('/all', queryPaymentController);
 router.get('/:id', getSinglePaymentController);
 

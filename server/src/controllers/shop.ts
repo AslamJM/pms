@@ -68,6 +68,7 @@ export const updateShopController = async (
 ) => {
   const { id } = req.params;
   const { input } = req.body;
+
   try {
     const shop = await updateShop(id, input);
     return res.status(200).json({

@@ -22,7 +22,7 @@ const CollectorTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { collectors, setSelectedCollector } = useCollectorContext();
-  const { setDeleteModalOpen } = useGlobalContext();
+  const { setDeleteModalOpen, setEditModalOpen } = useGlobalContext();
 
   if (collectors.length === 0) {
     return (
@@ -63,6 +63,10 @@ const CollectorTable = () => {
                       cursor: "pointer",
                     }}
                     fontSize="medium"
+                    onClick={() => {
+                      setSelectedCollector(row);
+                      setEditModalOpen(true);
+                    }}
                   />
                 </IconButton>
               </TableCell>

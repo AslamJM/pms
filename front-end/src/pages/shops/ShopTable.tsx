@@ -22,7 +22,7 @@ const columns: IColumn[] = [
 const ShopTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
-  const { setDeleteModalOpen } = useGlobalContext();
+  const { setDeleteModalOpen, setEditModalOpen } = useGlobalContext();
   const { setSelectedShop, shops } = useShopContext();
 
   if (shops.length === 0) {
@@ -59,15 +59,11 @@ const ShopTable = () => {
                         : null;
 
                     if (!lastPayment) {
-                      return (
-                        <TableCell key={index}>
-                          <Chip label="no payments yet" variant="outlined" />
-                        </TableCell>
-                      );
+                      return <TableCell key={index}>no payments yet</TableCell>;
                     }
 
                     return (
-                      <TableCell key={index} sx={{ textAlign: "center" }}>
+                      <TableCell key={index}>
                         {dayjs(new Date(lastPayment)).format("DD/MM/YYYY")}
                       </TableCell>
                     );
@@ -89,6 +85,10 @@ const ShopTable = () => {
                       cursor: "pointer",
                     }}
                     fontSize="medium"
+                    onClick={() => {
+                      setSelectedShop(row);
+                      setEditModalOpen(true);
+                    }}
                   />
                 </TableCell>
                 <TableCell>

@@ -6,6 +6,7 @@ import {
   updatePayment,
   deletePayment,
   getPaymentsOfSpecificDate,
+  verifyPayment,
 } from '../services/payment';
 import { Payment } from '../models/payment';
 import { UpdateQuery } from 'mongoose';
@@ -113,6 +114,25 @@ export const getPaymentsOfSpecificDateController = async (
     return res.status(200).json({
       payments: payments,
     });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const verifyPaymentController = async (req: Request, res: Response) => {
+  try {
+    const verified = await verifyPayment(req.params.id);
+    if (verified) {
+      return res.status(200).json({
+        message: 'payment is verified',
+      });
+    } else {
+      return res.status(400).json({
+        message: 'fail to verify',
+      });
+    }
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

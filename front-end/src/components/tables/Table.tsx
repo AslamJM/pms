@@ -12,7 +12,8 @@ export interface IColumn {
   id: string;
   label: string;
   minWidth?: number;
-  align?: "right";
+  maxWidth?: number;
+  align?: "right" | "left";
   format?: (value: number) => string;
 }
 
@@ -56,8 +57,7 @@ const CustomTable = ({
                   {col.label}
                 </TableCell>
               ))}
-              <TableCell>Edit</TableCell>
-              <TableCell>Delete</TableCell>
+              <TableCell align="center">Actions</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>{children}</TableBody>

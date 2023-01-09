@@ -46,6 +46,8 @@ export class Payment {
   paymentStatus: PaymentStatus;
   @prop()
   paymentMethod: PaymentMethod;
+  @prop({ default: false })
+  verified: boolean;
 
   public static async getPaymentsOfDay(
     this: ReturnModelType<typeof Payment>,

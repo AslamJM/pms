@@ -1,27 +1,28 @@
 import { useEffect, useState } from "react";
 import CustomTable, { IColumn } from "../../components/tables/Table";
-import { paymentClient } from "../../api/payments";
 import CircularLoader from "../../components/loader/CircularLoader";
 import { useQuery } from "react-query";
 import { Box, TableCell, TableRow, Typography } from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
-import DeleteIcon from "@mui/icons-material/Delete";
-import { IPayment } from "../../api/client";
+import ClearIcon from "@mui/icons-material/Clear";
+import CheckIcon from "@mui/icons-material/Check";
+import { apiClient, IPayment } from "../../api/client";
 import dayjs from "dayjs";
 import DeletePaymentModel from "./modals/DeletePaymentModal";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { queryPayments } from "../../api/client";
 import { usePaymentContext } from "../../context/PaymentContext";
+import IconButton from "@mui/material/IconButton";
 
 const columns: IColumn[] = [
-  { id: "invoice", label: "Invoice" },
+  { id: "invoice", label: "Invoice", maxWidth: 6 },
   { id: "shop", label: "Shop" },
-  { id: "amount", label: "Amount" },
-  { id: "free", label: "Free" },
-  { id: "discount", label: "Discount" },
-  { id: "paidAmount", label: "paid" },
-  { id: "returnAmount", label: "return" },
-  { id: "dueAmount", label: "due" },
+  { id: "amount", label: "Amount", align: "right" },
+  { id: "free", label: "Free", align: "right" },
+  { id: "discount", label: "Discount", align: "right" },
+  { id: "paidAmount", label: "paid", align: "right" },
+  { id: "returnAmount", label: "return", align: "right" },
+  { id: "dueAmount", label: "due", align: "right" },
   { id: "paymentStatus", label: "Status" },
   { id: "collector", label: "Collector" },
   { id: "paymentDate", label: "Payment Date" },
@@ -68,7 +69,6 @@ const PaymentTable = () => {
   const { setDeleteModalOpen, params } = useGlobalContext();
   const { setSelectedPayment, payments, setAllPayments } = usePaymentContext();
 
-  const { getAllpayments } = paymentClient;
   const { data, isLoading, isError, refetch } = useQuery(
     "all payments",
     async () => await queryPayments(params),
@@ -76,6 +76,11 @@ const PaymentTable = () => {
       onSuccess: (data) => setAllPayments(data.payments),
     }
   );
+
+  console.log(data?.payments);
+
+  const verifyPayment = async (id: string) =>
+    await apiClient.get<{ message: string }>(`/payments/verify/${id}`);
 
   useEffect(() => {
     refetch();
@@ -91,7 +96,7 @@ const PaymentTable = () => {
 
   if (payments && payments.length === 0) {
     return (
-      <Box>
+      <Box mt={1}>
         <Typography variant="h3" color="GrayText" align="center">
           You have no payments to display
         </Typography>
@@ -118,31 +123,57 @@ const PaymentTable = () => {
               <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
                 {columns.map((col, index) => {
                   return (
-                    <TableCell key={index} align={col.align}>
+                    <TableCell
+                      key={index}
+                      align={col.align}
+                      width={col.maxWidth}
+                    >
                       {row[col.id as keyof Omit<typeof row, "_id">]}
                     </TableCell>
                   );
                 })}
-                <TableCell>
-                  <BorderColorIcon
-                    color="success"
-                    sx={{
-                      cursor: "pointer",
-                    }}
-                    fontSize="medium"
-                  />
-                </TableCell>
-                <TableCell>
-                  <DeleteIcon
-                    color="error"
-                    sx={{ cursor: "pointer" }}
-                    fontSize="medium"
-                    onClick={() => {
-                      setSelectedPayment(rowPayment);
-                      setDeleteModalOpen(true);
-                    }}
-                  />
-                </TableCell>
+
+                {rowPayment.verfied === true ? (
+                  <TableCell
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <IconButton>
+                      <BorderColorIcon color="primary" fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        setSelectedPayment(rowPayment);
+                        setDeleteModalOpen(true);
+                      }}
+                    >
+                      <ClearIcon color="error" fontSize="small" />
+                    </IconButton>
+                  </TableCell>
+                ) : (
+                  <TableCell
+                    sx={{ display: "flex", justifyContent: "space-between" }}
+                  >
+                    <IconButton>
+                      <BorderColorIcon color="primary" fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                      onClick={() => {
+                        setSelectedPayment(rowPayment);
+                        setDeleteModalOpen(true);
+                      }}
+                    >
+                      <ClearIcon color="error" fontSize="small" />
+                    </IconButton>
+                    <IconButton
+                      onClick={async () => {
+                        await verifyPayment(rowPayment._id);
+                        await refetch();
+                      }}
+                    >
+                      <CheckIcon color="success" fontSize="small" />
+                    </IconButton>
+                  </TableCell>
+                )}
               </TableRow>
             );
           })}

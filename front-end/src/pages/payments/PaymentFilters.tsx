@@ -19,7 +19,7 @@ const PaymentFilters = () => {
       <div style={{ display: "flex", marginBottom: 10 }}>
         <div>
           <Typography variant="body1" sx={{ mb: 1 }}>
-            select date
+            select payment date
           </Typography>
           <PaymentDateFilter />
         </div>

@@ -10,9 +10,11 @@ export const createPayment = (input: Payment) => {
   return paymentModel.create(input);
 };
 
-export const queryPayments = (query: FilterQuery<Payment>) => {
+export const queryPayments = (
+  query: FilterQuery<Payment & { from: string; to: string }>
+) => {
   let filterQuery;
-  const { paymentDate } = query;
+  const { paymentDate, from, to } = query;
 
   if (paymentDate) {
     filterQuery = {
@@ -26,8 +28,19 @@ export const queryPayments = (query: FilterQuery<Payment>) => {
     filterQuery = query;
   }
 
+  if (from && to) {
+    filterQuery = {
+      ...filterQuery,
+      paymentDate: {
+        $gte: dayjs(from).startOf('D').toISOString(),
+        $lte: dayjs(to).endOf('D').toISOString(),
+      },
+    };
+  }
+
   return paymentModel
     .find(filterQuery)
+    .sort({ paymentDate: 'descending' })
     .populate('collector')
     .populate('shop')
     .populate('company');
@@ -46,4 +59,8 @@ export const deletePayment = (id: string) => {
 
 export const getPaymentsOfSpecificDate = ({ date }: { date: string }) => {
   return paymentModel.getPaymentsOfDay(date);
+};
+
+export const verifyPayment = (id: string) => {
+  return paymentModel.findByIdAndUpdate(id, { verified: true });
 };

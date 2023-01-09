@@ -1,13 +1,8 @@
 import ShopTable from "./ShopTable";
 import AddButton from "../../components/buttons/AddButton";
 import AddShopModal from "./modals/AddShopModal";
-import { useGlobalContext } from "../../context/GlobalContext";
+import EditShopModel from "./modals/EditShopModal";
 import SnackBar from "../../components/snackbar";
-import {
-  FilterByPaymentStatus,
-  FilterByRegion,
-} from "../../components/Filters/shopFilters";
-import Box from "@mui/material/Box";
 
 const Shops = () => {
   return (
@@ -15,7 +10,7 @@ const Shops = () => {
       <SnackBar />
 
       <AddButton title="add new shop" />
-
+      <EditShopModel />
       <AddShopModal />
       <ShopTable />
     </div>

@@ -36,6 +36,7 @@ interface PaymentCreateInput {
   paymentStatus: string;
   paymentMethod: string;
   collector: string;
+  verified: boolean;
 }
 
 const { getAll, getOne, deleteOne, updateOne, createOne } = apiMethods;
