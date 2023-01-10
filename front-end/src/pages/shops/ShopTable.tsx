@@ -7,16 +7,14 @@ import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { useState } from "react";
 import DeleteShopModel from "./modals/DeleteShopModal";
-import dayjs from "dayjs";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import Chip from "@mui/material/Chip";
+import { IconButton, Tooltip } from "@mui/material";
 
 const columns: IColumn[] = [
   { id: "name", label: "Name" },
   { id: "address", label: "Address" },
   { id: "region", label: "Region" },
-  { id: "lastPayment", label: "Last Payment" },
 ];
 
 const ShopTable = () => {
@@ -52,22 +50,6 @@ const ShopTable = () => {
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
                 {columns.map((col, index) => {
-                  if (col.id === "lastPayment") {
-                    const lastPayment =
-                      row.payments.length !== 0
-                        ? row.payments[0].paymentDate
-                        : null;
-
-                    if (!lastPayment) {
-                      return <TableCell key={index}>no payments yet</TableCell>;
-                    }
-
-                    return (
-                      <TableCell key={index}>
-                        {dayjs(new Date(lastPayment)).format("DD/MM/YYYY")}
-                      </TableCell>
-                    );
-                  }
                   return (
                     <TableCell key={index} align={col.align}>
                       {
@@ -78,29 +60,44 @@ const ShopTable = () => {
                     </TableCell>
                   );
                 })}
-                <TableCell>
-                  <BorderColorIcon
-                    color="success"
-                    sx={{
-                      cursor: "pointer",
-                    }}
-                    fontSize="medium"
-                    onClick={() => {
-                      setSelectedShop(row);
-                      setEditModalOpen(true);
-                    }}
-                  />
-                </TableCell>
-                <TableCell>
-                  <DeleteIcon
-                    color="error"
-                    sx={{ cursor: "pointer" }}
-                    fontSize="medium"
-                    onClick={() => {
-                      setSelectedShop(row);
-                      setDeleteModalOpen(true);
-                    }}
-                  />
+                <TableCell
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Tooltip title="edit">
+                    <IconButton
+                      onClick={() => {
+                        setSelectedShop(row);
+                        setEditModalOpen(true);
+                      }}
+                    >
+                      <BorderColorIcon
+                        color="success"
+                        sx={{
+                          cursor: "pointer",
+                        }}
+                        fontSize="medium"
+                      />
+                    </IconButton>
+                  </Tooltip>
+
+                  <Tooltip title="delete">
+                    <IconButton
+                      onClick={() => {
+                        setSelectedShop(row);
+                        setDeleteModalOpen(true);
+                      }}
+                    >
+                      <DeleteIcon
+                        color="error"
+                        sx={{ cursor: "pointer" }}
+                        fontSize="medium"
+                      />
+                    </IconButton>
+                  </Tooltip>
                 </TableCell>
               </TableRow>
             );

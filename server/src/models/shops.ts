@@ -1,5 +1,4 @@
-import { getModelForClass, prop, Ref } from '@typegoose/typegoose';
-import { Payment } from './payment';
+import { getModelForClass, prop } from '@typegoose/typegoose';
 
 export class Shop {
   @prop({ required: true })
@@ -8,8 +7,6 @@ export class Shop {
   address: string;
   @prop({ required: true })
   region: string;
-  @prop({ ref: 'Payment', default: [] })
-  payments: Ref<Payment>[];
 }
 
 export const shopModel = getModelForClass(Shop, {

@@ -31,7 +31,6 @@ export interface ICollector {
   name: string;
   phone: string;
   email: string;
-  payments: IPayment[];
 }
 
 export interface IShop {
@@ -39,7 +38,6 @@ export interface IShop {
   name: string;
   address: string;
   region: string;
-  payments: IPayment[];
 }
 
 export interface ICompany {

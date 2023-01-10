@@ -8,7 +8,6 @@ const Shops = () => {
   return (
     <div>
       <SnackBar />
-
       <AddButton title="add new shop" />
       <EditShopModel />
       <AddShopModal />

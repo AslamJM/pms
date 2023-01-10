@@ -7,6 +7,7 @@ import {
   IconButton,
   TableCell,
   TableRow,
+  Tooltip,
   Typography,
 } from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
@@ -55,34 +56,44 @@ const CollectorTable = () => {
                   </TableCell>
                 );
               })}
-              <TableCell>
-                <IconButton>
-                  <BorderColorIcon
-                    color="success"
-                    sx={{
-                      cursor: "pointer",
-                    }}
-                    fontSize="medium"
+              <TableCell
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+              >
+                <Tooltip title="edit">
+                  <IconButton
                     onClick={() => {
                       setSelectedCollector(row);
                       setEditModalOpen(true);
                     }}
-                  />
-                </IconButton>
-              </TableCell>
-              <TableCell>
-                <IconButton
-                  onClick={() => {
-                    setSelectedCollector(row);
-                    setDeleteModalOpen(true);
-                  }}
-                >
-                  <DeleteIcon
-                    color="error"
-                    sx={{ cursor: "pointer" }}
-                    fontSize="medium"
-                  />
-                </IconButton>
+                  >
+                    <BorderColorIcon
+                      color="success"
+                      sx={{
+                        cursor: "pointer",
+                      }}
+                      fontSize="medium"
+                    />
+                  </IconButton>
+                </Tooltip>
+
+                <Tooltip title="delete">
+                  <IconButton
+                    onClick={() => {
+                      setSelectedCollector(row);
+                      setDeleteModalOpen(true);
+                    }}
+                  >
+                    <DeleteIcon
+                      color="error"
+                      sx={{ cursor: "pointer" }}
+                      fontSize="medium"
+                    />
+                  </IconButton>
+                </Tooltip>
               </TableCell>
             </TableRow>
           );

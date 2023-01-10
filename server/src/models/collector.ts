@@ -1,5 +1,4 @@
-import { prop, Ref, getModelForClass } from '@typegoose/typegoose';
-import { Payment } from './payment';
+import { prop, getModelForClass } from '@typegoose/typegoose';
 
 export class Collector {
   @prop({ required: true })
@@ -8,8 +7,6 @@ export class Collector {
   phone: string;
   @prop()
   email: string;
-  @prop({ ref: 'Payment', default: [] })
-  payments: Ref<Payment>[];
 }
 
 export const collectorModel = getModelForClass(Collector, {

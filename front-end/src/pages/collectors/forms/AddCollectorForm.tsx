@@ -33,7 +33,7 @@ const AddCollectorForm = () => {
       onSubmit={(values, { resetForm }) => {
         if (isLoading) setLoading(true);
         mutate(
-          { ...values, payments: [] },
+          { ...values },
           {
             onSuccess: (data) => {
               queryClient.invalidateQueries("all collectors");

@@ -22,7 +22,7 @@ type UpdateResponse = {
   message: string;
 };
 
-interface PaymentCreateInput {
+export interface PaymentCreateInput {
   invoice: string;
   shop: string;
   amount: number;
@@ -36,7 +36,6 @@ interface PaymentCreateInput {
   paymentStatus: string;
   paymentMethod: string;
   collector: string;
-  verified: boolean;
 }
 
 const { getAll, getOne, deleteOne, updateOne, createOne } = apiMethods;

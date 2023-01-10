@@ -39,7 +39,7 @@ const AddShopForm = () => {
       onSubmit={(values, { resetForm }) => {
         if (isLoading) setLoading(true);
         mutate(
-          { ...values, payments: [] },
+          { ...values },
           {
             onSuccess: (data) => {
               queryClient.invalidateQueries("all shops");

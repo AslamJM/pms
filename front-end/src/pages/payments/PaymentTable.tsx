@@ -54,7 +54,7 @@ function createPaymentData(payment: IPayment) {
   } = payment;
   return {
     invoice,
-    shop: shop.name,
+    shop: shop ? shop.name : "-",
     amount,
     free,
     paidAmount,
@@ -62,8 +62,8 @@ function createPaymentData(payment: IPayment) {
     returnAmount,
     dueAmount,
     paymentStatus,
-    company: company.name,
-    collector: collector.name,
+    company: company ? company.name : "-",
+    collector: collector ? collector.name : "-",
     paymentDate: dayjs(new Date(paymentDate)).format("DD/MM/YYYY"),
     dueDate: dayjs(new Date(dueDate)).format("DD/MM/YYYY"),
   };
@@ -73,7 +73,7 @@ const PaymentTable = () => {
   const [page, setPage] = useState(0);
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
-  const { setDeleteModalOpen, params } = useGlobalContext();
+  const { setDeleteModalOpen, params, setEditModalOpen } = useGlobalContext();
   const { setSelectedPayment, payments, setAllPayments } = usePaymentContext();
 
   const { data, isLoading, isError, refetch } = useQuery(
@@ -175,7 +175,12 @@ const PaymentTable = () => {
                     />
                     <Box display="flex" alignItems="center">
                       <Tooltip title="edit">
-                        <IconButton>
+                        <IconButton
+                          onClick={() => {
+                            setSelectedPayment(rowPayment);
+                            setEditModalOpen(true);
+                          }}
+                        >
                           <BorderColorIcon color="primary" fontSize="small" />
                         </IconButton>
                       </Tooltip>
@@ -196,7 +201,12 @@ const PaymentTable = () => {
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
                     <Tooltip title="edit">
-                      <IconButton>
+                      <IconButton
+                        onClick={() => {
+                          setSelectedPayment(rowPayment);
+                          setEditModalOpen(true);
+                        }}
+                      >
                         <BorderColorIcon color="primary" fontSize="small" />
                       </IconButton>
                     </Tooltip>
