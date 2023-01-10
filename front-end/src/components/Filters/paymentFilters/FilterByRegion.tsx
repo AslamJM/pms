@@ -22,6 +22,7 @@ const FilterByRegion = () => {
               )
             )
           }
+          size="small"
         >
           {["region a", "region b", "region c", "region d"].map(
             (item, index) => (

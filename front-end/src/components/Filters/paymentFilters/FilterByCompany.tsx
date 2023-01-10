@@ -7,12 +7,13 @@ const FilterByCompany = () => {
   const { setParams, companies } = useGlobalContext();
 
   return (
-    <div style={{ flexGrow: 1, marginRight: 10 }}>
+    <div style={{ flex: 1, marginRight: 10 }}>
       <FormControl fullWidth>
         <InputLabel>company</InputLabel>
         <Select
           fullWidth
           onChange={(e) => setParams({ company: e.target.value })}
+          size="small"
         >
           {companies.map((item, index) => (
             <MenuItem key={index} value={item._id}>

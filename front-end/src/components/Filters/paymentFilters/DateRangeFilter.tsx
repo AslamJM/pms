@@ -29,17 +29,21 @@ const DateRangeFilter = () => {
           inputFormat="MM/DD/YYYY"
           value={from}
           onChange={handleChangeFrom}
-          renderInput={(params) => <TextField {...params} sx={{ mr: 1 }} />}
+          renderInput={(params) => (
+            <TextField {...params} sx={{ mr: 1 }} size="small" />
+          )}
         />
         <DesktopDatePicker
           label="To"
           inputFormat="MM/DD/YYYY"
           value={to}
           onChange={handleChangeTo}
-          renderInput={(params) => <TextField {...params} sx={{ mr: 1 }} />}
+          renderInput={(params) => (
+            <TextField {...params} sx={{ mr: 1 }} size="small" />
+          )}
         />
         <Button
-          size="large"
+          size="small"
           variant="contained"
           onClick={() => setParams({ from, to })}
         >

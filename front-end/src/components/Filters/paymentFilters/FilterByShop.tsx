@@ -9,10 +9,14 @@ const FilterByShop = () => {
   const { setParams } = useGlobalContext();
 
   return (
-    <div style={{ flexGrow: 1, marginRight: 10 }}>
+    <div style={{ flex: 1, marginRight: 10 }}>
       <FormControl fullWidth>
         <InputLabel>shop</InputLabel>
-        <Select fullWidth onChange={(e) => setParams({ shop: e.target.value })}>
+        <Select
+          fullWidth
+          onChange={(e) => setParams({ shop: e.target.value })}
+          size="small"
+        >
           {shops.map((item, index) => (
             <MenuItem key={index} value={item._id}>
               {item.name}

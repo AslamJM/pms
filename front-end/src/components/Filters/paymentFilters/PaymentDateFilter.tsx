@@ -40,7 +40,9 @@ const PaymentDateFilter = () => {
           inputFormat="MM/DD/YYYY"
           value={date}
           onChange={handleChange}
-          renderInput={(params) => <TextField {...params} sx={{ mr: 1 }} />}
+          renderInput={(params) => (
+            <TextField {...params} sx={{ mr: 1 }} size="small" />
+          )}
         />
       </Box>
     </LocalizationProvider>
