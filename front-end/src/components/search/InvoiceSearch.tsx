@@ -4,13 +4,17 @@ import InputBase from "@mui/material/InputBase";
 import IconButton from "@mui/material/IconButton";
 import { apiClient, IPayment } from "../../api/client";
 import { usePaymentContext } from "../../context/PaymentContext";
+import { useGlobalContext } from "../../context/GlobalContext";
 import SearchIcon from "@mui/icons-material/Search";
 import Typography from "@mui/material/Typography";
+import UpgradeIcon from "@mui/icons-material/Upgrade";
+import { Button, Chip } from "@mui/material";
 
 export default function InvoiceSearch() {
   const [search, setSearch] = useState("");
 
   const { selectedPayment, setSelectedPayment } = usePaymentContext();
+  const { setEditModalOpen } = useGlobalContext();
 
   const getPaymnent = async () => {
     const response = await apiClient.get<{ payment: IPayment }>(
@@ -48,11 +52,29 @@ export default function InvoiceSearch() {
       >
         <SearchIcon color="primary" />
       </IconButton>
-      <Typography sx={{ ml: 2 }}>
-        {selectedPayment
-          ? selectedPayment.invoice + " - " + selectedPayment.shop.name
-          : "search an invoice"}
-      </Typography>
+      {selectedPayment ? (
+        <>
+          <Chip
+            label={selectedPayment.invoice + " - " + selectedPayment.shop.name}
+            color="success"
+            onDelete={() => {
+              setSelectedPayment(null);
+              setSearch("");
+            }}
+          />
+          <Button
+            size="small"
+            variant="outlined"
+            sx={{ ml: 1 }}
+            onClick={() => setEditModalOpen(true)}
+            startIcon={<UpgradeIcon />}
+          >
+            Update Invoice
+          </Button>
+        </>
+      ) : (
+        <Typography sx={{ ml: 2 }}>search an invoice....</Typography>
+      )}
     </Paper>
   );
 }

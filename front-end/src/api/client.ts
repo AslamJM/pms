@@ -24,6 +24,8 @@ export interface IPayment {
   paymentMethod: string;
   collector: ICollector;
   verified: boolean;
+  createdAt: Date;
+  updatedAt: Date;
 }
 
 export interface ICollector {

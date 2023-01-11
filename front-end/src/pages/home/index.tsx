@@ -6,6 +6,7 @@ import AddPaymentModal from "./modals/AddPaymentModal";
 import InvoiceSearch from "../../components/search/InvoiceSearch";
 import SnackBar from "../../components/snackbar";
 import dayjs from "dayjs";
+import UpdateInvoiceModal from "./modals/UpdateInvoiceModal";
 
 const Home = () => {
   const { companies } = useGlobalContext();
@@ -14,6 +15,7 @@ const Home = () => {
     <div>
       <SnackBar />
       <AddPaymentModal />
+      <UpdateInvoiceModal />
       <Box>
         <Typography variant="h5">Welcome user</Typography>
         <Typography variant="h6">

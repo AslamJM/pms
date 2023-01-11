@@ -1,0 +1,118 @@
+import { Box, Button, DialogContent, TextField } from "@mui/material";
+import Divider from "@mui/material/Divider";
+import Typography from "@mui/material/Typography";
+import CircularProgress from "@mui/material/CircularProgress";
+import dayjs from "dayjs";
+import Modal from "../../../components/modals/MainModal";
+import { usePaymentContext } from "../../../context/PaymentContext";
+import { useGlobalContext } from "../../../context/GlobalContext";
+import { useMutation } from "react-query";
+import { PaymentCreateInput } from "../../../api/payments";
+import { apiClient, IPayment } from "../../../api/client";
+import { useState } from "react";
+
+const UpdateInvoiceModal = () => {
+  const { selectedPayment, setSelectedPayment } = usePaymentContext();
+  const {
+    setEditModalOpen,
+
+    setLoading,
+    setSnackMessage,
+    setSnackOpen,
+  } = useGlobalContext();
+  const [due, setDue] = useState(selectedPayment?.dueAmount.toString());
+
+  const { mutate, isLoading } = useMutation(
+    async (input: Partial<PaymentCreateInput>) =>
+      await apiClient.patch<{ payment: IPayment; message: string }>(
+        `/payments/update/${selectedPayment?._id}`,
+        { input }
+      )
+  );
+
+  return (
+    <Modal title="update invoice" type="edit">
+      <DialogContent>
+        <Typography>Invoice no: {selectedPayment?.invoice}</Typography>
+        <Typography>
+          Last Payment:
+          {dayjs(selectedPayment?.updatedAt).format("DD/MM/YYYY")}
+        </Typography>
+        <Divider sx={{ mb: 1 }} />
+        <Box display="flex">
+          <Typography>Shop: </Typography>
+          <Typography color="GrayText">{selectedPayment?.shop.name}</Typography>
+        </Box>
+        <Box display="flex">
+          <Typography>Region: </Typography>
+          <Typography color="GrayText">
+            {selectedPayment?.shop.region}
+          </Typography>
+        </Box>
+        <Box display="flex">
+          <Typography>Company: </Typography>
+          <Typography color="GrayText">
+            {selectedPayment?.company.name}
+          </Typography>
+        </Box>
+        <Box display="flex">
+          <Typography>Collector: </Typography>
+          <Typography color="GrayText">
+            {selectedPayment?.collector.name}
+          </Typography>
+        </Box>
+        <Divider sx={{ mb: 1 }} />
+        <Box>
+          <Typography>Amount: {selectedPayment?.amount}</Typography>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography sx={{ mr: 0.5 }}>
+              Due:{selectedPayment?.dueAmount}
+            </Typography>
+            <TextField
+              placeholder="enter amount"
+              size="small"
+              sx={{ mr: 0.5 }}
+              value={due}
+              onChange={(e) => setDue(e.target.value)}
+            />
+            <Button
+              variant="contained"
+              onClick={() => {
+                mutate(
+                  {
+                    dueAmount: selectedPayment?.dueAmount! - Number(due),
+                  },
+                  {
+                    onSuccess: (data) => {
+                      setSelectedPayment(null);
+                      setLoading(false);
+                      setSnackMessage(data.data.message);
+                      setSnackOpen(true);
+                    },
+                    onError: (error: any) => {
+                      console.log(error);
+                      setSnackMessage(error.message);
+                      setSnackOpen(true);
+                    },
+                    onSettled: () => {
+                      setLoading(false);
+                      setEditModalOpen(false);
+                    },
+                  }
+                );
+              }}
+            >
+              {isLoading ? <CircularProgress /> : "update"}
+            </Button>
+          </Box>
+        </Box>
+      </DialogContent>
+    </Modal>
+  );
+};
+
+export default UpdateInvoiceModal;

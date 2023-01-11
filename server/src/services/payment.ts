@@ -3,7 +3,11 @@ import { FilterQuery, UpdateQuery } from 'mongoose';
 import dayjs from 'dayjs';
 
 export const getSinglePayment = (id: string) => {
-  return paymentModel.findById(id).populate('collector').populate('shop');
+  return paymentModel
+    .findById(id)
+    .populate('collector')
+    .populate('shop')
+    .populate('company');
 };
 
 export const createPayment = (input: Payment) => {
@@ -50,7 +54,8 @@ export const updatePayment = (id: string, input: UpdateQuery<Payment>) => {
   return paymentModel
     .findByIdAndUpdate(id, input, { new: true })
     .populate('collector')
-    .populate('shop');
+    .populate('shop')
+    .populate('company');
 };
 
 export const deletePayment = (id: string) => {
@@ -69,5 +74,6 @@ export const getInvoice = (invoice: string) => {
   return paymentModel
     .findOne({ invoice })
     .populate('collector')
-    .populate('shop');
+    .populate('shop')
+    .populate('company');
 };

@@ -1,4 +1,6 @@
 import { Dialog, DialogTitle } from "@mui/material";
+import IconButton from "@mui/material/IconButton";
+import CloseIcon from "@mui/icons-material/Close";
 import { useGlobalContext } from "../../context/GlobalContext";
 
 type Props = {
@@ -8,7 +10,14 @@ type Props = {
 };
 
 const Modal = ({ title, children, type }: Props) => {
-  const { deleteModalOpen, editModalOpen, addModalOpen } = useGlobalContext();
+  const {
+    deleteModalOpen,
+    editModalOpen,
+    addModalOpen,
+    setAddModalOpen,
+    setEditModalOpen,
+    setDeleteModalOpen,
+  } = useGlobalContext();
   return (
     <Dialog
       open={
@@ -19,7 +28,29 @@ const Modal = ({ title, children, type }: Props) => {
           : addModalOpen
       }
     >
-      <DialogTitle>{title}</DialogTitle>
+      <DialogTitle>
+        {title}{" "}
+        <IconButton
+          aria-label="close"
+          onClick={() => {
+            if (type === "delete") {
+              setDeleteModalOpen(false);
+            } else if (type === "edit") {
+              setEditModalOpen(false);
+            } else {
+              setAddModalOpen(false);
+            }
+          }}
+          sx={{
+            position: "absolute",
+            right: 8,
+            top: 8,
+            color: (theme) => theme.palette.grey[500],
+          }}
+        >
+          <CloseIcon />
+        </IconButton>
+      </DialogTitle>
       {children}
     </Dialog>
   );

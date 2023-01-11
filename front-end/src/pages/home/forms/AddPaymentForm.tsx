@@ -66,17 +66,17 @@ const AddPaymentForm = () => {
 
   const { isLoading, mutate } = useMutation(paymentClient.createPayment);
 
-  useEffect(() => {
-    setDue(
-      (
-        parseToNumber(famount) -
-        parseToNumber(fpaid) -
-        parseToNumber(ffree) -
-        parseToNumber(fdiscount) -
-        parseToNumber(freturn)
-      ).toString()
-    );
-  }, [famount, ffree, freturn, fdiscount, fpaid]);
+  // useEffect(() => {
+  //   setDue(
+  //     (
+  //       parseToNumber(famount) -
+  //       parseToNumber(fpaid) -
+  //       parseToNumber(ffree) -
+  //       parseToNumber(fdiscount) -
+  //       parseToNumber(freturn)
+  //     ).toString()
+  //   );
+  // }, [famount, ffree, freturn, fdiscount, fpaid]);
 
   return (
     <Formik
@@ -264,7 +264,9 @@ const AddPaymentForm = () => {
                     label="Due Amount"
                     fullWidth
                     value={due}
-                    disabled
+                    onChange={(e) => {
+                      setDue(e.target.value);
+                    }}
                   />
                 </FormControl>
               </Box>
