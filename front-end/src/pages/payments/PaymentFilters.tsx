@@ -16,6 +16,7 @@ const PaymentFilters = () => {
         <FilterByCompany />
         <FilterByCollector />
         <FilterByStatus />
+        {/* //<FilterByRegion /> */}
         <VerifedFilter />
       </div>
       <div style={{ display: "flex", marginBottom: 10, alignItems: "center" }}>

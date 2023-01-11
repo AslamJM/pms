@@ -8,6 +8,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import PaidIcon from "@mui/icons-material/Paid";
+import SummarizeIcon from "@mui/icons-material/Summarize";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import FollowTheSignsIcon from "@mui/icons-material/FollowTheSigns";
 import LocationCityIcon from "@mui/icons-material/LocationCity";
@@ -18,6 +19,7 @@ const drawerWidth = 200;
 const listItems = [
   { title: "Home", icon: <HomeIcon />, to: "/" },
   { title: "Payments", icon: <PaidIcon />, to: "/payments" },
+  { title: "Reports", icon: <SummarizeIcon />, to: "/reports" },
   { title: "Shops", icon: <StorefrontIcon />, to: "/shops" },
   { title: "Collectors", icon: <FollowTheSignsIcon />, to: "/collectors" },
   { title: "Companies", icon: <LocationCityIcon />, to: "/companies" },

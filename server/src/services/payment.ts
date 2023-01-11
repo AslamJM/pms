@@ -64,3 +64,10 @@ export const getPaymentsOfSpecificDate = ({ date }: { date: string }) => {
 export const verifyPayment = (id: string) => {
   return paymentModel.findByIdAndUpdate(id, { verified: true });
 };
+
+export const getInvoice = (invoice: string) => {
+  return paymentModel
+    .findOne({ invoice })
+    .populate('collector')
+    .populate('shop');
+};

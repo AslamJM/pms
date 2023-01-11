@@ -17,7 +17,7 @@ import {
   PAYMENT_METHOD,
   PAYMENT_STATUS,
   parseToNumber,
-} from "./data";
+} from "../../payments/forms/data";
 import { paymentClient } from "../../../api/payments";
 import { useShopContext } from "../../../context/ShopContext";
 import { useCollectorContext } from "../../../context/CollectorContext";

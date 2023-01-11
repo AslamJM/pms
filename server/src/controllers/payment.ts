@@ -7,6 +7,7 @@ import {
   deletePayment,
   getPaymentsOfSpecificDate,
   verifyPayment,
+  getInvoice,
 } from '../services/payment';
 import { Payment } from '../models/payment';
 import { UpdateQuery } from 'mongoose';
@@ -126,6 +127,22 @@ export const verifyPaymentController = async (req: Request, res: Response) => {
         message: 'fail to verify',
       });
     }
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const getInvoiceController = async (
+  req: Request<{}, {}, {}, { invoice: string }>,
+  res: Response
+) => {
+  try {
+    const payment = await getInvoice(req.query.invoice);
+    return res.status(200).json({
+      payment: payment,
+    });
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
