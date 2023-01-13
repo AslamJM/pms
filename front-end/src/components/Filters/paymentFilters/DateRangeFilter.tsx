@@ -23,7 +23,7 @@ const DateRangeFilter = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box display="flex" mb={1}>
+      <Box display="flex" alignItems="flex-end">
         <DesktopDatePicker
           label="From"
           inputFormat="MM/DD/YYYY"
@@ -42,11 +42,7 @@ const DateRangeFilter = () => {
             <TextField {...params} sx={{ mr: 1 }} size="small" />
           )}
         />
-        <Button
-          size="small"
-          variant="contained"
-          onClick={() => setParams({ from, to })}
-        >
+        <Button variant="contained" onClick={() => setParams({ from, to })}>
           Fetch Payments
         </Button>
       </Box>

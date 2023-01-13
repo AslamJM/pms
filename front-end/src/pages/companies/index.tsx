@@ -1,12 +1,16 @@
-import { Box, Button, Divider, TextField } from "@mui/material";
+import { Box, Button, Divider, TextField, Tooltip } from "@mui/material";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { createCompany } from "../../api/company";
 import Typography from "@mui/material/Typography/Typography";
+import IconButton from "@mui/material/IconButton";
+import BorderColorIcon from "@mui/icons-material/BorderColor";
+import DeleteIcon from "@mui/icons-material/Delete";
 
 const CompanyPage = () => {
   const [company, setCompany] = useState("");
+
   const queryClient = useQueryClient();
 
   const { companies } = useGlobalContext();
@@ -18,6 +22,8 @@ const CompanyPage = () => {
       onSettled: () => setCompany(""),
     }
   );
+
+  const onClickEdit = () => {};
 
   return (
     <div>
@@ -51,11 +57,7 @@ const CompanyPage = () => {
         {companies.length === 0 ? (
           <Typography>you have no companies.</Typography>
         ) : (
-          companies.map((c) => (
-            <Typography variant="body1" sx={{ my: 1 }}>
-              {c.name}
-            </Typography>
-          ))
+          companies.map((c) => <Typography>{c.name}</Typography>)
         )}
       </Box>
     </div>

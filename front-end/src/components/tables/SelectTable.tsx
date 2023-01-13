@@ -1,79 +1,50 @@
-import { useState } from "react";
-import Paper from "@mui/material/Paper";
-import Table from "@mui/material/Table";
-import TableBody from "@mui/material/TableBody";
-import TableCell from "@mui/material/TableCell";
-import TableContainer from "@mui/material/TableContainer";
-import TableHead from "@mui/material/TableHead";
-import TablePagination from "@mui/material/TablePagination";
-import TableRow from "@mui/material/TableRow";
+import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
+import { IPayment } from "../../api/client";
+import { createPaymentData } from "./data";
+import { useGlobalContext } from "../../context/GlobalContext";
+import { queryPayments } from "../../api/client";
+import { usePaymentContext } from "../../context/PaymentContext";
+import { useQuery } from "react-query";
+import { useMemo } from "react";
 
-export interface IColumn {
-  id: string;
-  label: string;
-  minWidth?: number;
-  maxWidth?: number;
-  align?: "right" | "left";
-  format?: (value: number) => string;
-}
+const PaymentTableSelect = () => {
+  const { setDeleteModalOpen, params, setEditModalOpen } = useGlobalContext();
+  const { setSelectedPayment, payments, setAllPayments } = usePaymentContext();
 
-type Props = {
-  columns: IColumn[];
-  children: React.ReactNode;
-  count: number;
-  page: number;
-  rowsPerPage: number;
-  setPage: React.Dispatch<React.SetStateAction<number>>;
-  setRowsPerPage: React.Dispatch<React.SetStateAction<number>>;
-};
+  const columns = useMemo<
+    MRT_ColumnDef<ReturnType<typeof createPaymentData>>[]
+  >(
+    () => [
+      { accessorKey: "invoice", header: "Invoice", maxSize: 5 },
+      { accessorKey: "shop", header: "Shop", maxSize: 5 },
+      { accessorKey: "amount", header: "Amount", maxSize: 5 },
+      { accessorKey: "free", header: "Free", maxSize: 5 },
+      { accessorKey: "discount", header: "Discount", maxSize: 5 },
+      { accessorKey: "paidAmount", header: "paid", maxSize: 5 },
+      { accessorKey: "returnAmount", header: "return", maxSize: 5 },
+      { accessorKey: "dueAmount", header: "due", maxSize: 5 },
+      { accessorKey: "paymentStatus", header: "Status", maxSize: 5 },
+      { accessorKey: "collector", header: "Collector", maxSize: 5 },
+      { accessorKey: "paymentDate", header: "Payment Date", maxSize: 6 },
+    ],
+    []
+  );
 
-const CustomTable = ({
-  count,
-  columns,
-  children,
-  page,
-  setPage,
-  setRowsPerPage,
-  rowsPerPage,
-}: Props) => {
-  //handle pagination
-  const handleChangePage = (event: unknown, newPage: number) => {
-    setPage(newPage);
-  };
-  const handleChangeRowsPerPage = (
-    event: React.ChangeEvent<HTMLInputElement>
-  ) => {
-    setRowsPerPage(+event.target.value);
-    setPage(0);
-  };
+  const { data, isLoading, isError, refetch } = useQuery(
+    "all payments",
+    async () => await queryPayments(params),
+    {
+      onSuccess: (data) => setAllPayments(data.payments),
+    }
+  );
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
-      <TableContainer>
-        <Table stickyHeader>
-          <TableHead>
-            <TableRow>
-              {columns.map((col) => (
-                <TableCell key={col.id} style={{ minWidth: col.minWidth }}>
-                  {col.label}
-                </TableCell>
-              ))}
-              <TableCell align="center">Actions</TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>{children}</TableBody>
-        </Table>
-      </TableContainer>
-      <TablePagination
-        rowsPerPageOptions={[10, 25, 100]}
-        component="div"
-        count={count}
-        rowsPerPage={rowsPerPage}
-        page={page}
-        onPageChange={handleChangePage}
-        onRowsPerPageChange={handleChangeRowsPerPage}
-      />
-    </Paper>
+    <MaterialReactTable
+      columns={columns}
+      data={payments ? payments.map((d) => createPaymentData(d)) : []}
+      state={{ isLoading }}
+      enableEditing
+    />
   );
 };
 
-export default CustomTable;
+export default PaymentTableSelect;

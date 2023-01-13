@@ -7,6 +7,7 @@ import PaymentDateFilter from "../../components/Filters/paymentFilters/PaymentDa
 import DateRangeFilter from "../../components/Filters/paymentFilters/DateRangeFilter";
 import VerifedFilter from "../../components/Filters/paymentFilters/VerifiedFilter";
 import Typography from "@mui/material/Typography";
+import ResetButton from "../../components/buttons/ResetButton";
 
 const PaymentFilters = () => {
   return (
@@ -19,7 +20,9 @@ const PaymentFilters = () => {
         {/* //<FilterByRegion /> */}
         <VerifedFilter />
       </div>
-      <div style={{ display: "flex", marginBottom: 10, alignItems: "center" }}>
+      <div
+        style={{ display: "flex", marginBottom: 10, alignItems: "flex-end" }}
+      >
         <div>
           <Typography variant="body1" sx={{ mb: 1 }}>
             select payment date
@@ -31,6 +34,9 @@ const PaymentFilters = () => {
             filter by date range
           </Typography>
           <DateRangeFilter></DateRangeFilter>
+        </div>
+        <div>
+          <ResetButton />
         </div>
       </div>
     </>

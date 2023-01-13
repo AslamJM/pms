@@ -2,7 +2,7 @@ import React, { createContext, useContext, useReducer } from "react";
 import { IPayment } from "../api/client";
 
 export interface IAction {
-  type: "SET_ALL_PaymentS" | "SET_SELECTED_Payment";
+  type: "SET_ALL_PaymentS" | "SET_SELECTED_Payment" | "SET_CHECKED_PAYMENTS";
 
   payload: any;
 }
@@ -12,6 +12,8 @@ export interface IPaymentState {
   setAllPayments: (value: IPayment[]) => void;
   selectedPayment: IPayment | null;
   setSelectedPayment: (value: IPayment | null) => void;
+  checkedPayments: string[];
+  setCheckedPayments: (value: string[]) => void;
 }
 
 const initialState: IPaymentState = {
@@ -19,6 +21,8 @@ const initialState: IPaymentState = {
   setAllPayments: () => {},
   selectedPayment: null,
   setSelectedPayment: () => {},
+  checkedPayments: [],
+  setCheckedPayments: () => {},
 };
 
 const PaymentContext = createContext(initialState);
@@ -40,6 +44,11 @@ function PaymentReducer(state: IPaymentState, action: IAction): IPaymentState {
         ...state,
         selectedPayment: action.payload,
       };
+    case "SET_CHECKED_PAYMENTS":
+      return {
+        ...state,
+        checkedPayments: action.payload,
+      };
     default:
       return state;
   }
@@ -56,10 +65,15 @@ function usePaymentReducer() {
     dispatch({ type: "SET_SELECTED_Payment", payload: value });
   };
 
+  const setCheckedPayments = (value: string[]) => {
+    dispatch({ type: "SET_CHECKED_PAYMENTS", payload: value });
+  };
+
   return {
     ...state,
     setAllPayments,
     setSelectedPayment,
+    setCheckedPayments,
   };
 }
 

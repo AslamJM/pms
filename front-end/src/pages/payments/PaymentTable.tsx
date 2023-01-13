@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import CustomTable, { IColumn } from "../../components/tables/Table";
+import PaymnentTableContainer from "../../components/tables/PaymentTableContainer";
 import CircularLoader from "../../components/loader/CircularLoader";
 import { useQuery } from "react-query";
 import {
@@ -9,6 +10,7 @@ import {
   TableRow,
   Tooltip,
   Typography,
+  Checkbox,
 } from "@mui/material";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import ClearIcon from "@mui/icons-material/Clear";
@@ -74,7 +76,13 @@ const PaymentTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const { setDeleteModalOpen, params, setEditModalOpen } = useGlobalContext();
-  const { setSelectedPayment, payments, setAllPayments } = usePaymentContext();
+  const {
+    setSelectedPayment,
+    payments,
+    setAllPayments,
+    checkedPayments,
+    setCheckedPayments,
+  } = usePaymentContext();
 
   const { data, isLoading, isError, refetch } = useQuery(
     "all payments",
@@ -86,6 +94,38 @@ const PaymentTable = () => {
 
   const verifyPayment = async (id: string) =>
     await apiClient.get<{ message: string }>(`/payments/verify/${id}`);
+
+  const handleSelectAllClick = (event: React.ChangeEvent<HTMLInputElement>) => {
+    if (event.target.checked) {
+      setCheckedPayments(payments.map((p) => p._id));
+      return;
+    }
+    setCheckedPayments([]);
+  };
+
+  const handleClick = (event: React.MouseEvent<unknown>, id: string) => {
+    const selectedIndex = checkedPayments.indexOf(id);
+    let newSelected: string[] = [];
+
+    if (selectedIndex === -1) {
+      newSelected = newSelected.concat(checkedPayments, id);
+    } else if (selectedIndex === 0) {
+      newSelected = newSelected.concat(checkedPayments.slice(1));
+    } else if (selectedIndex === checkedPayments.length - 1) {
+      newSelected = newSelected.concat(checkedPayments.slice(0, -1));
+    } else if (selectedIndex > 0) {
+      newSelected = newSelected.concat(
+        checkedPayments.slice(0, selectedIndex),
+        checkedPayments.slice(selectedIndex + 1)
+      );
+    }
+
+    setCheckedPayments(newSelected);
+  };
+
+  const isSelected = (name: string) => checkedPayments.indexOf(name) !== -1;
+
+  console.log(checkedPayments);
 
   useEffect(() => {
     refetch();
@@ -112,20 +152,29 @@ const PaymentTable = () => {
   return (
     <>
       <DeletePaymentModel />
-      <CustomTable
+      <PaymnentTableContainer
         columns={columns}
-        count={0}
+        count={payments.length}
         page={page}
         rowsPerPage={rowsPerPage}
         setPage={setPage}
         setRowsPerPage={setRowsPerPage}
+        onSelectAllClick={handleSelectAllClick}
+        numSelected={checkedPayments.length}
       >
         {payments
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
           .map((rowPayment, setkey) => {
             const row = createPaymentData(rowPayment);
+            const isItemSelected = isSelected(rowPayment._id);
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
+                <TableCell>
+                  <Checkbox
+                    checked={isItemSelected}
+                    onClick={(event) => handleClick(event, rowPayment._id)}
+                  />
+                </TableCell>
                 {columns.map((col, index) => {
                   if (col.id === "paymentStatus") {
                     return (
@@ -235,7 +284,7 @@ const PaymentTable = () => {
               </TableRow>
             );
           })}
-      </CustomTable>
+      </PaymnentTableContainer>
     </>
   );
 };
