@@ -35,7 +35,7 @@ const columns: IColumn[] = [
   { id: "paymentStatus", label: "Status" },
   { id: "collector", label: "Collector" },
   { id: "paymentDate", label: "Payment Date" },
-  { id: "dueDate", label: "Due Date" },
+  //{ id: "dueDate", label: "Due Date" },
 ];
 
 function createPaymentData(payment: IPayment) {
@@ -168,7 +168,17 @@ const PaymentTable = () => {
             const row = createPaymentData(rowPayment);
             const isItemSelected = isSelected(rowPayment._id);
             return (
-              <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
+              <TableRow
+                hover
+                role="checkbox"
+                tabIndex={-1}
+                key={setkey}
+                style={
+                  setkey % 2
+                    ? { background: "#fdffe0" }
+                    : { background: "white" }
+                }
+              >
                 <TableCell>
                   <Checkbox
                     checked={isItemSelected}

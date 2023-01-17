@@ -10,7 +10,7 @@ export const createShop = (input: Shop) => {
 };
 
 export const queryShops = (query: FilterQuery<Shop>) => {
-  return shopModel.find(query);
+  return shopModel.find(query).populate('region');
 };
 
 export const updateShop = (id: string, input: UpdateQuery<Shop>) => {

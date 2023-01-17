@@ -1,24 +1,24 @@
 import { Request, Response } from 'express';
 import {
-  createCompany,
-  getSingleCompany,
-  queryCompanies,
-  updateCompany,
-  deleteCompany,
-} from '../services/company';
-import { Company } from '../models/company';
+  createArea,
+  getSingleArea,
+  queryAreas,
+  updateArea,
+  deleteArea,
+} from '../services/area';
+import { Area } from '../models/area';
 import { UpdateQuery } from 'mongoose';
 
-export const createCompanyController = async (
-  req: Request<{}, {}, { input: Company }>,
+export const createAreaController = async (
+  req: Request<{}, {}, { input: Area }>,
   res: Response
 ) => {
   const { input } = req.body;
   try {
-    const created = await createCompany(input);
+    const created = await createArea(input);
     return res.status(200).json({
-      message: 'Company created successfully',
-      company: created,
+      message: 'Area created successfully',
+      Area: created,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -27,15 +27,15 @@ export const createCompanyController = async (
   }
 };
 
-export const getSingleCompanyController = async (
+export const getSingleAreaController = async (
   req: Request<{ id: string }>,
   res: Response
 ) => {
   const { id } = req.params;
   try {
-    const company = await getSingleCompany(id);
+    const Area = await getSingleArea(id);
     return res.status(200).json({
-      company: company,
+      Area: Area,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -44,15 +44,15 @@ export const getSingleCompanyController = async (
   }
 };
 
-export const deleteCompanyController = async (
+export const deleteAreaController = async (
   req: Request<{ id: string }>,
   res: Response
 ) => {
   const { id } = req.params;
   try {
-    await deleteCompany(id);
+    await deleteArea(id);
     return res.status(200).json({
-      message: 'Company deleted successfully',
+      message: 'Area deleted successfully',
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -61,17 +61,17 @@ export const deleteCompanyController = async (
   }
 };
 
-export const updateCompanyController = async (
-  req: Request<{ id: string }, {}, { input: UpdateQuery<Company> }>,
+export const updateAreaController = async (
+  req: Request<{ id: string }, {}, { input: UpdateQuery<Area> }>,
   res: Response
 ) => {
   const { id } = req.params;
   const { input } = req.body;
   try {
-    const company = await updateCompany(id, input);
+    const Area = await updateArea(id, input);
     return res.status(200).json({
-      message: 'Company updated successfully',
-      company: company,
+      message: 'Area updated successfully',
+      Area: Area,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -80,11 +80,11 @@ export const updateCompanyController = async (
   }
 };
 
-export const queryCompanyController = async (req: Request, res: Response) => {
+export const queryAreaController = async (req: Request, res: Response) => {
   try {
-    const companies = await queryCompanies(req.query);
+    const areas = await queryAreas(req.query);
     return res.status(200).json({
-      companies: companies,
+      areas: areas,
     });
   } catch (error: any) {
     return res.status(500).json({

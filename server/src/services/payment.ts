@@ -70,6 +70,14 @@ export const verifyPayment = (id: string) => {
   return paymentModel.findByIdAndUpdate(id, { verified: true });
 };
 
+export const verifyMany = (ids: string[]) => {
+  return paymentModel.updateMany(
+    { _id: { $in: ids } },
+    { $set: { verified: true } },
+    { multi: true }
+  );
+};
+
 export const getInvoice = (invoice: string) => {
   return paymentModel
     .findOne({ invoice })

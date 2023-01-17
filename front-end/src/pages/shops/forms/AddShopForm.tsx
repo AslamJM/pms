@@ -21,10 +21,8 @@ const initialValues = {
   region: "",
 };
 
-const REGIONS = ["region a", "region b", "region c", "region d"];
-
 const AddShopForm = () => {
-  const { setAddModalOpen, setLoading, setSnackMessage, setSnackOpen } =
+  const { setAddModalOpen, setLoading, setSnackMessage, setSnackOpen, areas } =
     useGlobalContext();
   const { createShop } = shopClient;
   const { isLoading, mutate } = useMutation(
@@ -85,9 +83,9 @@ const AddShopForm = () => {
                   name="region"
                   value={values.region}
                 >
-                  {REGIONS.map((item, index) => (
-                    <MenuItem key={index} value={item}>
-                      {item}
+                  {areas.map((item, index) => (
+                    <MenuItem key={index} value={item._id}>
+                      {item.name}
                     </MenuItem>
                   ))}
                 </Select>

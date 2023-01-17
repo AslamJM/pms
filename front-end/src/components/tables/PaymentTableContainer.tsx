@@ -9,6 +9,8 @@ import TablePagination from "@mui/material/TablePagination";
 import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { usePaymentContext } from "../../context/PaymentContext";
+import { useGlobalContext } from "../../context/GlobalContext";
+import { apiClient } from "../../api/client";
 import Button from "@mui/material/Button";
 
 export interface IColumn {
@@ -55,6 +57,27 @@ const CustomTable = ({
     setPage(0);
   };
   const { checkedPayments, setCheckedPayments } = usePaymentContext();
+  const { setSnackMessage, setSnackOpen, setParams } = useGlobalContext();
+
+  const handleVerify = async () => {
+    try {
+      const response = await apiClient.post<{ message: string }>(
+        "/payments/verify",
+        {
+          ids: checkedPayments,
+        }
+      );
+      if (response.status === 200) {
+        setCheckedPayments([]);
+        setSnackMessage(response.data.message);
+        setSnackOpen(true);
+        setParams({});
+      }
+    } catch (error: any) {
+      setSnackMessage(error.message);
+      setSnackOpen(true);
+    }
+  };
 
   return (
     <Paper sx={{ width: "100%", overflow: "hidden", mt: 1 }}>
@@ -80,7 +103,11 @@ const CustomTable = ({
               >
                 cancel
               </Button>
-              <Button variant="contained" sx={{ mr: 1 }}>
+              <Button
+                variant="contained"
+                sx={{ mr: 1 }}
+                onClick={() => handleVerify()}
+              >
                 verify {numSelected} payments
               </Button>
             </Box>

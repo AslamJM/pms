@@ -1,7 +1,7 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { useQuery } from "react-query";
-import { ICompany } from "../api/client";
-import { getAllCompanies } from "../api/company";
+import { ICompany, IArea } from "../api/client";
+import { getAllCompanies, getAllAreas } from "../api/company";
 export interface IAction {
   type:
     | "SET_SNACKBAR"
@@ -11,6 +11,7 @@ export interface IAction {
     | "SET_LOADING"
     | "SET_ADD_OPEN"
     | "SET_COMPANIES"
+    | "SET_AREAS"
     | "SET_PARAMS"
     | "RESET_PARAMS";
 
@@ -32,6 +33,8 @@ export interface IGlobalState {
   setLoading: (value: boolean) => void;
   companies: ICompany[];
   setComapnies: (value: ICompany[]) => void;
+  areas: IArea[];
+  setAreas: (value: IArea[]) => void;
   params: any;
   setParams: (value: any) => void;
   resetParams: (value: any) => void;
@@ -52,6 +55,8 @@ const initialState: IGlobalState = {
   setLoading: () => {},
   companies: [],
   setComapnies: () => {},
+  areas: [],
+  setAreas: () => {},
   params: {},
   setParams: () => {},
   resetParams: () => {},
@@ -101,6 +106,11 @@ function globalReducer(state: IGlobalState, action: IAction): IGlobalState {
         ...state,
         companies: action.payload,
       };
+    case "SET_AREAS":
+      return {
+        ...state,
+        areas: action.payload,
+      };
     case "SET_PARAMS":
       return {
         ...state,
@@ -145,6 +155,9 @@ function useGlobalReducer() {
   const resetParams = (value: any) => {
     dispatch({ type: "RESET_PARAMS", payload: value });
   };
+  const setAreas = (value: ICompany[]) => {
+    dispatch({ type: "SET_AREAS", payload: value });
+  };
   return {
     ...state,
     setSnackOpen,
@@ -156,6 +169,7 @@ function useGlobalReducer() {
     setComapnies,
     setParams,
     resetParams,
+    setAreas,
   };
 }
 
@@ -166,6 +180,11 @@ export default function GlobalContextProvider({
   const { data } = useQuery("all companies", getAllCompanies, {
     onSuccess: (data) => globalState.setComapnies(data.companies),
   });
+
+  useQuery("all areas", getAllAreas, {
+    onSuccess: (data) => globalState.setAreas(data.areas),
+  });
+
   return (
     <globalContext.Provider value={globalState}>
       {children}

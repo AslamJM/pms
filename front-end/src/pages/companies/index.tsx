@@ -4,9 +4,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { createCompany } from "../../api/company";
 import Typography from "@mui/material/Typography/Typography";
-import IconButton from "@mui/material/IconButton";
-import BorderColorIcon from "@mui/icons-material/BorderColor";
-import DeleteIcon from "@mui/icons-material/Delete";
+import CompanyName from "./CompanyName";
 
 const CompanyPage = () => {
   const [company, setCompany] = useState("");
@@ -22,8 +20,6 @@ const CompanyPage = () => {
       onSettled: () => setCompany(""),
     }
   );
-
-  const onClickEdit = () => {};
 
   return (
     <div>
@@ -57,7 +53,9 @@ const CompanyPage = () => {
         {companies.length === 0 ? (
           <Typography>you have no companies.</Typography>
         ) : (
-          companies.map((c) => <Typography>{c.name}</Typography>)
+          companies.map((c) => (
+            <CompanyName name={c.name} id={c._id} key={c._id} />
+          ))
         )}
       </Box>
     </div>

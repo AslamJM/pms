@@ -1,4 +1,5 @@
 import { Request, Response } from 'express';
+import { verifyMany } from './../services/payment';
 import {
   createPayment,
   getSinglePayment,
@@ -143,6 +144,25 @@ export const getInvoiceController = async (
     return res.status(200).json({
       payment: payment,
     });
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const verifyManyController = async (
+  req: Request<{}, {}, { ids: string[] }>,
+  res: Response
+) => {
+  const { ids } = req.body;
+  try {
+    const payments = await verifyMany(ids);
+    if (payments) {
+      return res
+        .status(200)
+        .json({ message: 'payments verified successfully ' });
+    }
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

@@ -35,3 +35,36 @@ export function createPaymentData(payment: IPayment) {
     dueDate: dayjs(new Date(dueDate)).format("DD/MM/YYYY"),
   };
 }
+
+export function createJson(payment: IPayment) {
+  const {
+    invoice,
+    shop,
+    amount,
+    free,
+    paidAmount,
+    discount,
+    returnAmount,
+    dueAmount,
+    paymentStatus,
+    company,
+    dueDate,
+    paymentDate,
+    collector,
+  } = payment;
+  return {
+    invoice,
+    shop: shop ? shop.name : "-",
+    amount,
+    free,
+    paid: paidAmount,
+    discount,
+    return: returnAmount,
+    due: dueAmount,
+    status: paymentStatus,
+    company: company ? company.name : "-",
+    collector: collector ? collector.name : "-",
+    "Payment Date": dayjs(new Date(paymentDate)).format("DD/MM/YYYY"),
+    "Due Date": dayjs(new Date(dueDate)).format("DD/MM/YYYY"),
+  };
+}

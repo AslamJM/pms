@@ -39,10 +39,15 @@ export interface IShop {
   _id: string;
   name: string;
   address: string;
-  region: string;
+  region: IArea;
 }
 
 export interface ICompany {
+  _id: string;
+  name: string;
+}
+
+export interface IArea {
   _id: string;
   name: string;
 }

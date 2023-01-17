@@ -7,6 +7,7 @@ import {
   paymentRouter,
   collectorRouter,
   companyRouter,
+  areaRouter,
 } from './routes';
 
 const app = express();
@@ -18,6 +19,7 @@ app.use('/api/shops', shopRouter);
 app.use('/api/payments', paymentRouter);
 app.use('/api/collectors', collectorRouter);
 app.use('/api/companies', companyRouter);
+app.use('/api/areas', areaRouter);
 
 const createServer = async () => {
   await connectDB();
