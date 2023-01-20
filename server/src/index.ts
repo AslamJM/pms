@@ -8,13 +8,14 @@ import {
   collectorRouter,
   companyRouter,
   areaRouter,
+  authRouter,
 } from './routes';
 
 const app = express();
 app.use(express.json());
 app.use(cors());
 
-app.get('/ping', (_, res) => res.send('ping'));
+app.use('/api/users', authRouter);
 app.use('/api/shops', shopRouter);
 app.use('/api/payments', paymentRouter);
 app.use('/api/collectors', collectorRouter);

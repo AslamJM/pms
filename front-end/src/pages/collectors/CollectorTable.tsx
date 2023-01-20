@@ -2,6 +2,7 @@ import { useState } from "react";
 import CustomTable, { IColumn } from "../../components/tables/Table";
 import { useCollectorContext } from "../../context/CollectorContext";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { useAuthContext } from "../../context/AuthContext";
 import {
   Box,
   IconButton,
@@ -24,6 +25,7 @@ const CollectorTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { collectors, setSelectedCollector } = useCollectorContext();
   const { setDeleteModalOpen, setEditModalOpen } = useGlobalContext();
+  const { user } = useAuthContext();
 
   if (collectors.length === 0) {
     return (
@@ -56,45 +58,47 @@ const CollectorTable = () => {
                   </TableCell>
                 );
               })}
-              <TableCell
-                sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                }}
-              >
-                <Tooltip title="edit">
-                  <IconButton
-                    onClick={() => {
-                      setSelectedCollector(row);
-                      setEditModalOpen(true);
-                    }}
-                  >
-                    <BorderColorIcon
-                      color="success"
-                      sx={{
-                        cursor: "pointer",
+              {user?.role === "ADMIN" && (
+                <TableCell
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                  }}
+                >
+                  <Tooltip title="edit">
+                    <IconButton
+                      onClick={() => {
+                        setSelectedCollector(row);
+                        setEditModalOpen(true);
                       }}
-                      fontSize="medium"
-                    />
-                  </IconButton>
-                </Tooltip>
+                    >
+                      <BorderColorIcon
+                        color="success"
+                        sx={{
+                          cursor: "pointer",
+                        }}
+                        fontSize="medium"
+                      />
+                    </IconButton>
+                  </Tooltip>
 
-                <Tooltip title="delete">
-                  <IconButton
-                    onClick={() => {
-                      setSelectedCollector(row);
-                      setDeleteModalOpen(true);
-                    }}
-                  >
-                    <DeleteIcon
-                      color="error"
-                      sx={{ cursor: "pointer" }}
-                      fontSize="medium"
-                    />
-                  </IconButton>
-                </Tooltip>
-              </TableCell>
+                  <Tooltip title="delete">
+                    <IconButton
+                      onClick={() => {
+                        setSelectedCollector(row);
+                        setDeleteModalOpen(true);
+                      }}
+                    >
+                      <DeleteIcon
+                        color="error"
+                        sx={{ cursor: "pointer" }}
+                        fontSize="medium"
+                      />
+                    </IconButton>
+                  </Tooltip>
+                </TableCell>
+              )}
             </TableRow>
           );
         })}

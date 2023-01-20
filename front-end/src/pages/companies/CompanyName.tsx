@@ -12,6 +12,7 @@ import { useState } from "react";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useMutation, useQueryClient } from "react-query";
+import { useAuthContext } from "../../context/AuthContext";
 import { apiClient } from "../../api/client";
 import CloseIcon from "@mui/icons-material/Close";
 import CheckIcon from "@mui/icons-material/Check";
@@ -21,6 +22,7 @@ const CompanyName = ({ name, id }: { name: string; id: string }) => {
   const [edit, setEdit] = useState(false);
   const [editVal, setEditVal] = useState("");
   const [del, setDelete] = useState(false);
+  const { user } = useAuthContext();
 
   const updateCompany = async () => {
     const response = await apiClient.patch<{ message: string }>(
@@ -69,7 +71,7 @@ const CompanyName = ({ name, id }: { name: string; id: string }) => {
           {name}
         </Typography>
       )}
-      {!edit && (
+      {!edit && user?.role === "ADMIN" && (
         <Box display="flex" alignItems="flex-end">
           <Tooltip title="edit">
             <IconButton

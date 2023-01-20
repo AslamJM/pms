@@ -3,6 +3,7 @@ import BorderColorIcon from "@mui/icons-material/BorderColor";
 import DeleteIcon from "@mui/icons-material/Delete";
 import { useShopContext } from "../../context/ShopContext";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { useAuthContext } from "../../context/AuthContext";
 import TableRow from "@mui/material/TableRow";
 import TableCell from "@mui/material/TableCell";
 import { useState } from "react";
@@ -22,6 +23,7 @@ const ShopTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
   const { setDeleteModalOpen, setEditModalOpen } = useGlobalContext();
   const { setSelectedShop, shops } = useShopContext();
+  const { user } = useAuthContext();
 
   if (shops.length === 0) {
     return (
@@ -50,55 +52,60 @@ const ShopTable = () => {
             return (
               <TableRow hover role="checkbox" tabIndex={-1} key={setkey}>
                 {columns.map((col, index) => {
+                  if (col.id === "region") {
+                    return (
+                      <TableCell key={index} align={col.align}>
+                        {row["region"].name}
+                      </TableCell>
+                    );
+                  }
                   return (
                     <TableCell key={index} align={col.align}>
-                      {
-                        row[
-                          col.id as keyof Omit<typeof row, "_id" | "payments">
-                        ]
-                      }
+                      {row[col.id as keyof Omit<typeof row, "_id" | "region">]}
                     </TableCell>
                   );
                 })}
-                <TableCell
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                  }}
-                >
-                  <Tooltip title="edit">
-                    <IconButton
-                      onClick={() => {
-                        setSelectedShop(row);
-                        setEditModalOpen(true);
-                      }}
-                    >
-                      <BorderColorIcon
-                        color="success"
-                        sx={{
-                          cursor: "pointer",
+                {user?.role === "ADMIN" && (
+                  <TableCell
+                    sx={{
+                      display: "flex",
+                      alignItems: "center",
+                      justifyContent: "center",
+                    }}
+                  >
+                    <Tooltip title="edit">
+                      <IconButton
+                        onClick={() => {
+                          setSelectedShop(row);
+                          setEditModalOpen(true);
                         }}
-                        fontSize="medium"
-                      />
-                    </IconButton>
-                  </Tooltip>
+                      >
+                        <BorderColorIcon
+                          color="success"
+                          sx={{
+                            cursor: "pointer",
+                          }}
+                          fontSize="medium"
+                        />
+                      </IconButton>
+                    </Tooltip>
 
-                  <Tooltip title="delete">
-                    <IconButton
-                      onClick={() => {
-                        setSelectedShop(row);
-                        setDeleteModalOpen(true);
-                      }}
-                    >
-                      <DeleteIcon
-                        color="error"
-                        sx={{ cursor: "pointer" }}
-                        fontSize="medium"
-                      />
-                    </IconButton>
-                  </Tooltip>
-                </TableCell>
+                    <Tooltip title="delete">
+                      <IconButton
+                        onClick={() => {
+                          setSelectedShop(row);
+                          setDeleteModalOpen(true);
+                        }}
+                      >
+                        <DeleteIcon
+                          color="error"
+                          sx={{ cursor: "pointer" }}
+                          fontSize="medium"
+                        />
+                      </IconButton>
+                    </Tooltip>
+                  </TableCell>
+                )}
               </TableRow>
             );
           })}

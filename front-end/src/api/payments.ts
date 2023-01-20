@@ -30,6 +30,7 @@ export interface PaymentCreateInput {
   free: number;
   discount: number;
   returnAmount: number;
+  marketReturn: number;
   dueAmount: number;
   paymentDate: Date;
   dueDate: Date;

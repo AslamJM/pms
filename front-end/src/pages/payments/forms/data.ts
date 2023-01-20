@@ -6,6 +6,7 @@ export const FORM_MODEL = {
   free: "free",
   discount: "discount",
   returnAmount: "returnAmount",
+  marketReturn: "marketReturn",
   collector: "collector",
   company: "company",
   invoice: "invoice",

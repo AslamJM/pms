@@ -10,6 +10,7 @@ import TableRow from "@mui/material/TableRow";
 import Typography from "@mui/material/Typography";
 import { usePaymentContext } from "../../context/PaymentContext";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { useAuthContext } from "../../context/AuthContext";
 import { apiClient } from "../../api/client";
 import Button from "@mui/material/Button";
 
@@ -58,6 +59,7 @@ const CustomTable = ({
   };
   const { checkedPayments, setCheckedPayments } = usePaymentContext();
   const { setSnackMessage, setSnackOpen, setParams } = useGlobalContext();
+  const { user } = useAuthContext();
 
   const handleVerify = async () => {
     try {
@@ -130,7 +132,10 @@ const CustomTable = ({
                   {col.label}
                 </TableCell>
               ))}
-              <TableCell align="center">Actions</TableCell>
+              <TableCell align="center">last payment</TableCell>
+              {user?.role === "ADMIN" && (
+                <TableCell align="center">Actions</TableCell>
+              )}
             </TableRow>
           </TableHead>
           <TableBody>{children}</TableBody>

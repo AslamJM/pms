@@ -16,7 +16,6 @@ import {
   FORM_MODEL,
   PAYMENT_METHOD,
   PAYMENT_STATUS,
-  parseToNumber,
 } from "../../payments/forms/data";
 import { paymentClient } from "../../../api/payments";
 import { useShopContext } from "../../../context/ShopContext";
@@ -32,6 +31,7 @@ const initialValues = {
   free: "",
   discount: "",
   returnAmount: "",
+  marketReturn: "",
   collector: "",
   company: "",
   invoice: "",
@@ -51,6 +51,7 @@ const AddPaymentForm = () => {
   const [fdiscount, setDiscount] = useState("");
   const [fpaid, setPaid] = useState("");
   const [freturn, setReturn] = useState("");
+  const [market, setMarket] = useState("");
 
   const {
     setAddModalOpen,
@@ -93,6 +94,7 @@ const AddPaymentForm = () => {
             paidAmount: Number(fpaid),
             dueAmount: Number(due),
             returnAmount: Number(freturn),
+            marketReturn: Number(market),
             paymentDate: new Date(paymentDate),
             dueDate: new Date(dueDate),
           },
@@ -231,7 +233,7 @@ const AddPaymentForm = () => {
               </Box>
             </Box>
             <Box display="flex" width="100%" my={2}>
-              <Box sx={{ mx: 0.5 }} width="33%">
+              <Box sx={{ mx: 0.5 }} width="25%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.paidAmount}
@@ -244,7 +246,7 @@ const AddPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="33%">
+              <Box sx={{ mx: 0.5 }} width="25%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.returnAmount}
@@ -257,7 +259,20 @@ const AddPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="33%">
+              <Box sx={{ mx: 0.5 }} width="25%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.marketReturn}
+                    label="market"
+                    fullWidth
+                    value={market}
+                    onChange={(e) => {
+                      setMarket(e.target.value);
+                    }}
+                  />
+                </FormControl>
+              </Box>
+              <Box sx={{ mx: 0.5 }} width="25%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.dueAmount}

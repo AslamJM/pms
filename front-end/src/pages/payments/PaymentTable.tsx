@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import CustomTable, { IColumn } from "../../components/tables/Table";
+import { IColumn } from "../../components/tables/Table";
 import PaymnentTableContainer from "../../components/tables/PaymentTableContainer";
 import CircularLoader from "../../components/loader/CircularLoader";
 import { useQuery } from "react-query";
@@ -19,8 +19,10 @@ import { apiClient, IPayment } from "../../api/client";
 import dayjs from "dayjs";
 import DeletePaymentModel from "./modals/DeletePaymentModal";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { useAuthContext } from "../../context/AuthContext";
 import { queryPayments } from "../../api/client";
 import { usePaymentContext } from "../../context/PaymentContext";
+import { calculateLastDays } from "../../components/tables/data";
 import IconButton from "@mui/material/IconButton";
 
 const columns: IColumn[] = [
@@ -31,6 +33,7 @@ const columns: IColumn[] = [
   { id: "discount", label: "Discount", align: "right" },
   { id: "paidAmount", label: "paid", align: "right" },
   { id: "returnAmount", label: "return", align: "right" },
+  { id: "marketReturn", label: "market", align: "right" },
   { id: "dueAmount", label: "due", align: "right" },
   { id: "paymentStatus", label: "Status" },
   { id: "collector", label: "Collector" },
@@ -47,6 +50,7 @@ function createPaymentData(payment: IPayment) {
     paidAmount,
     discount,
     returnAmount,
+    marketReturn,
     dueAmount,
     paymentStatus,
     company,
@@ -62,6 +66,7 @@ function createPaymentData(payment: IPayment) {
     paidAmount,
     discount,
     returnAmount,
+    marketReturn,
     dueAmount,
     paymentStatus,
     company: company ? company.name : "-",
@@ -76,6 +81,7 @@ const PaymentTable = () => {
   const [rowsPerPage, setRowsPerPage] = useState(10);
 
   const { setDeleteModalOpen, params, setEditModalOpen } = useGlobalContext();
+  const { user } = useAuthContext();
   const {
     setSelectedPayment,
     payments,
@@ -175,7 +181,7 @@ const PaymentTable = () => {
                 key={setkey}
                 style={
                   setkey % 2
-                    ? { background: "#fdffe0" }
+                    ? { background: "#f2752730" }
                     : { background: "white" }
                 }
               >
@@ -217,8 +223,9 @@ const PaymentTable = () => {
                     </TableCell>
                   );
                 })}
+                <TableCell>{calculateLastDays(rowPayment)}</TableCell>
 
-                {rowPayment.verified === true ? (
+                {user?.role === "ADMIN" && rowPayment.verified === true ? (
                   <TableCell
                     sx={{
                       display: "flex",
@@ -255,7 +262,7 @@ const PaymentTable = () => {
                       </Tooltip>
                     </Box>
                   </TableCell>
-                ) : (
+                ) : user?.role === "ADMIN" ? (
                   <TableCell
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
@@ -290,6 +297,8 @@ const PaymentTable = () => {
                       </IconButton>
                     </Tooltip>
                   </TableCell>
+                ) : (
+                  <></>
                 )}
               </TableRow>
             );

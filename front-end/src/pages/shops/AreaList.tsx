@@ -6,7 +6,7 @@ const AreaList = () => {
     <div>
       <h1>List of Areas</h1>
       {areas.map((a) => (
-        <p>{a.name}</p>
+        <p key={a._id}>{a.name}</p>
       ))}
     </div>
   );

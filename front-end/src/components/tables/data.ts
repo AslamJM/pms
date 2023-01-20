@@ -11,6 +11,7 @@ export function createPaymentData(payment: IPayment) {
     paidAmount,
     discount,
     returnAmount,
+    marketReturn,
     dueAmount,
     paymentStatus,
     company,
@@ -27,6 +28,7 @@ export function createPaymentData(payment: IPayment) {
     paidAmount,
     discount,
     returnAmount,
+    marketReturn,
     dueAmount,
     paymentStatus,
     company: company ? company.name : "-",
@@ -68,3 +70,8 @@ export function createJson(payment: IPayment) {
     "Due Date": dayjs(new Date(dueDate)).format("DD/MM/YYYY"),
   };
 }
+
+export const calculateLastDays = (payment: IPayment) => {
+  const days = dayjs().diff(dayjs(payment.paymentDate), "days");
+  return `${days} days`;
+};

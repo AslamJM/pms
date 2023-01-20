@@ -9,6 +9,7 @@ import Shops from "./pages/shops";
 import CompanyPage from "./pages/companies";
 import Reports from "./pages/reports";
 import GlobalContextProvider from "./context/GlobalContext";
+import AuthContextProvider from "./context/AuthContext";
 import CollectorContextProvider from "./context/CollectorContext";
 import ShopContextProvider from "./context/ShopContext";
 import PaymentContextProvider from "./context/PaymentContext";
@@ -27,26 +28,28 @@ const queryClient = new QueryClient({
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <QueryClientProvider client={queryClient}>
-      <GlobalContextProvider>
-        <ShopContextProvider>
-          <CollectorContextProvider>
-            <PaymentContextProvider>
-              <BrowserRouter>
-                <Routes>
-                  <Route element={<App />}>
-                    <Route path="/" element={<Home />} />
-                    <Route path="/payments" element={<Payments />} />
-                    <Route path="/reports" element={<Reports />} />
-                    <Route path="/shops" element={<Shops />} />
-                    <Route path="/collectors" element={<Collectors />} />
-                    <Route path="/companies" element={<CompanyPage />} />
-                  </Route>
-                </Routes>
-              </BrowserRouter>
-            </PaymentContextProvider>
-          </CollectorContextProvider>
-        </ShopContextProvider>
-      </GlobalContextProvider>
+      <AuthContextProvider>
+        <GlobalContextProvider>
+          <ShopContextProvider>
+            <CollectorContextProvider>
+              <PaymentContextProvider>
+                <BrowserRouter>
+                  <Routes>
+                    <Route element={<App />}>
+                      <Route path="/" element={<Home />} />
+                      <Route path="/payments" element={<Payments />} />
+                      <Route path="/reports" element={<Reports />} />
+                      <Route path="/shops" element={<Shops />} />
+                      <Route path="/collectors" element={<Collectors />} />
+                      <Route path="/companies" element={<CompanyPage />} />
+                    </Route>
+                  </Routes>
+                </BrowserRouter>
+              </PaymentContextProvider>
+            </CollectorContextProvider>
+          </ShopContextProvider>
+        </GlobalContextProvider>
+      </AuthContextProvider>
     </QueryClientProvider>
   </React.StrictMode>
 );

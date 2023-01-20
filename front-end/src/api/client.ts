@@ -1,7 +1,9 @@
 import axios from "axios";
 
+const api_url = import.meta.env.VITE_API_URL;
+
 export const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: api_url,
   headers: {
     "Content-type": "application/json",
   },
@@ -17,6 +19,7 @@ export interface IPayment {
   free: number;
   discount: number;
   returnAmount: number;
+  marketReturn: number;
   dueAmount: number;
   paymentDate: Date;
   dueDate: Date;
@@ -50,6 +53,12 @@ export interface ICompany {
 export interface IArea {
   _id: string;
   name: string;
+}
+
+export interface IUser {
+  _id: string;
+  username: string;
+  role: "ADMIN" | "EMPLOYEE";
 }
 
 // client queries

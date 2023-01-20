@@ -56,6 +56,7 @@ const EditPaymentForm = () => {
     free: selectedPayment?.free.toString(),
     discount: selectedPayment?.discount.toString(),
     returnAmount: selectedPayment?.returnAmount.toString(),
+    marketReturn: selectedPayment?.marketReturn.toString(),
     collector: selectedPayment?.collector._id,
     company: selectedPayment?.company._id,
     invoice: selectedPayment?.invoice,
@@ -71,6 +72,7 @@ const EditPaymentForm = () => {
   const [fdiscount, setDiscount] = useState(initialValues.discount!);
   const [fpaid, setPaid] = useState(initialValues.paidAmount!);
   const [freturn, setReturn] = useState(initialValues.returnAmount!);
+  const [market, setMarket] = useState(initialValues.marketReturn!);
 
   useEffect(() => {
     setDue(
@@ -99,6 +101,7 @@ const EditPaymentForm = () => {
             paidAmount: Number(fpaid),
             dueAmount: Number(due),
             returnAmount: Number(freturn),
+            marketReturn: Number(market),
             paymentDate: new Date(paymentDate!),
             dueDate: new Date(dueDate!),
           },
@@ -237,7 +240,7 @@ const EditPaymentForm = () => {
               </Box>
             </Box>
             <Box display="flex" width="100%" my={2}>
-              <Box sx={{ mx: 0.5 }} width="33%">
+              <Box sx={{ mx: 0.5 }} width="25%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.paidAmount}
@@ -250,7 +253,7 @@ const EditPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="33%">
+              <Box sx={{ mx: 0.5 }} width="25%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.returnAmount}
@@ -263,7 +266,20 @@ const EditPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="33%">
+              <Box sx={{ mx: 0.5 }} width="25%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.marketReturn}
+                    label="Market"
+                    fullWidth
+                    value={market}
+                    onChange={(e) => {
+                      setMarket(e.target.value);
+                    }}
+                  />
+                </FormControl>
+              </Box>
+              <Box sx={{ mx: 0.5 }} width="25%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.dueAmount}

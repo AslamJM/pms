@@ -36,6 +36,8 @@ export class Payment {
   discount: number;
   @prop({ default: 0 })
   returnAmount: number;
+  @prop({ default: 0 })
+  marketReturn: number;
   @prop({ ref: () => Collector })
   collector: Ref<Collector>;
   @prop({ required: true })

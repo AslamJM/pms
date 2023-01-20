@@ -2,12 +2,15 @@ import { Box, Button, Divider, TextField, Tooltip } from "@mui/material";
 import { useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
 import { useGlobalContext } from "../../context/GlobalContext";
+import { useAuthContext } from "../../context/AuthContext";
+import { PageHeader } from "../../components/header";
 import { createCompany } from "../../api/company";
 import Typography from "@mui/material/Typography/Typography";
 import CompanyName from "./CompanyName";
 
 const CompanyPage = () => {
   const [company, setCompany] = useState("");
+  const { user } = useAuthContext();
 
   const queryClient = useQueryClient();
 
@@ -23,28 +26,31 @@ const CompanyPage = () => {
 
   return (
     <div>
-      <Box display="flex" alignItems="center" justifyContent="center">
-        <TextField
-          value={company}
-          onChange={(e) => setCompany(e.target.value)}
-          sx={{ mr: 1, flexGrow: 1 }}
-          size="medium"
-          fullWidth
-          placeholder="enter the company name to add"
-        />
-        <Button
-          variant="contained"
-          onClick={() => {
-            if (company.length === 0) {
-              return;
-            }
-            mutate(company);
-          }}
-          size="large"
-        >
-          add
-        </Button>
-      </Box>
+      <PageHeader title="Companies" />
+      {user?.role === "ADMIN" && (
+        <Box display="flex" alignItems="center" justifyContent="center">
+          <TextField
+            value={company}
+            onChange={(e) => setCompany(e.target.value)}
+            sx={{ mr: 1, flexGrow: 1 }}
+            size="medium"
+            fullWidth
+            placeholder="enter the company name to add"
+          />
+          <Button
+            variant="contained"
+            onClick={() => {
+              if (company.length === 0) {
+                return;
+              }
+              mutate(company);
+            }}
+            size="large"
+          >
+            add
+          </Button>
+        </Box>
+      )}
       <Box>
         <Typography variant="h5" sx={{ mt: 1, mb: 1 }}>
           List of companies

@@ -1,4 +1,10 @@
-import { Box, Button, DialogContent, TextField } from "@mui/material";
+import {
+  Box,
+  Button,
+  DialogContent,
+  FormControlLabel,
+  TextField,
+} from "@mui/material";
 import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import CircularProgress from "@mui/material/CircularProgress";
@@ -10,6 +16,7 @@ import { useMutation } from "react-query";
 import { PaymentCreateInput } from "../../../api/payments";
 import { apiClient, IPayment } from "../../../api/client";
 import { useState } from "react";
+import Checkbox from "@mui/material/Checkbox";
 
 const UpdateInvoiceModal = () => {
   const { selectedPayment, setSelectedPayment } = usePaymentContext();
@@ -21,13 +28,17 @@ const UpdateInvoiceModal = () => {
     setSnackOpen,
   } = useGlobalContext();
   const [due, setDue] = useState(selectedPayment?.dueAmount.toString());
+  const [paid, setPaid] = useState(false);
 
   const { mutate, isLoading } = useMutation(
     async (input: Partial<PaymentCreateInput>) =>
       await apiClient.patch<{ payment: IPayment; message: string }>(
         `/payments/update/${selectedPayment?._id}`,
         { input }
-      )
+      ),
+    {
+      onSettled: () => setDue(""),
+    }
   );
 
   return (
@@ -46,7 +57,7 @@ const UpdateInvoiceModal = () => {
         <Box display="flex">
           <Typography>Region: </Typography>
           <Typography color="GrayText">
-            {selectedPayment?.shop.region}
+            {selectedPayment?.shop.region.name}
           </Typography>
         </Box>
         <Box display="flex">
@@ -79,12 +90,23 @@ const UpdateInvoiceModal = () => {
               value={due}
               onChange={(e) => setDue(e.target.value)}
             />
+            <FormControlLabel
+              control={
+                <Checkbox
+                  checked={paid}
+                  onChange={() => setPaid((pr) => !pr)}
+                />
+              }
+              label="Fully Paid"
+            />
             <Button
               variant="contained"
               onClick={() => {
                 mutate(
                   {
                     dueAmount: selectedPayment?.dueAmount! - Number(due),
+                    paidAmount: selectedPayment?.paidAmount! + Number(due),
+                    paymentStatus: paid ? "PAID" : "DUE",
                   },
                   {
                     onSuccess: (data) => {
