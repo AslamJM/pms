@@ -65,6 +65,18 @@ export class Payment {
       .populate('shop')
       .populate('company');
   }
+
+  public static async getPaymentsOfMonth(
+    this: ReturnModelType<typeof Payment>
+  ) {
+    return this.find({
+      paymentDate: {
+        $gte: dayjs().startOf('M').toISOString(),
+        $lte: dayjs().endOf('M').toISOString(),
+      },
+    })
+    .populate('company');
+  }
 }
 
 export const paymentModel = getModelForClass(Payment, {

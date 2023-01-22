@@ -39,7 +39,6 @@ const Login = () => {
           password,
         }
       );
-      console.log(response);
 
       if (response.status === 400) {
         setError("invalid username or incorrect password");
@@ -51,6 +50,7 @@ const Login = () => {
       if (response.status === 200) {
         setToken(response.data.token);
         setUser(response.data.user);
+        localStorage.setItem("token", response.data.token);
         setLoading(false);
       }
     } catch (error: any) {

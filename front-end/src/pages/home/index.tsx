@@ -6,6 +6,7 @@ import { useAuthContext } from "../../context/AuthContext";
 import AddPaymentModal from "./modals/AddPaymentModal";
 import InvoiceSearch from "../../components/search/InvoiceSearch";
 import SnackBar from "../../components/snackbar";
+import CompanyPayments from "./CompanyPayments";
 import dayjs from "dayjs";
 import UpdateInvoiceModal from "./modals/UpdateInvoiceModal";
 
@@ -24,6 +25,7 @@ const Home = () => {
           {dayjs().add(-1, "day").format("DD/MM/YYYY")}
         </Typography>
         <Divider />
+        <CompanyPayments />
       </Box>
       <div>
         {user?.role === "ADMIN" && (

@@ -1,4 +1,4 @@
-import React, { createContext, useContext, useReducer } from "react";
+import React, { createContext, useContext, useEffect, useReducer } from "react";
 import { IUser } from "../api/client";
 
 export interface IAction {
@@ -64,6 +64,12 @@ export default function authContextProvider({
   children,
 }: React.PropsWithChildren<{}>) {
   const authState = useAuthReducer();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    authState.setToken(token);
+  }, []);
+
   return (
     <authContext.Provider value={authState}>{children}</authContext.Provider>
   );

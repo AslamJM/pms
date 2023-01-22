@@ -18,6 +18,7 @@ const Navbar = ({ open, setOpen }: Props) => {
   const handleLogout = () => {
     setUser(null);
     setToken(null);
+    localStorage.removeItem("token");
   };
 
   return (

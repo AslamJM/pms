@@ -10,6 +10,10 @@ import { useEffect, useMemo } from "react";
 import { write, utils, writeFile } from "xlsx";
 import { Box, Button } from "@mui/material";
 import GridOnIcon from "@mui/icons-material/GridOn";
+import PictureAsPdfIcon from "@mui/icons-material/PictureAsPdf";
+import jsPDF from "jspdf";
+import autoTable from "jspdf-autotable";
+import dayjs from "dayjs";
 
 const PaymentTableSelect = () => {
   const { params, companies } = useGlobalContext();
@@ -136,6 +140,16 @@ const PaymentTableSelect = () => {
     writeFile(workBook, "paymentData.xlsx");
   };
 
+  const exportPdf = (cols: any, data: any) => {
+    const doc = new jsPDF();
+    doc.text(`Payments - ${dayjs().format("DD/MM/YYYY")}`, 5, 10);
+    autoTable(doc, {
+      head: [cols],
+      body: data,
+    });
+    doc.save("table.pdf");
+  };
+
   useEffect(() => {
     refetch();
   }, [params]);
@@ -178,6 +192,40 @@ const PaymentTableSelect = () => {
             variant="outlined"
           >
             Export to Excel
+          </Button>
+          <Button
+            color="primary"
+            disabled={!table.getIsSomeRowsSelected}
+            startIcon={<PictureAsPdfIcon />}
+            variant="outlined"
+            onClick={() => {
+              let cols = table
+                .getVisibleFlatColumns()
+                .map((c) => c.columnDef.header)
+                .filter((c) => c !== "Select") as string[];
+
+              let colIds = table
+                .getVisibleFlatColumns()
+                .map((c) => c.id)
+                .filter((c) => c !== "mrt-row-select");
+
+              let rows = table
+                .getSelectedRowModel()
+                .rows.map((r) => r.original)
+                .map((r) => {
+                  let temp: any[] = [];
+                  colIds.map((c) => {
+                    if (r[c as keyof typeof r] !== null) {
+                      temp.push(r[c as keyof typeof r].toString());
+                    }
+                  });
+                  return temp;
+                });
+
+              exportPdf(cols, rows);
+            }}
+          >
+            export pdf
           </Button>
         </Box>
       )}

@@ -19,6 +19,8 @@
     "dayjs": "^1.11.7",
     "export-xlsx": "^0.1.4",
     "formik": "^2.2.9",
+    "jspdf": "^2.5.1",
+    "jspdf-autotable": "^3.5.28",
     "material-react-table": "^1.5.7",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

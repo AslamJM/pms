@@ -10,6 +10,8 @@ import {
   verifyPayment,
   getInvoice,
 } from '../services/payment';
+import { queryCompanies } from '../services/company';
+import { paymentModel } from '../models/payment';
 import { Payment } from '../models/payment';
 import { UpdateQuery } from 'mongoose';
 
@@ -163,6 +165,30 @@ export const verifyManyController = async (
         .status(200)
         .json({ message: 'payments verified successfully ' });
     }
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const getMonthlyCompanyIncome = async (req: Request, res: Response) => {
+  try {
+    const payments = await paymentModel.getPaymentsOfMonth();
+    const resObj: Record<string, number> = {};
+
+    const companies = (await queryCompanies({})).map((c) => c.name);
+    if (companies.length > 0) {
+      companies.forEach((c) => {
+        resObj[c] = 0;
+      });
+    }
+
+    payments.forEach((p) => {
+      //@ts-ignore
+      resObj[p.company.name] += p.paidAmount;
+    });
+    return res.status(200).json(resObj);
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,
