@@ -52,7 +52,7 @@ const SideNav = ({ open, setOpen }: Props) => {
     <Drawer variant="permanent" open={open}>
       <Toolbar />
       <DrawerHeader>
-        <IconButton onClick={() => setOpen(false)}>
+        <IconButton onClick={() => setOpen(!open)}>
           {theme.direction === "rtl" ? (
             <ChevronRightIcon />
           ) : (

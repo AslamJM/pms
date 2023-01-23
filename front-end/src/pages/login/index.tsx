@@ -13,6 +13,7 @@ import { useState } from "react";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useAuthContext } from "../../context/AuthContext";
 import { IUser } from "../../api/client";
+import LinearProgress from "@mui/material/LinearProgress";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -20,7 +21,7 @@ const Login = () => {
   const [error, setError] = useState("");
 
   const { loading, setLoading } = useGlobalContext();
-  const { setUser, setToken } = useAuthContext();
+  const { setUser, setToken, authLoad } = useAuthContext();
 
   const api_url = import.meta.env.VITE_API_URL;
   type LoginResponse = {
@@ -51,6 +52,7 @@ const Login = () => {
         setToken(response.data.token);
         setUser(response.data.user);
         localStorage.setItem("token", response.data.token);
+        localStorage.setItem("user", JSON.stringify(response.data.user));
         setLoading(false);
       }
     } catch (error: any) {
@@ -61,6 +63,19 @@ const Login = () => {
     }
   };
 
+  if (authLoad) {
+    return (
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="center"
+        height="100vh"
+      >
+        <Typography>Loading.......</Typography>
+      </Box>
+    );
+  }
+
   return (
     <Box
       display="flex"
@@ -69,42 +84,57 @@ const Login = () => {
       justifyContent="center"
       height="100vh"
     >
-      <Paper sx={{ width: 500, p: 2 }}>
-        <Typography variant="h5" sx={{ letterSpacing: 0.5, my: 1 }}>
-          Log In
-        </Typography>
-        <Divider />
+      <Paper
+        sx={{
+          width: 400,
+          p: 2,
+          height: 400,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          bgcolor: "#f2740512",
+        }}
+        elevation={3}
+      >
         <Box>
-          <FormControl fullWidth sx={{ my: 1 }}>
-            <TextField
-              variant="standard"
-              value={username}
-              onChange={(e) => setUsername(e.target.value)}
-              placeholder="User Name"
+          <Typography variant="h5" sx={{ letterSpacing: 0.5, my: 1 }}>
+            Log In
+          </Typography>
+          <Divider />
+          <Box>
+            <FormControl fullWidth sx={{ my: 1 }}>
+              <TextField
+                variant="standard"
+                value={username}
+                onChange={(e) => setUsername(e.target.value)}
+                placeholder="User Name"
+                fullWidth
+                error={error.length > 0}
+                helperText={error}
+              />
+            </FormControl>
+            <FormControl fullWidth sx={{ my: 1 }}>
+              <TextField
+                variant="standard"
+                value={password}
+                onChange={(e) => setPassword(e.target.value)}
+                placeholder="Password"
+                fullWidth
+                error={error.length > 0}
+              />
+            </FormControl>
+            <Button
+              variant="contained"
               fullWidth
-              error={error.length > 0}
-              helperText={error}
-            />
-          </FormControl>
-          <FormControl fullWidth sx={{ my: 1 }}>
-            <TextField
-              variant="standard"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              placeholder="Password"
-              fullWidth
-              error={error.length > 0}
-            />
-          </FormControl>
-          <Button
-            variant="contained"
-            fullWidth
-            sx={{ my: 1 }}
-            onClick={() => handleLogin()}
-            disabled={loading || username.length === 0 || password.length === 0}
-          >
-            {loading ? <CircularProgress /> : "Log In"}
-          </Button>
+              sx={{ my: 1 }}
+              onClick={() => handleLogin()}
+              disabled={
+                loading || username.length === 0 || password.length === 0
+              }
+            >
+              {loading ? <CircularProgress /> : "Log In"}
+            </Button>
+          </Box>
         </Box>
       </Paper>
     </Box>

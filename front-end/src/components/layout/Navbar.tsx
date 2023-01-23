@@ -19,6 +19,7 @@ const Navbar = ({ open, setOpen }: Props) => {
     setUser(null);
     setToken(null);
     localStorage.removeItem("token");
+    localStorage.removeItem("user");
   };
 
   return (

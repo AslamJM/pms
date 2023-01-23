@@ -46,8 +46,13 @@ export const queryPayments = (
     .find(filterQuery)
     .sort({ paymentDate: 'descending' })
     .populate('collector')
-    .populate('shop')
-    .populate('company');
+    .populate('company')
+    .populate({
+      path: 'shop',
+      populate: {
+        path: 'region',
+      },
+    });
 };
 
 export const updatePayment = (id: string, input: UpdateQuery<Payment>) => {

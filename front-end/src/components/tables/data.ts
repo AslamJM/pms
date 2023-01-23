@@ -23,6 +23,7 @@ export function createPaymentData(payment: IPayment) {
     _id,
     invoice,
     shop: shop ? shop.name : "-",
+    area: shop.region.name ? shop.region.name : "-",
     amount,
     free,
     paidAmount,
