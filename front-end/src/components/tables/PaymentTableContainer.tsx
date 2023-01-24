@@ -82,9 +82,9 @@ const CustomTable = ({
   };
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden", mt: 1 }}>
+    <Paper sx={{ width: "100%", overflow: "hidden", mt: 3 }}>
       {numSelected > 0 && (
-        <Toolbar sx={{ bgcolor: "lightgray" }}>
+        <Toolbar sx={{ bgcolor: "#BB892D33" }}>
           <Box
             display="flex"
             alignItems="center"

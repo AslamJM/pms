@@ -1,4 +1,5 @@
 import { useGlobalContext } from "../../context/GlobalContext";
+import AreaName from "./forms/AreaName";
 
 const AreaList = () => {
   const { areas } = useGlobalContext();
@@ -6,7 +7,7 @@ const AreaList = () => {
     <div>
       <h1>List of Areas</h1>
       {areas.map((a) => (
-        <p key={a._id}>{a.name}</p>
+        <AreaName key={a._id} id={a._id} name={a.name} />
       ))}
     </div>
   );

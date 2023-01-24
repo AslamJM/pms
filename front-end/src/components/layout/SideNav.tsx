@@ -68,7 +68,7 @@ const SideNav = ({ open, setOpen }: Props) => {
               to={item.to}
               style={({ isActive }) => {
                 return {
-                  color: isActive ? "#f27521" : "#000000",
+                  color: isActive ? "#BB892D" : "#000000",
                   textDecoration: "none",
                 };
               }}
@@ -88,7 +88,7 @@ const SideNav = ({ open, setOpen }: Props) => {
                   <ListItemIcon
                     sx={{
                       color:
-                        location.pathname === item.to ? "#f27521" : "#000000",
+                        location.pathname === item.to ? "#BB892D" : "#000000",
                       minWidth: 0,
                       mr: open ? 3 : "auto",
                       justifyContent: "center",

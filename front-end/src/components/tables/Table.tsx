@@ -53,7 +53,7 @@ const CustomTable = ({
     <Paper sx={{ width: "100%", overflow: "hidden" }}>
       <TableContainer>
         <Table stickyHeader>
-          <TableHead>
+          <TableHead sx={{ bgcolor: "#BB892D" }}>
             <TableRow>
               {columns.map((col) => (
                 <TableCell key={col.id} style={{ minWidth: col.minWidth }}>

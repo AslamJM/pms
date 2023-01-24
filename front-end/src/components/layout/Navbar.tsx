@@ -6,6 +6,7 @@ import { Box } from "@mui/material";
 import Button from "@mui/material/Button";
 import { useAuthContext } from "../../context/AuthContext";
 import { AppBar } from "./Drawer";
+import logo from "../../assets/logo.jpg";
 
 type Props = {
   open: boolean;
@@ -25,15 +26,18 @@ const Navbar = ({ open, setOpen }: Props) => {
   return (
     <AppBar
       position="fixed"
-      color="primary"
-      sx={{ zIndex: (theme) => theme.zIndex.drawer + 1, width: "100%" }}
+      sx={{
+        zIndex: (theme) => theme.zIndex.drawer + 1,
+        width: "100%",
+        bgcolor: "white",
+      }}
       open={open}
     >
       <Toolbar>
         <IconButton
           size="large"
           onClick={() => setOpen(true)}
-          color="inherit"
+          color="primary"
           edge="start"
           sx={{
             marginRight: 5,
@@ -42,13 +46,13 @@ const Navbar = ({ open, setOpen }: Props) => {
         >
           <MenuIcon />
         </IconButton>
-        <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
-          L O G O
-        </Typography>
+        <Box sx={{ py: 1, flexGrow: 1 }}>
+          <img src={logo} alt="" style={{ height: 50 }} />
+        </Box>
         <Box>
           <Button
             variant="text"
-            color="secondary"
+            color="primary"
             size="large"
             onClick={() => handleLogout()}
           >

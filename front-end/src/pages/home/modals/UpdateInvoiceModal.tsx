@@ -17,6 +17,7 @@ import { PaymentCreateInput } from "../../../api/payments";
 import { apiClient, IPayment } from "../../../api/client";
 import { useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
+import currencyFormatter from "currency-formatter";
 
 const UpdateInvoiceModal = () => {
   const { selectedPayment, setSelectedPayment } = usePaymentContext();
@@ -74,14 +75,16 @@ const UpdateInvoiceModal = () => {
         </Box>
         <Divider sx={{ mb: 1 }} />
         <Box>
-          <Typography>Amount: {selectedPayment?.amount}</Typography>
+          <Typography>
+            Amount: {currencyFormatter.format(selectedPayment?.amount!, {})}
+          </Typography>
           <Box
             display="flex"
             alignItems="center"
             justifyContent="space-between"
           >
             <Typography sx={{ mr: 0.5 }}>
-              Due:{selectedPayment?.dueAmount}
+              Due:{currencyFormatter.format(selectedPayment?.dueAmount!, {})}
             </Typography>
             <TextField
               placeholder="enter amount"

@@ -1,6 +1,5 @@
 import { apiClient } from "../../api/client";
 import { useQuery } from "react-query";
-import { mapObject } from "underscore";
 import {
   Paper,
   Table,
@@ -8,9 +7,9 @@ import {
   TableCell,
   TableHead,
   TableRow,
-  Toolbar,
   Typography,
 } from "@mui/material";
+import currencyFormatter from "currency-formatter";
 import TableContainer from "@mui/material/TableContainer";
 import { useGlobalContext } from "../../context/GlobalContext";
 const CompanyPayments = () => {
@@ -48,10 +47,10 @@ const CompanyPayments = () => {
         <Typography>payments for this month</Typography>
         <TableContainer>
           <Table size="small">
-            <TableHead>
+            <TableHead sx={{ bgcolor: "#BB892D" }}>
               <TableRow>
                 <TableCell>Company</TableCell>
-                <TableCell>Amount</TableCell>
+                <TableCell align="right">Amount</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -59,7 +58,9 @@ const CompanyPayments = () => {
                 companies.map((c) => (
                   <TableRow key={c._id}>
                     <TableCell>{c.name}</TableCell>
-                    <TableCell>{data[c.name]}</TableCell>
+                    <TableCell align="right">
+                      {currencyFormatter.format(data[c.name], {})}
+                    </TableCell>
                   </TableRow>
                 ))}
             </TableBody>

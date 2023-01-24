@@ -24,17 +24,53 @@ import { queryPayments } from "../../api/client";
 import { usePaymentContext } from "../../context/PaymentContext";
 import { calculateLastDays } from "../../components/tables/data";
 import IconButton from "@mui/material/IconButton";
+import currencyFormatter from "currency-formatter";
 
 const columns: IColumn[] = [
   { id: "invoice", label: "Invoice", maxWidth: 6 },
   { id: "shop", label: "Shop" },
-  { id: "amount", label: "Amount", align: "right" },
-  { id: "free", label: "Free", align: "right" },
-  { id: "discount", label: "Discount", align: "right" },
-  { id: "paidAmount", label: "paid", align: "right" },
-  { id: "returnAmount", label: "return", align: "right" },
-  { id: "marketReturn", label: "market", align: "right" },
-  { id: "dueAmount", label: "due", align: "right" },
+  {
+    id: "amount",
+    label: "Amount",
+    align: "right",
+    format: (val) => currencyFormatter.format(val, {}),
+  },
+  {
+    id: "free",
+    label: "Free",
+    align: "right",
+    format: (val) => currencyFormatter.format(val, {}),
+  },
+  {
+    id: "discount",
+    label: "Discount",
+    align: "right",
+    format: (val) => currencyFormatter.format(val, {}),
+  },
+  {
+    id: "paidAmount",
+    label: "paid",
+    align: "right",
+    format: (val) => currencyFormatter.format(val, {}),
+  },
+  {
+    id: "returnAmount",
+    label: "saleable return",
+    align: "right",
+    format: (val) => currencyFormatter.format(val, {}),
+  },
+  {
+    id: "marketReturn",
+    label: "market return",
+    align: "right",
+    format: (val) => currencyFormatter.format(val, {}),
+  },
+  {
+    id: "dueAmount",
+    label: "due",
+    align: "right",
+    format: (val) => currencyFormatter.format(val, {}),
+  },
   { id: "paymentStatus", label: "Status" },
   { id: "collector", label: "Collector" },
   { id: "paymentDate", label: "Payment Date" },
@@ -131,8 +167,6 @@ const PaymentTable = () => {
 
   const isSelected = (name: string) => checkedPayments.indexOf(name) !== -1;
 
-  console.log(checkedPayments);
-
   useEffect(() => {
     refetch();
   }, [params]);
@@ -219,7 +253,11 @@ const PaymentTable = () => {
                       align={col.align}
                       width={col.maxWidth}
                     >
-                      {row[col.id as keyof Omit<typeof row, "_id">]}
+                      {col.format
+                        ? col.format(
+                            Number(row[col.id as keyof Omit<typeof row, "_id">])
+                          )
+                        : row[col.id as keyof Omit<typeof row, "_id">]}
                     </TableCell>
                   );
                 })}

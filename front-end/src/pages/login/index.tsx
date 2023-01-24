@@ -8,12 +8,13 @@ import {
 } from "@mui/material";
 import Button from "@mui/material/Button";
 import FormControl from "@mui/material/FormControl";
-import axios, { AxiosError } from "axios";
+import axios from "axios";
 import { useState } from "react";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useAuthContext } from "../../context/AuthContext";
 import { IUser } from "../../api/client";
-import LinearProgress from "@mui/material/LinearProgress";
+import logo from "../../assets/logo.jpg";
+import Avatar from "@mui/material/Avatar/Avatar";
 
 const Login = () => {
   const [username, setUsername] = useState("");
@@ -71,7 +72,7 @@ const Login = () => {
         justifyContent="center"
         height="100vh"
       >
-        <Typography>Loading.......</Typography>
+        <img src={logo} alt="" style={{ width: 600, aspectRatio: "auto" }} />
       </Box>
     );
   }
@@ -92,10 +93,22 @@ const Login = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          bgcolor: "#f2740512",
+
+          position: "relative",
         }}
         elevation={3}
       >
+        <img
+          src={logo}
+          alt=""
+          style={{
+            top: 0,
+            position: "absolute",
+            width: 220,
+            aspectRatio: "auto",
+            marginTop: 10,
+          }}
+        />
         <Box>
           <Typography variant="h5" sx={{ letterSpacing: 0.5, my: 1 }}>
             Log In

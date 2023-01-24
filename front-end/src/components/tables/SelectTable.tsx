@@ -19,6 +19,7 @@ import jsPDF from "jspdf";
 import autoTable from "jspdf-autotable";
 import dayjs, { Dayjs } from "dayjs";
 import Typography from "@mui/material/Typography";
+import currencyFormatter from "currency-formatter";
 
 const PaymentTableSelect = () => {
   //report states
@@ -64,6 +65,11 @@ const PaymentTableSelect = () => {
         muiTableBodyCellProps: {
           align: "right",
         },
+        Cell: ({ cell }) => (
+          <Typography component="p" variant="subtitle2">
+            {currencyFormatter.format(cell.getValue<number>(), {})}
+          </Typography>
+        ),
         size: 50,
         enableColumnFilter: false,
       },
@@ -74,6 +80,11 @@ const PaymentTableSelect = () => {
         muiTableBodyCellProps: {
           align: "right",
         },
+        Cell: ({ cell }) => (
+          <Typography component="p" variant="subtitle2">
+            {currencyFormatter.format(cell.getValue<number>(), {})}
+          </Typography>
+        ),
         size: 50,
         enableColumnFilter: false,
       },
@@ -84,6 +95,11 @@ const PaymentTableSelect = () => {
         muiTableBodyCellProps: {
           align: "right",
         },
+        Cell: ({ cell }) => (
+          <Typography component="p" variant="subtitle2">
+            {currencyFormatter.format(cell.getValue<number>(), {})}
+          </Typography>
+        ),
         size: 50,
         enableColumnFilter: false,
       },
@@ -94,16 +110,26 @@ const PaymentTableSelect = () => {
         muiTableBodyCellProps: {
           align: "right",
         },
+        Cell: ({ cell }) => (
+          <Typography component="p" variant="subtitle2">
+            {currencyFormatter.format(cell.getValue<number>(), {})}
+          </Typography>
+        ),
         size: 50,
         enableColumnFilter: false,
       },
       {
         accessorKey: "returnAmount",
-        header: "return",
+        header: "saleable",
         muiTableHeadCellProps: { align: "right" },
         muiTableBodyCellProps: {
           align: "right",
         },
+        Cell: ({ cell }) => (
+          <Typography component="p" variant="subtitle2">
+            {currencyFormatter.format(cell.getValue<number>(), {})}
+          </Typography>
+        ),
         size: 50,
         enableColumnFilter: false,
       },
@@ -114,6 +140,11 @@ const PaymentTableSelect = () => {
         muiTableBodyCellProps: {
           align: "right",
         },
+        Cell: ({ cell }) => (
+          <Typography component="p" variant="subtitle2">
+            {currencyFormatter.format(cell.getValue<number>(), {})}
+          </Typography>
+        ),
         size: 50,
         enableColumnFilter: false,
       },
@@ -124,6 +155,11 @@ const PaymentTableSelect = () => {
         muiTableBodyCellProps: {
           align: "right",
         },
+        Cell: ({ cell }) => (
+          <Typography component="p" variant="subtitle2">
+            {currencyFormatter.format(cell.getValue<number>(), {})}
+          </Typography>
+        ),
         size: 50,
         enableColumnFilter: false,
       },
@@ -218,7 +254,7 @@ const PaymentTableSelect = () => {
               refetch();
             }}
           >
-            {isLoading ? <CircularProgress /> : "Fetch Payments"}
+            {isLoading ? "Fetching...." : "Fetch Payments"}
           </Button>
         </Box>
       </LocalizationProvider>
@@ -228,6 +264,13 @@ const PaymentTableSelect = () => {
         state={{ isLoading }}
         initialState={{ showColumnFilters: true }}
         enableRowSelection
+        muiTableBodyProps={{
+          sx: {
+            "& tr:nth-of-type(even)": {
+              backgroundColor: "#ADADC9",
+            },
+          },
+        }}
         renderTopToolbarCustomActions={({ table }) => (
           <Box
             sx={{ display: "flex", gap: "1rem", p: "0.5rem", flexWrap: "wrap" }}
