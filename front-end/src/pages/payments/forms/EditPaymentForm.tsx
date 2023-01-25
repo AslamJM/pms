@@ -12,18 +12,13 @@ import MenuItem from "@mui/material/MenuItem";
 import { Formik } from "formik";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import DatePicker from "../../../components/datepicker";
-import {
-  FORM_MODEL,
-  PAYMENT_METHOD,
-  PAYMENT_STATUS,
-  parseToNumber,
-} from "./data";
+import { FORM_MODEL, PAYMENT_METHOD, PAYMENT_STATUS } from "./data";
 import { PaymentCreateInput } from "../../../api/payments";
 import { useShopContext } from "../../../context/ShopContext";
 import { useCollectorContext } from "../../../context/CollectorContext";
 import { usePaymentContext } from "../../../context/PaymentContext";
 import { useMutation, useQueryClient } from "react-query";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { apiClient, IPayment } from "../../../api/client";
 
 const EditPaymentForm = () => {
@@ -50,7 +45,6 @@ const EditPaymentForm = () => {
 
   const initialValues = {
     shop: selectedPayment?.shop._id,
-    amount: selectedPayment?.amount.toString(),
     paidAmount: selectedPayment?.paidAmount.toString(),
     dueAmount: selectedPayment?.dueAmount.toString(),
     free: selectedPayment?.free.toString(),
@@ -67,24 +61,11 @@ const EditPaymentForm = () => {
   };
 
   const [due, setDue] = useState(initialValues.dueAmount!);
-  const [famount, setAmount] = useState(initialValues.amount!);
   const [ffree, setFree] = useState(initialValues.free!);
   const [fdiscount, setDiscount] = useState(initialValues.discount!);
   const [fpaid, setPaid] = useState(initialValues.paidAmount!);
   const [freturn, setReturn] = useState(initialValues.returnAmount!);
   const [market, setMarket] = useState(initialValues.marketReturn!);
-
-  useEffect(() => {
-    setDue(
-      (
-        parseToNumber(famount) -
-        parseToNumber(fpaid) -
-        parseToNumber(ffree) -
-        parseToNumber(fdiscount) -
-        parseToNumber(freturn)
-      ).toString()
-    );
-  }, [famount, ffree, freturn, fdiscount, fpaid]);
 
   return (
     <Formik
@@ -95,7 +76,6 @@ const EditPaymentForm = () => {
         mutate(
           {
             ...values,
-            amount: Number(famount),
             free: Number(ffree),
             discount: Number(fdiscount),
             paidAmount: Number(fpaid),
@@ -133,7 +113,7 @@ const EditPaymentForm = () => {
             <Box display="flex" width="100%" my={2}>
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth>
-                  <InputLabel>shop</InputLabel>
+                  <InputLabel>Shop</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
@@ -151,7 +131,7 @@ const EditPaymentForm = () => {
 
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth>
-                  <InputLabel>collector</InputLabel>
+                  <InputLabel>Collector</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
@@ -181,7 +161,7 @@ const EditPaymentForm = () => {
               </Box>
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth>
-                  <InputLabel>company</InputLabel>
+                  <InputLabel>Company</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
@@ -201,12 +181,12 @@ const EditPaymentForm = () => {
               <Box sx={{ mx: 0.3 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
-                    name={FORM_MODEL.amount}
-                    label="Amount"
+                    name={FORM_MODEL.paidAmount}
+                    label="Paid Amount"
                     fullWidth
-                    value={famount}
+                    value={fpaid}
                     onChange={(e) => {
-                      setAmount(e.target.value);
+                      setPaid(e.target.value);
                     }}
                   />
                 </FormControl>
@@ -240,24 +220,11 @@ const EditPaymentForm = () => {
               </Box>
             </Box>
             <Box display="flex" width="100%" my={2}>
-              <Box sx={{ mx: 0.5 }} width="25%">
-                <FormControl fullWidth>
-                  <TextField
-                    name={FORM_MODEL.paidAmount}
-                    label="Paid Amount"
-                    fullWidth
-                    value={fpaid}
-                    onChange={(e) => {
-                      setPaid(e.target.value);
-                    }}
-                  />
-                </FormControl>
-              </Box>
-              <Box sx={{ mx: 0.5 }} width="25%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.returnAmount}
-                    label="Saleable"
+                    label="Saleable Return"
                     fullWidth
                     value={freturn}
                     onChange={(e) => {
@@ -266,11 +233,11 @@ const EditPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="25%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.marketReturn}
-                    label="Market"
+                    label="Market Return"
                     fullWidth
                     value={market}
                     onChange={(e) => {
@@ -279,14 +246,16 @@ const EditPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="25%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.dueAmount}
                     label="Due Amount"
                     fullWidth
                     value={due}
-                    disabled
+                    onChange={(e) => {
+                      setDue(e.target.value);
+                    }}
                   />
                 </FormControl>
               </Box>

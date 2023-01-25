@@ -8,7 +8,7 @@ import { useShopContext } from "../../context/ShopContext";
 import { useQuery } from "react-query";
 import { useMemo, useState } from "react";
 import { write, utils, writeFile } from "xlsx";
-import { Box, Button, CircularProgress } from "@mui/material";
+import { Box, Button } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -32,10 +32,13 @@ const PaymentTableSelect = () => {
   const [to, setTo] = useState<Dayjs | null>(dayjs());
   //
 
+  //contexts
   const { companies } = useGlobalContext();
   const { collectors } = useCollectorContext();
   const { shops } = useShopContext();
+  //
 
+  //column definitions for table
   const columns = useMemo<
     MRT_ColumnDef<ReturnType<typeof createPaymentData>>[]
   >(
@@ -59,8 +62,8 @@ const PaymentTableSelect = () => {
         ),
       },
       {
-        accessorKey: "amount",
-        header: "Amount",
+        accessorKey: "paidAmount",
+        header: "Paid",
         muiTableHeadCellProps: { align: "right" },
         muiTableBodyCellProps: {
           align: "right",
@@ -103,24 +106,10 @@ const PaymentTableSelect = () => {
         size: 50,
         enableColumnFilter: false,
       },
-      {
-        accessorKey: "paidAmount",
-        header: "paid",
-        muiTableHeadCellProps: { align: "right" },
-        muiTableBodyCellProps: {
-          align: "right",
-        },
-        Cell: ({ cell }) => (
-          <Typography component="p" variant="subtitle2">
-            {currencyFormatter.format(cell.getValue<number>(), {})}
-          </Typography>
-        ),
-        size: 50,
-        enableColumnFilter: false,
-      },
+
       {
         accessorKey: "returnAmount",
-        header: "saleable",
+        header: "Saleable",
         muiTableHeadCellProps: { align: "right" },
         muiTableBodyCellProps: {
           align: "right",
@@ -135,7 +124,7 @@ const PaymentTableSelect = () => {
       },
       {
         accessorKey: "marketReturn",
-        header: "market",
+        header: "Market",
         muiTableHeadCellProps: { align: "right" },
         muiTableBodyCellProps: {
           align: "right",
@@ -150,7 +139,7 @@ const PaymentTableSelect = () => {
       },
       {
         accessorKey: "dueAmount",
-        header: "due",
+        header: "Due",
         muiTableHeadCellProps: { align: "right" },
         muiTableBodyCellProps: {
           align: "right",
@@ -179,9 +168,11 @@ const PaymentTableSelect = () => {
         filterSelectOptions: collectors.map((c) => c.name),
       },
       { accessorKey: "paymentDate", header: "Payment Date", maxSize: 6 },
+      { accessorKey: "lastPaid", header: "Last Paid", maxSize: 6 },
     ],
     []
   );
+  //
 
   const { isLoading, refetch } = useQuery(
     "all reports",
@@ -226,6 +217,7 @@ const PaymentTableSelect = () => {
 
   return (
     <>
+      {/*filters with date range*/}
       <Typography sx={{ mb: 0.8 }}>select a date range</Typography>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box display="flex" alignItems="flex-end" mb={2}>
@@ -258,6 +250,8 @@ const PaymentTableSelect = () => {
           </Button>
         </Box>
       </LocalizationProvider>
+      {/******************************/}
+
       <MaterialReactTable
         columns={columns}
         data={payments ? payments.map((d) => createPaymentData(d)) : []}

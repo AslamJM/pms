@@ -14,7 +14,6 @@ export interface IPayment {
   invoice: string;
   shop: IShop;
   company: ICompany;
-  amount: number;
   paidAmount: number;
   free: number;
   discount: number;

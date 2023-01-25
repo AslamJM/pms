@@ -6,7 +6,6 @@ export function createPaymentData(payment: IPayment) {
     _id,
     invoice,
     shop,
-    amount,
     free,
     paidAmount,
     discount,
@@ -24,7 +23,6 @@ export function createPaymentData(payment: IPayment) {
     invoice,
     shop: shop ? shop.name : "-",
     area: shop.region.name ? shop.region.name : "-",
-    amount,
     free,
     paidAmount,
     discount,
@@ -36,6 +34,7 @@ export function createPaymentData(payment: IPayment) {
     collector: collector ? collector.name : "-",
     paymentDate: dayjs(new Date(paymentDate)).format("DD/MM/YYYY"),
     dueDate: dayjs(new Date(dueDate)).format("DD/MM/YYYY"),
+    lastPaid: dayjs().diff(dayjs(payment.paymentDate), "days") + " days",
   };
 }
 
@@ -43,7 +42,6 @@ export function createJson(payment: IPayment) {
   const {
     invoice,
     shop,
-    amount,
     free,
     paidAmount,
     discount,
@@ -58,7 +56,6 @@ export function createJson(payment: IPayment) {
   return {
     invoice,
     shop: shop ? shop.name : "-",
-    amount,
     free,
     paid: paidAmount,
     discount,

@@ -25,14 +25,12 @@ export class Payment {
   @prop({ ref: () => Company })
   company: Ref<Company>;
   @prop({ required: true })
-  amount: number;
-  @prop({ required: true })
   paidAmount: number;
-  @prop()
+  @prop({ default: 0 })
   dueAmount: number;
-  @prop({ required: true })
+  @prop({ default: 0 })
   free: number;
-  @prop({ required: true })
+  @prop({ default: 0 })
   discount: number;
   @prop({ default: 0 })
   returnAmount: number;
@@ -74,8 +72,7 @@ export class Payment {
         $gte: dayjs().startOf('M').toISOString(),
         $lte: dayjs().endOf('M').toISOString(),
       },
-    })
-    .populate('company');
+    }).populate('company');
   }
 }
 

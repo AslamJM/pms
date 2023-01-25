@@ -46,7 +46,6 @@ const REGIONS = ["region a", "region b", "region c", "region d"];
 
 const AddPaymentForm = () => {
   const [due, setDue] = useState("");
-  const [famount, setAmount] = useState("");
   const [ffree, setFree] = useState("");
   const [fdiscount, setDiscount] = useState("");
   const [fpaid, setPaid] = useState("");
@@ -67,18 +66,6 @@ const AddPaymentForm = () => {
 
   const { isLoading, mutate } = useMutation(paymentClient.createPayment);
 
-  // useEffect(() => {
-  //   setDue(
-  //     (
-  //       parseToNumber(famount) -
-  //       parseToNumber(fpaid) -
-  //       parseToNumber(ffree) -
-  //       parseToNumber(fdiscount) -
-  //       parseToNumber(freturn)
-  //     ).toString()
-  //   );
-  // }, [famount, ffree, freturn, fdiscount, fpaid]);
-
   return (
     <Formik
       initialValues={initialValues}
@@ -88,7 +75,6 @@ const AddPaymentForm = () => {
         mutate(
           {
             ...values,
-            amount: Number(famount),
             free: Number(ffree),
             discount: Number(fdiscount),
             paidAmount: Number(fpaid),
@@ -126,7 +112,7 @@ const AddPaymentForm = () => {
             <Box display="flex" width="100%" my={2}>
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth>
-                  <InputLabel>shop</InputLabel>
+                  <InputLabel>Shop</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
@@ -144,7 +130,7 @@ const AddPaymentForm = () => {
 
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth>
-                  <InputLabel>collector</InputLabel>
+                  <InputLabel>Collector</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
@@ -174,7 +160,7 @@ const AddPaymentForm = () => {
               </Box>
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth>
-                  <InputLabel>company</InputLabel>
+                  <InputLabel>Company</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
@@ -194,12 +180,12 @@ const AddPaymentForm = () => {
               <Box sx={{ mx: 0.3 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
-                    name={FORM_MODEL.amount}
-                    label="Amount"
+                    name={FORM_MODEL.paidAmount}
+                    label="Paid Amount"
                     fullWidth
-                    value={famount}
+                    value={fpaid}
                     onChange={(e) => {
-                      setAmount(e.target.value);
+                      setPaid(e.target.value);
                     }}
                   />
                 </FormControl>
@@ -233,24 +219,11 @@ const AddPaymentForm = () => {
               </Box>
             </Box>
             <Box display="flex" width="100%" my={2}>
-              <Box sx={{ mx: 0.5 }} width="25%">
-                <FormControl fullWidth>
-                  <TextField
-                    name={FORM_MODEL.paidAmount}
-                    label="Paid Amount"
-                    fullWidth
-                    value={fpaid}
-                    onChange={(e) => {
-                      setPaid(e.target.value);
-                    }}
-                  />
-                </FormControl>
-              </Box>
-              <Box sx={{ mx: 0.5 }} width="25%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.returnAmount}
-                    label="Saleble"
+                    label="Saleble Return"
                     fullWidth
                     value={freturn}
                     onChange={(e) => {
@@ -259,11 +232,11 @@ const AddPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="25%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.marketReturn}
-                    label="market"
+                    label="Market Return"
                     fullWidth
                     value={market}
                     onChange={(e) => {
@@ -272,7 +245,7 @@ const AddPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="25%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.dueAmount}

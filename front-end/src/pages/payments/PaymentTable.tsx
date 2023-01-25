@@ -30,8 +30,8 @@ const columns: IColumn[] = [
   { id: "invoice", label: "Invoice", maxWidth: 6 },
   { id: "shop", label: "Shop" },
   {
-    id: "amount",
-    label: "Amount",
+    id: "paidAmount",
+    label: "paid",
     align: "right",
     format: (val) => currencyFormatter.format(val, {}),
   },
@@ -47,12 +47,7 @@ const columns: IColumn[] = [
     align: "right",
     format: (val) => currencyFormatter.format(val, {}),
   },
-  {
-    id: "paidAmount",
-    label: "paid",
-    align: "right",
-    format: (val) => currencyFormatter.format(val, {}),
-  },
+
   {
     id: "returnAmount",
     label: "saleable return",
@@ -81,7 +76,6 @@ function createPaymentData(payment: IPayment) {
   const {
     invoice,
     shop,
-    amount,
     free,
     paidAmount,
     discount,
@@ -97,7 +91,6 @@ function createPaymentData(payment: IPayment) {
   return {
     invoice,
     shop: shop ? shop.name : "-",
-    amount,
     free,
     paidAmount,
     discount,

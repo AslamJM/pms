@@ -26,7 +26,8 @@ const AddShopForm = () => {
     useGlobalContext();
   const { createShop } = shopClient;
   const { isLoading, mutate } = useMutation(
-    async (input: Omit<IShop, "_id">) => await createShop(input)
+    async (input: { name: string; region: string; address: string }) =>
+      await createShop(input)
   );
 
   const queryClient = useQueryClient();

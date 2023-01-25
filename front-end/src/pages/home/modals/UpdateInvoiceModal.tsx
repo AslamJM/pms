@@ -76,7 +76,8 @@ const UpdateInvoiceModal = () => {
         <Divider sx={{ mb: 1 }} />
         <Box>
           <Typography>
-            Amount: {currencyFormatter.format(selectedPayment?.amount!, {})}
+            Paid Amount:{" "}
+            {currencyFormatter.format(selectedPayment?.paidAmount!, {})}
           </Typography>
           <Box
             display="flex"

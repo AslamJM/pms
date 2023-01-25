@@ -35,8 +35,11 @@ const updateShop = (id: string, input: Partial<IShop>) =>
 const deleteShop = (id: string) =>
   deleteOne<GetOneResponse>(shopRoutes.delete, id);
 
-const createShop = (input: Omit<IShop, "_id">) =>
-  createOne<GetOneResponse, Omit<IShop, "_id">>(shopRoutes.create, input);
+const createShop = (input: { name: string; region: string; address: string }) =>
+  createOne<GetOneResponse, { name: string; region: string; address: string }>(
+    shopRoutes.create,
+    input
+  );
 
 export const shopClient = {
   getAllShops,
