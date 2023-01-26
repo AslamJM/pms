@@ -6,5 +6,5 @@ export class Area {
 }
 
 export const areaModel = getModelForClass(Area, {
-  schemaOptions: { timestamps: true },
+  schemaOptions: { timestamps: false },
 });

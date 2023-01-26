@@ -175,7 +175,7 @@ const PaymentTable = () => {
   if (payments && payments.length === 0) {
     return (
       <Box mt={5}>
-        <Typography variant="h5" color="GrayText" align="center">
+        <Typography color="GrayText" align="center">
           You have no payments to display
         </Typography>
       </Box>

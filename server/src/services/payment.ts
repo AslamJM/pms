@@ -1,6 +1,7 @@
 import { paymentModel, Payment } from '../models/payment';
 import { FilterQuery, UpdateQuery } from 'mongoose';
 import dayjs from 'dayjs';
+import { omit } from 'underscore';
 
 export const getSinglePayment = (id: string) => {
   return paymentModel
@@ -15,21 +16,23 @@ export const createPayment = (input: Payment) => {
 };
 
 export const queryPayments = (
-  query: FilterQuery<Payment & { from: string; to: string }>
+  query: FilterQuery<Payment & { from: string; to: string; limit: number }>
 ) => {
   let filterQuery;
   const { paymentDate, from, to } = query;
 
+  let newquery = omit(query, 'limit');
+
   if (paymentDate) {
     filterQuery = {
-      ...query,
+      ...newquery,
       paymentDate: {
         $gte: dayjs(paymentDate).startOf('D').toISOString(),
         $lte: dayjs(paymentDate).endOf('D').toISOString(),
       },
     };
   } else {
-    filterQuery = query;
+    filterQuery = newquery;
   }
 
   if (from && to) {
@@ -52,7 +55,8 @@ export const queryPayments = (
       populate: {
         path: 'region',
       },
-    });
+    })
+    .limit(query.limit);
 };
 
 export const updatePayment = (id: string, input: UpdateQuery<Payment>) => {
@@ -87,6 +91,11 @@ export const getInvoice = (invoice: string) => {
   return paymentModel
     .findOne({ invoice })
     .populate('collector')
-    .populate('shop')
+    .populate({
+      path: 'shop',
+      populate: {
+        path: 'region',
+      },
+    })
     .populate('company');
 };

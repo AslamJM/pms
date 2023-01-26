@@ -30,7 +30,7 @@ const CollectorTable = () => {
   if (collectors.length === 0) {
     return (
       <Box>
-        <Typography variant="h3" color="GrayText" align="center">
+        <Typography color="GrayText" align="center">
           You have no collectors to display
         </Typography>
       </Box>

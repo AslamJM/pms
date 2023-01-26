@@ -6,5 +6,5 @@ export class Company {
 }
 
 export const companyModel = getModelForClass(Company, {
-  schemaOptions: { timestamps: true },
+  schemaOptions: { timestamps: false },
 });

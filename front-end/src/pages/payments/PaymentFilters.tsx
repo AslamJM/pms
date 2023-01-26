@@ -8,6 +8,7 @@ import DateRangeFilter from "../../components/Filters/paymentFilters/DateRangeFi
 import VerifedFilter from "../../components/Filters/paymentFilters/VerifiedFilter";
 import Typography from "@mui/material/Typography";
 import ResetButton from "../../components/buttons/ResetButton";
+import LimitFilter from "../../components/Filters/paymentFilters/LimitFilter";
 
 const PaymentFilters = () => {
   return (
@@ -35,6 +36,7 @@ const PaymentFilters = () => {
           </Typography>
           <DateRangeFilter></DateRangeFilter>
         </div>
+        <LimitFilter />
         <div>
           <ResetButton />
         </div>

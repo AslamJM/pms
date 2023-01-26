@@ -11,5 +11,5 @@ export class Shop {
 }
 
 export const shopModel = getModelForClass(Shop, {
-  schemaOptions: { timestamps: true },
+  schemaOptions: { timestamps: false },
 });

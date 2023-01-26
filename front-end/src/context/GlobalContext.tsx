@@ -57,7 +57,7 @@ const initialState: IGlobalState = {
   setComapnies: () => {},
   areas: [],
   setAreas: () => {},
-  params: {},
+  params: { limit: 50 },
   setParams: () => {},
   resetParams: () => {},
 };

@@ -10,5 +10,5 @@ export class Collector {
 }
 
 export const collectorModel = getModelForClass(Collector, {
-  schemaOptions: { timestamps: true },
+  schemaOptions: { timestamps: false },
 });

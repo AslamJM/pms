@@ -28,7 +28,7 @@ const ShopTable = () => {
   if (shops.length === 0) {
     return (
       <Box>
-        <Typography variant="h3" color="GrayText" align="center">
+        <Typography color="GrayText" align="center">
           You have no shops to display
         </Typography>
       </Box>
