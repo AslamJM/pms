@@ -51,7 +51,6 @@ const EditShopForm = () => {
               setSnackOpen(true);
             },
             onError: (error: any) => {
-              console.log(error);
               setSnackMessage(error.message);
               setSnackOpen(true);
             },

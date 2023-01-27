@@ -49,7 +49,6 @@ const EditCollectorForm = () => {
               resetForm();
             },
             onError: (error: any) => {
-              console.log(error);
               setLoading(false);
               setSnackMessage(error.message);
               setEditModalOpen(false);

@@ -5,7 +5,9 @@
   "author": "AslamJM",
   "license": "MIT",
   "scripts": {
-    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts",
+    "start": "tsc && node ./build/index.js",
+    "pm2": "tsc && pm2 start pm2.config.js"
   },
   "devDependencies": {
     "@types/cors": "^2.8.13",

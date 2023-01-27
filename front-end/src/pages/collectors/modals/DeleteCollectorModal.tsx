@@ -14,8 +14,6 @@ const DeleteCollectorModel = () => {
   const { deleteCollector } = collectorClient;
   const { selectedCollector } = useCollectorContext();
 
-  console.log(selectedCollector);
-
   const queryClient = useQueryClient();
 
   const { isLoading, mutate } = useMutation(
@@ -28,7 +26,6 @@ const DeleteCollectorModel = () => {
         setSnackOpen(true);
       },
       onError: (error: any) => {
-        console.log(error);
         setSnackMessage(error.message);
         setSnackOpen(true);
       },

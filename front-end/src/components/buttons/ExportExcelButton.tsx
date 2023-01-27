@@ -99,7 +99,6 @@ const ExportExcelButton = () => {
 
   const downloadExcel = () => {
     const data = payments.map((payment) => getExcelData(payment));
-    console.log(data);
 
     const excelData = [{ table1: data }];
 

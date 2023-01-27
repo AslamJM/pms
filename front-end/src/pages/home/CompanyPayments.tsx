@@ -32,19 +32,10 @@ const CompanyPayments = () => {
     return <div>Error Fetching Data</div>;
   }
 
-  const renderTable = () => {
-    console.log(companies);
-
-    if (data) {
-    } else {
-      return <></>;
-    }
-  };
-
   return (
     <div>
       <Paper sx={{ width: 600, my: 1, p: 1 }}>
-        <Typography>payments for this month</Typography>
+        <Typography>Payments collections for this month</Typography>
         <TableContainer>
           <Table size="small">
             <TableHead sx={{ bgcolor: "#BB892D" }}>
