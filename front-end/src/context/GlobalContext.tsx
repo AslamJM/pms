@@ -2,6 +2,7 @@ import React, { createContext, useContext, useReducer } from "react";
 import { useQuery } from "react-query";
 import { ICompany, IArea } from "../api/client";
 import { getAllCompanies, getAllAreas } from "../api/company";
+import dayjs from "dayjs";
 export interface IAction {
   type:
     | "SET_SNACKBAR"
@@ -57,7 +58,7 @@ const initialState: IGlobalState = {
   setComapnies: () => {},
   areas: [],
   setAreas: () => {},
-  params: { limit: 50 },
+  params: { paymentDate: dayjs() },
   setParams: () => {},
   resetParams: () => {},
 };

@@ -9,7 +9,7 @@ const VerifedFilter = () => {
   const { setParams, params } = useGlobalContext();
 
   return (
-    <FormControl style={{ flex: 1 }}>
+    <FormControl>
       <FormLabel>Verified Status</FormLabel>
       <RadioGroup row>
         <FormControlLabel

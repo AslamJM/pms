@@ -1,7 +1,7 @@
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { useField } from "formik";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
-import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import TextField from "@mui/material/TextField";
 
 interface Props {
@@ -14,7 +14,7 @@ const FormikDateTimePicker = ({ label, ...props }: Props) => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <DateTimePicker
+      <DesktopDatePicker
         {...field}
         {...props}
         onChange={(val) => {

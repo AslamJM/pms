@@ -9,7 +9,7 @@ const ResetButton = () => {
     <Button
       onClick={() => {
         setCheckedPayments([]);
-        resetParams({});
+        resetParams({ count: 50 });
       }}
       variant="contained"
       sx={{ ml: 1 }}

@@ -25,6 +25,7 @@ type UpdateResponse = {
 export interface PaymentCreateInput {
   invoice: string;
   shop: string;
+  totalAmount: number;
   paidAmount: number;
   free: number;
   discount: number;

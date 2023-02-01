@@ -24,7 +24,7 @@ import currencyFormatter from "currency-formatter";
 const PaymentTableSelect = () => {
   //report states
   const [payments, setAllPayments] = useState<IPayment[] | null>();
-  const [params, setParams] = useState({});
+  const [params, setParams] = useState<any>({ verified: true });
   //
 
   //for date picker
@@ -60,6 +60,21 @@ const PaymentTableSelect = () => {
         filterSelectOptions: Array.from(
           new Set(shops.map((c) => c.region.name))
         ),
+      },
+      {
+        accessorKey: "totalAmount",
+        header: "Total",
+        muiTableHeadCellProps: { align: "right" },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        Cell: ({ cell }) => (
+          <Typography component="p" variant="subtitle2">
+            {currencyFormatter.format(cell.getValue<number>(), {})}
+          </Typography>
+        ),
+        size: 50,
+        enableColumnFilter: false,
       },
       {
         accessorKey: "paidAmount",

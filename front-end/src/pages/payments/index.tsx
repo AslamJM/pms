@@ -7,7 +7,7 @@ import { PageHeader } from "../../components/header";
 const Payments = () => {
   return (
     <div>
-      <PageHeader title="Payments" />
+      <PageHeader title="Daily Sales" />
       <SnackBar />
       <PaymentFilters />
       <EditPaymentModel />

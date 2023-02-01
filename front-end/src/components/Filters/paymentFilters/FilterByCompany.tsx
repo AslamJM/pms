@@ -1,26 +1,27 @@
 import { useGlobalContext } from "../../../context/GlobalContext";
 import FormControl from "@mui/material/FormControl";
-import InputLabel from "@mui/material/InputLabel";
-import { MenuItem, Select } from "@mui/material";
+import TextField from "@mui/material/TextField";
+import Autocomplete from "@mui/material/Autocomplete";
+import { useMemo } from "react";
 
 const FilterByCompany = () => {
   const { setParams, companies } = useGlobalContext();
 
+  const companyOptions = useMemo(() => {
+    return companies.map((c) => ({ label: c.name, _id: c._id }));
+  }, []);
+
   return (
     <div style={{ flex: 1, marginRight: 10 }}>
       <FormControl fullWidth>
-        <InputLabel>company</InputLabel>
-        <Select
-          fullWidth
-          onChange={(e) => setParams({ company: e.target.value })}
-          size="small"
-        >
-          {companies.map((item, index) => (
-            <MenuItem key={index} value={item._id}>
-              {item.name}
-            </MenuItem>
-          ))}
-        </Select>
+        <Autocomplete
+          autoSelect
+          options={companyOptions}
+          renderInput={(params) => (
+            <TextField {...params} label="Company" size="small" />
+          )}
+          onChange={(e, v) => setParams({ company: v?._id })}
+        />
       </FormControl>
     </div>
   );

@@ -19,27 +19,19 @@ const PaymentFilters = () => {
         <FilterByCollector />
         <FilterByStatus />
         {/* //<FilterByRegion /> */}
-        <VerifedFilter />
       </div>
       <div
-        style={{ display: "flex", marginBottom: 10, alignItems: "flex-end" }}
+        style={{
+          display: "flex",
+          marginBottom: 10,
+          alignItems: "center",
+          justifyContent: "flex-start",
+        }}
       >
-        <div>
-          <Typography variant="body1" sx={{ mb: 1 }}>
-            select payment date
-          </Typography>
-          <PaymentDateFilter />
-        </div>
-        <div>
-          <Typography variant="body1" sx={{ mb: 1 }}>
-            filter by date range
-          </Typography>
-          <DateRangeFilter></DateRangeFilter>
-        </div>
+        <PaymentDateFilter />
         <LimitFilter />
-        <div>
-          <ResetButton />
-        </div>
+        <VerifedFilter />
+        <ResetButton />
       </div>
     </>
   );

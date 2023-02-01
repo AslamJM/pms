@@ -1,6 +1,7 @@
 export const FORM_MODEL = {
   shop: "shop",
   amount: "amount",
+  totalAmount: "totalAmount",
   paidAmount: "paidAmount",
   dueAmount: "dueAmount",
   free: "free",

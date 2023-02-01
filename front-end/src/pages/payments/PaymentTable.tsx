@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import { IColumn } from "../../components/tables/Table";
 import PaymnentTableContainer from "../../components/tables/PaymentTableContainer";
 import CircularLoader from "../../components/loader/CircularLoader";
@@ -29,9 +29,17 @@ import currencyFormatter from "currency-formatter";
 const columns: IColumn[] = [
   { id: "invoice", label: "Invoice", maxWidth: 6 },
   { id: "shop", label: "Shop" },
+  { id: "company", label: "Company" },
+
+  {
+    id: "totalAmount",
+    label: "Total",
+    align: "right",
+    format: (val) => currencyFormatter.format(val, {}),
+  },
   {
     id: "paidAmount",
-    label: "paid",
+    label: "Paid",
     align: "right",
     format: (val) => currencyFormatter.format(val, {}),
   },
@@ -50,26 +58,25 @@ const columns: IColumn[] = [
 
   {
     id: "returnAmount",
-    label: "saleable return",
+    label: "Saleable",
     align: "right",
     format: (val) => currencyFormatter.format(val, {}),
   },
   {
     id: "marketReturn",
-    label: "market return",
+    label: "Market",
     align: "right",
     format: (val) => currencyFormatter.format(val, {}),
   },
   {
     id: "dueAmount",
-    label: "due",
+    label: "Due",
     align: "right",
     format: (val) => currencyFormatter.format(val, {}),
   },
   { id: "paymentStatus", label: "Status" },
   { id: "collector", label: "Collector" },
   { id: "paymentDate", label: "Payment Date" },
-  //{ id: "dueDate", label: "Due Date" },
 ];
 
 function createPaymentData(payment: IPayment) {
@@ -77,6 +84,7 @@ function createPaymentData(payment: IPayment) {
     invoice,
     shop,
     free,
+    totalAmount,
     paidAmount,
     discount,
     returnAmount,
@@ -84,7 +92,6 @@ function createPaymentData(payment: IPayment) {
     dueAmount,
     paymentStatus,
     company,
-    dueDate,
     paymentDate,
     collector,
   } = payment;
@@ -92,6 +99,7 @@ function createPaymentData(payment: IPayment) {
     invoice,
     shop: shop ? shop.name : "-",
     free,
+    totalAmount,
     paidAmount,
     discount,
     returnAmount,
@@ -101,7 +109,6 @@ function createPaymentData(payment: IPayment) {
     company: company ? company.name : "-",
     collector: collector ? collector.name : "-",
     paymentDate: dayjs(new Date(paymentDate)).format("DD/MM/YYYY"),
-    dueDate: dayjs(new Date(dueDate)).format("DD/MM/YYYY"),
   };
 }
 
@@ -159,6 +166,17 @@ const PaymentTable = () => {
   };
 
   const isSelected = (name: string) => checkedPayments.indexOf(name) !== -1;
+
+  const totalAmounts = useCallback(() => {
+    let tTotal = payments.reduce((acc, curr) => curr.totalAmount + acc, 0);
+    let tPaid = payments.reduce((acc, curr) => curr.paidAmount + acc, 0);
+    let tFree = payments.reduce((acc, curr) => curr.free + acc, 0);
+    let tMarket = payments.reduce((acc, curr) => curr.marketReturn + acc, 0);
+    let tSaleable = payments.reduce((acc, curr) => curr.returnAmount + acc, 0);
+    let tDiscount = payments.reduce((acc, curr) => curr.discount + acc, 0);
+    let tDue = payments.reduce((acc, curr) => curr.dueAmount + acc, 0);
+    return [tTotal, tPaid, tFree, tDiscount, tSaleable, tMarket, tDue];
+  }, [payments]);
 
   useEffect(() => {
     refetch();
@@ -334,6 +352,19 @@ const PaymentTable = () => {
               </TableRow>
             );
           })}
+        <TableRow style={{ background: "#e4e9e1" }}>
+          <TableCell colSpan={1} />
+          <TableCell>
+            <Typography>Total</Typography>
+          </TableCell>
+          <TableCell colSpan={2} />
+          {totalAmounts().map((val, index) => (
+            <TableCell key={index}>
+              <Typography>{currencyFormatter.format(val, {})}</Typography>
+            </TableCell>
+          ))}
+          <TableCell colSpan={4} />
+        </TableRow>
       </PaymnentTableContainer>
     </>
   );

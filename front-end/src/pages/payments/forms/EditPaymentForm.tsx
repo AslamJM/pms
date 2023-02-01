@@ -45,6 +45,7 @@ const EditPaymentForm = () => {
 
   const initialValues = {
     shop: selectedPayment?.shop._id,
+    totalAmount: selectedPayment?.totalAmount.toString(),
     paidAmount: selectedPayment?.paidAmount.toString(),
     dueAmount: selectedPayment?.dueAmount.toString(),
     free: selectedPayment?.free.toString(),
@@ -66,6 +67,7 @@ const EditPaymentForm = () => {
   const [fpaid, setPaid] = useState(initialValues.paidAmount!);
   const [freturn, setReturn] = useState(initialValues.returnAmount!);
   const [market, setMarket] = useState(initialValues.marketReturn!);
+  const [total, setTotal] = useState(initialValues.totalAmount);
 
   return (
     <Formik
@@ -78,6 +80,7 @@ const EditPaymentForm = () => {
             ...values,
             free: Number(ffree),
             discount: Number(fdiscount),
+            totalAmount: Number(total),
             paidAmount: Number(fpaid),
             dueAmount: Number(due),
             returnAmount: Number(freturn),
@@ -147,7 +150,7 @@ const EditPaymentForm = () => {
               </Box>
             </Box>
             <Box display="flex" width="100%" my={2}>
-              <Box sx={{ mx: 0.5 }} width="50%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.invoice}
@@ -158,7 +161,7 @@ const EditPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="50%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <InputLabel>Company</InputLabel>
                   <Select
@@ -173,6 +176,19 @@ const EditPaymentForm = () => {
                       </MenuItem>
                     ))}
                   </Select>
+                </FormControl>
+              </Box>
+              <Box sx={{ mx: 0.3 }} width="33%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.totalAmount}
+                    label="Total Amount"
+                    fullWidth
+                    value={total}
+                    onChange={(e) => {
+                      setTotal(e.target.value);
+                    }}
+                  />
                 </FormControl>
               </Box>
             </Box>

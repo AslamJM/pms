@@ -25,6 +25,8 @@ export class Payment {
   @prop({ ref: () => Company })
   company: Ref<Company>;
   @prop({ required: true })
+  totalAmount: number;
+  @prop({ required: true })
   paidAmount: number;
   @prop({ default: 0 })
   dueAmount: number;

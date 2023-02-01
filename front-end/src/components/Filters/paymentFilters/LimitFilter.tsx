@@ -7,7 +7,7 @@ const LimitFilter = () => {
   const { setParams } = useGlobalContext();
 
   return (
-    <div style={{ marginRight: 10, marginLeft: 10, width: 100 }}>
+    <div style={{ marginRight: 10, marginLeft: 10, width: 200 }}>
       <FormControl fullWidth>
         <InputLabel>count</InputLabel>
         <Select

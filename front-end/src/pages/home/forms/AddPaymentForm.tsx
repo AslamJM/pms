@@ -26,6 +26,7 @@ import { useEffect, useState } from "react";
 const initialValues = {
   shop: "",
   amount: "",
+  totalAmount: "",
   paidAmount: "",
   dueAmount: "",
   free: "",
@@ -41,9 +42,6 @@ const initialValues = {
   paymentMethod: "",
 };
 
-//backend data for shops and collectors
-const REGIONS = ["region a", "region b", "region c", "region d"];
-
 const AddPaymentForm = () => {
   const [due, setDue] = useState("");
   const [ffree, setFree] = useState("");
@@ -51,6 +49,7 @@ const AddPaymentForm = () => {
   const [fpaid, setPaid] = useState("");
   const [freturn, setReturn] = useState("");
   const [market, setMarket] = useState("");
+  const [total, setTotal] = useState("");
 
   const {
     setAddModalOpen,
@@ -66,6 +65,10 @@ const AddPaymentForm = () => {
 
   const { isLoading, mutate } = useMutation(paymentClient.createPayment);
 
+  useEffect(() => {
+    setDue((Number(total) - Number(fpaid)).toString());
+  }, [fpaid]);
+
   return (
     <Formik
       initialValues={initialValues}
@@ -77,6 +80,7 @@ const AddPaymentForm = () => {
             ...values,
             free: Number(ffree),
             discount: Number(fdiscount),
+            totalAmount: Number(total),
             paidAmount: Number(fpaid),
             dueAmount: Number(due),
             returnAmount: Number(freturn),
@@ -146,7 +150,7 @@ const AddPaymentForm = () => {
               </Box>
             </Box>
             <Box display="flex" width="100%" my={2}>
-              <Box sx={{ mx: 0.5 }} width="50%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <TextField
                     name={FORM_MODEL.invoice}
@@ -157,7 +161,7 @@ const AddPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
-              <Box sx={{ mx: 0.5 }} width="50%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <InputLabel>Company</InputLabel>
                   <Select
@@ -172,6 +176,19 @@ const AddPaymentForm = () => {
                       </MenuItem>
                     ))}
                   </Select>
+                </FormControl>
+              </Box>
+              <Box sx={{ mx: 0.3 }} width="33%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.totalAmount}
+                    label="Total Amount"
+                    fullWidth
+                    value={total}
+                    onChange={(e) => {
+                      setTotal(e.target.value);
+                    }}
+                  />
                 </FormControl>
               </Box>
             </Box>
@@ -251,9 +268,7 @@ const AddPaymentForm = () => {
                     label="Due Amount"
                     fullWidth
                     value={due}
-                    onChange={(e) => {
-                      setDue(e.target.value);
-                    }}
+                    disabled
                   />
                 </FormControl>
               </Box>
