@@ -7,6 +7,7 @@ import {
   InputLabel,
   Box,
   CircularProgress,
+  Autocomplete,
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Formik } from "formik";
@@ -51,6 +52,8 @@ const AddPaymentForm = () => {
   const [market, setMarket] = useState("");
   const [total, setTotal] = useState("");
 
+  const [shop, setShop] = useState("");
+
   const {
     setAddModalOpen,
     companies,
@@ -60,6 +63,8 @@ const AddPaymentForm = () => {
   } = useGlobalContext();
   const { shops } = useShopContext();
   const { collectors } = useCollectorContext();
+
+  const shopOptions = shops.map((s) => ({ label: s.name, _id: s._id }));
 
   const queryClient = useQueryClient();
 
@@ -78,6 +83,7 @@ const AddPaymentForm = () => {
         mutate(
           {
             ...values,
+            shop,
             free: Number(ffree),
             discount: Number(fdiscount),
             totalAmount: Number(total),
@@ -115,19 +121,20 @@ const AddPaymentForm = () => {
             <Box display="flex" width="100%" my={2}>
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth>
-                  <InputLabel>Shop</InputLabel>
-                  <Select
-                    onChange={handleChange}
-                    fullWidth
-                    name={FORM_MODEL.shop}
-                    value={values.shop}
-                  >
-                    {shops.map((item, index) => (
-                      <MenuItem key={index} value={item._id}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <Autocomplete
+                    autoSelect
+                    options={shopOptions}
+                    sx={{ mx: 1 }}
+                    renderInput={(params) => (
+                      <TextField
+                        {...params}
+                        label="Shop"
+                        size="small"
+                        fullWidth
+                      />
+                    )}
+                    onChange={(e, v) => setShop(v?._id!)}
+                  />
                 </FormControl>
               </Box>
 
@@ -139,6 +146,7 @@ const AddPaymentForm = () => {
                     fullWidth
                     name={FORM_MODEL.collector}
                     value={values.collector}
+                    size="small"
                   >
                     {collectors.map((item, index) => (
                       <MenuItem key={index} value={item._id}>

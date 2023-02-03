@@ -360,7 +360,12 @@ const PaymentTable = () => {
           <TableCell colSpan={2} />
           {totalAmounts().map((val, index) => (
             <TableCell key={index}>
-              <Typography>{currencyFormatter.format(val, {})}</Typography>
+              <Typography
+                component="b"
+                sx={{ fontWeight: "bold", fontSize: 14 }}
+              >
+                {currencyFormatter.format(val, {})}
+              </Typography>
             </TableCell>
           ))}
           <TableCell colSpan={4} />

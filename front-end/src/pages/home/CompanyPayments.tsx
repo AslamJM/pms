@@ -33,32 +33,30 @@ const CompanyPayments = () => {
   }
 
   return (
-    <div>
-      <Paper sx={{ width: 600, my: 1, p: 1 }}>
-        <Typography>Payments collections for this month</Typography>
-        <TableContainer>
-          <Table size="small">
-            <TableHead sx={{ bgcolor: "#BB892D" }}>
-              <TableRow>
-                <TableCell>Company</TableCell>
-                <TableCell align="right">Amount</TableCell>
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {data &&
-                companies.map((c) => (
-                  <TableRow key={c._id}>
-                    <TableCell>{c.name}</TableCell>
-                    <TableCell align="right">
-                      {currencyFormatter.format(data[c.name], {})}
-                    </TableCell>
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </TableContainer>
-      </Paper>
-    </div>
+    <Paper sx={{ width: 600, my: 1, p: 1 }}>
+      <Typography>Payments collections for this month</Typography>
+      <TableContainer>
+        <Table size="small">
+          <TableHead sx={{ bgcolor: "#BB892D" }}>
+            <TableRow>
+              <TableCell>Company</TableCell>
+              <TableCell align="right">Amount</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {data &&
+              companies.map((c) => (
+                <TableRow key={c._id}>
+                  <TableCell>{c.name}</TableCell>
+                  <TableCell align="right">
+                    {currencyFormatter.format(data[c.name], {})}
+                  </TableCell>
+                </TableRow>
+              ))}
+          </TableBody>
+        </Table>
+      </TableContainer>
+    </Paper>
   );
 };
 

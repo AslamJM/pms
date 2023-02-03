@@ -11,7 +11,7 @@ const FilterByShop = () => {
   const shopOptions = shops.map((s) => ({ label: s.name, _id: s._id }));
 
   return (
-    <div style={{ flex: 1, marginRight: 10 }}>
+    <div style={{ width: 200, marginRight: 10 }}>
       <FormControl fullWidth>
         <Autocomplete
           autoSelect

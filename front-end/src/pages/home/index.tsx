@@ -9,8 +9,7 @@ import SnackBar from "../../components/snackbar";
 import CompanyPayments from "./CompanyPayments";
 import dayjs from "dayjs";
 import UpdateInvoiceModal from "./modals/UpdateInvoiceModal";
-import Calendar from "react-calendar";
-import "react-calendar/dist/Calendar.css";
+import SearchShop from "./SearchShop";
 
 const Home = () => {
   const { companies } = useGlobalContext();
@@ -25,11 +24,9 @@ const Home = () => {
         <Typography variant="h5">Welcome {user?.role}</Typography>
         <Typography variant="h6">{dayjs().format("DD/MM/YYYY")}</Typography>
         <Divider />
-        <Box display="flex" alignItems="center" justifyContent="space-between">
+        <Box display="flex">
           <CompanyPayments />
-          <Box p={1} pr={4}>
-            <Calendar value={dayjs().toDate()} />
-          </Box>
+          {user?.role === "ADMIN" && <SearchShop />}
         </Box>
       </Box>
       <div>

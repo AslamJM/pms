@@ -211,13 +211,15 @@ const PaymentTableSelect = () => {
 
   //function for pdf export
   const exportPdf = (cols: any, data: any) => {
-    const doc = new jsPDF();
+    const doc = new jsPDF({ orientation: "landscape" });
     doc.text(`Payments - ${dayjs().format("DD/MM/YYYY")}`, 5, 10);
     autoTable(doc, {
       head: [cols],
       body: data,
+      styles: { cellPadding: 1, fontSize: 10 },
+      columnStyles: { text: { cellWidth: "auto" } },
     });
-    doc.save("table.pdf");
+    doc.save(`table-${dayjs().format("DD/MM/YYYY")}.pdf`);
   };
   //
 
@@ -340,7 +342,6 @@ const PaymentTableSelect = () => {
                     });
                     return temp;
                   });
-
                 exportPdf(cols, rows);
               }}
             >

@@ -7,7 +7,7 @@ const FilterByStatus = () => {
   const { setParams } = useGlobalContext();
 
   return (
-    <div style={{ flex: 1, marginRight: 10 }}>
+    <div style={{ width: 200, marginRight: 10 }}>
       <FormControl fullWidth>
         <InputLabel>Payment Status</InputLabel>
         <Select
