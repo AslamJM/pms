@@ -21,7 +21,7 @@ const PaymentDateFilter = () => {
       <Box style={{ marginRight: 10, width: 200 }}>
         <DesktopDatePicker
           label="PaymentDate"
-          inputFormat="MM/DD/YYYY"
+          inputFormat="DD/MM/YYYY"
           value={date}
           onChange={handleChange}
           renderInput={(params) => (

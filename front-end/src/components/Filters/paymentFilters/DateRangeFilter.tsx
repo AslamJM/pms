@@ -26,7 +26,7 @@ const DateRangeFilter = () => {
       <Box display="flex" alignItems="flex-end">
         <DesktopDatePicker
           label="From"
-          inputFormat="MM/DD/YYYY"
+          inputFormat="DD/MM/YYYY"
           value={from}
           onChange={handleChangeFrom}
           renderInput={(params) => (
@@ -35,7 +35,7 @@ const DateRangeFilter = () => {
         />
         <DesktopDatePicker
           label="To"
-          inputFormat="MM/DD/YYYY"
+          inputFormat="DD/MM/YYYY"
           value={to}
           onChange={handleChangeTo}
           renderInput={(params) => (

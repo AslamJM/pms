@@ -331,7 +331,7 @@ const PaymentTableSelect = () => {
         <Box display="flex" alignItems="flex-end" mb={2}>
           <DesktopDatePicker
             label="From"
-            inputFormat="MM/DD/YYYY"
+            inputFormat="DD/MM/YYYY"
             value={from}
             onChange={handleChangeFrom}
             renderInput={(params) => (
@@ -340,7 +340,7 @@ const PaymentTableSelect = () => {
           />
           <DesktopDatePicker
             label="To"
-            inputFormat="MM/DD/YYYY"
+            inputFormat="DD/MM/YYYY"
             value={to}
             onChange={handleChangeTo}
             renderInput={(params) => (
