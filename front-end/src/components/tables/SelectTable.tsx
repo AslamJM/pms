@@ -75,6 +75,19 @@ const PaymentTableSelect = () => {
         ),
         size: 50,
         enableColumnFilter: false,
+        Footer: ({ table }) => (
+          <Typography align="right" sx={{ fontSize: 14, fontWeight: "800" }}>
+            {currencyFormatter.format(
+              table
+                .getFilteredRowModel()
+                .rows.reduce(
+                  (total, row) => total + row.getValue<number>("totalAmount"),
+                  0
+                ),
+              {}
+            )}
+          </Typography>
+        ),
       },
       {
         accessorKey: "paidAmount",
@@ -90,6 +103,19 @@ const PaymentTableSelect = () => {
         ),
         size: 50,
         enableColumnFilter: false,
+        Footer: ({ table }) => (
+          <Typography align="right" sx={{ fontSize: 14, fontWeight: "800" }}>
+            {currencyFormatter.format(
+              table
+                .getFilteredRowModel()
+                .rows.reduce(
+                  (total, row) => total + row.getValue<number>("paidAmount"),
+                  0
+                ),
+              {}
+            )}
+          </Typography>
+        ),
       },
       {
         accessorKey: "free",
@@ -105,6 +131,19 @@ const PaymentTableSelect = () => {
         ),
         size: 50,
         enableColumnFilter: false,
+        Footer: ({ table }) => (
+          <Typography align="right" sx={{ fontSize: 14, fontWeight: "800" }}>
+            {currencyFormatter.format(
+              table
+                .getFilteredRowModel()
+                .rows.reduce(
+                  (total, row) => total + row.getValue<number>("free"),
+                  0
+                ),
+              {}
+            )}
+          </Typography>
+        ),
       },
       {
         accessorKey: "discount",
@@ -120,6 +159,19 @@ const PaymentTableSelect = () => {
         ),
         size: 50,
         enableColumnFilter: false,
+        Footer: ({ table }) => (
+          <Typography align="right" sx={{ fontSize: 14, fontWeight: "800" }}>
+            {currencyFormatter.format(
+              table
+                .getFilteredRowModel()
+                .rows.reduce(
+                  (total, row) => total + row.getValue<number>("dueAmount"),
+                  0
+                ),
+              {}
+            )}
+          </Typography>
+        ),
       },
 
       {
@@ -136,6 +188,19 @@ const PaymentTableSelect = () => {
         ),
         size: 50,
         enableColumnFilter: false,
+        Footer: ({ table }) => (
+          <Typography align="right" sx={{ fontSize: 14, fontWeight: "800" }}>
+            {currencyFormatter.format(
+              table
+                .getFilteredRowModel()
+                .rows.reduce(
+                  (total, row) => total + row.getValue<number>("returnAmount"),
+                  0
+                ),
+              {}
+            )}
+          </Typography>
+        ),
       },
       {
         accessorKey: "marketReturn",
@@ -151,6 +216,19 @@ const PaymentTableSelect = () => {
         ),
         size: 50,
         enableColumnFilter: false,
+        Footer: ({ table }) => (
+          <Typography align="right" sx={{ fontSize: 14, fontWeight: "800" }}>
+            {currencyFormatter.format(
+              table
+                .getFilteredRowModel()
+                .rows.reduce(
+                  (total, row) => total + row.getValue<number>("marketReturn"),
+                  0
+                ),
+              {}
+            )}
+          </Typography>
+        ),
       },
       {
         accessorKey: "dueAmount",
@@ -166,6 +244,19 @@ const PaymentTableSelect = () => {
         ),
         size: 50,
         enableColumnFilter: false,
+        Footer: ({ table }) => (
+          <Typography align="right" sx={{ fontSize: 14, fontWeight: "800" }}>
+            {currencyFormatter.format(
+              table
+                .getFilteredRowModel()
+                .rows.reduce(
+                  (total, row) => total + row.getValue<number>("dueAmount"),
+                  0
+                ),
+              {}
+            )}
+          </Typography>
+        ),
       },
       {
         accessorKey: "paymentStatus",
