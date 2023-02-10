@@ -3,6 +3,10 @@ import { useQuery } from "react-query";
 import { ICompany, IArea } from "../api/client";
 import { getAllCompanies, getAllAreas } from "../api/company";
 import dayjs from "dayjs";
+import timezone from "dayjs/plugin/timezone";
+
+dayjs.extend(timezone);
+dayjs.tz.setDefault("Asia/Colombo");
 export interface IAction {
   type:
     | "SET_SNACKBAR"

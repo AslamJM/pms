@@ -6,6 +6,7 @@ import collectorRouter from './collectors';
 import shopRouter from './shop';
 import companyRouter from './company';
 import areaRouter from './area';
+import historyRouter from './history';
 
 const authRouter = Router();
 
@@ -18,4 +19,5 @@ export {
   companyRouter,
   areaRouter,
   authRouter,
+  historyRouter,
 };

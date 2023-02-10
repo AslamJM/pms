@@ -26,7 +26,7 @@ export class Payment {
   company: Ref<Company>;
   @prop({ required: true })
   totalAmount: number;
-  @prop({ required: true })
+  @prop({ default: 0 })
   paidAmount: number;
   @prop({ default: 0 })
   dueAmount: number;
@@ -42,8 +42,6 @@ export class Payment {
   collector: Ref<Collector>;
   @prop({ required: true })
   paymentDate: Date;
-  @prop()
-  dueDate: Date;
   @prop()
   paymentStatus: PaymentStatus;
   @prop()
@@ -78,6 +76,19 @@ export class Payment {
   }
 }
 
+export class UpdatePayment {
+  @prop({ ref: () => Payment })
+  payment: Ref<Payment>;
+  @prop({ default: 0 })
+  amount: number;
+  @prop({ ref: () => Collector })
+  collector: Ref<Collector>;
+  @prop({ required: true })
+  updateDate: Date;
+}
+
 export const paymentModel = getModelForClass(Payment, {
   schemaOptions: { timestamps: true },
 });
+
+export const updatePaymentModel = getModelForClass(UpdatePayment);

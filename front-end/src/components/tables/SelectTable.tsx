@@ -28,8 +28,8 @@ const PaymentTableSelect = () => {
   //
 
   //for date picker
-  const [from, setFrom] = useState<Dayjs | null>(dayjs());
-  const [to, setTo] = useState<Dayjs | null>(dayjs());
+  const [from, setFrom] = useState<string | null>(dayjs().toISOString());
+  const [to, setTo] = useState<string | null>(dayjs().toISOString());
   //
 
   //contexts
@@ -281,7 +281,7 @@ const PaymentTableSelect = () => {
   //
 
   const { isLoading, refetch } = useQuery(
-    "all reports",
+    ["all reports", params],
     async () => await queryPayments(params),
     {
       enabled: false,
@@ -316,10 +316,10 @@ const PaymentTableSelect = () => {
 
   //date picker utils functions
   const handleChangeFrom = (newValue: Dayjs | null) => {
-    setFrom(newValue);
+    setFrom(newValue?.toISOString()!);
   };
   const handleChangeTo = (newValue: Dayjs | null) => {
-    setTo(newValue);
+    setTo(newValue?.toISOString()!);
   };
   //
 
@@ -350,7 +350,7 @@ const PaymentTableSelect = () => {
           <Button
             variant="contained"
             onClick={() => {
-              setParams({ from, to });
+              setParams({ from, to, verified: true });
               refetch();
             }}
           >

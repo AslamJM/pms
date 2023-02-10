@@ -25,7 +25,6 @@ export const createPaymentController = async (
 
     return res.status(200).json({
       message: 'payment created successfully',
-      payment: created,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -61,7 +60,6 @@ export const deletePaymentController = async (
 
     return res.status(200).json({
       message: 'payment deleted successfully',
-      payment: payment,
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -80,7 +78,6 @@ export const updatePaymentController = async (
     const payment = await updatePayment(id, input);
     return res.status(200).json({
       message: 'payment updated successfully',
-      payment: payment,
     });
   } catch (error: any) {
     return res.status(500).json({

@@ -23,6 +23,7 @@ import { useShopContext } from "../../../context/ShopContext";
 import { useCollectorContext } from "../../../context/CollectorContext";
 import { useMutation, useQueryClient } from "react-query";
 import { useEffect, useState } from "react";
+import dayjs from "dayjs";
 
 const initialValues = {
   shop: "",
@@ -79,7 +80,6 @@ const AddPaymentForm = () => {
       initialValues={initialValues}
       onSubmit={(values, { resetForm }) => {
         const { dueDate, paymentDate } = values;
-
         mutate(
           {
             ...values,
