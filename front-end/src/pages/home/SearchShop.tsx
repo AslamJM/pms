@@ -5,9 +5,13 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import { useQuery } from "react-query";
 import { IPayment, queryPayments } from "../../api/client";
-import { CircularProgress, Grid } from "@mui/material";
+import { CircularProgress, Grid, Table } from "@mui/material";
 import UpdateDue from "./UpdateDue";
 import Typography from "@mui/material/Typography";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import TableCell from "@mui/material/TableCell";
+import TableBody from "@mui/material/TableBody";
 
 const SearchShop = () => {
   const [shop, setShop] = useState<string | null>(null);
@@ -19,11 +23,16 @@ const SearchShop = () => {
   const { isLoading, refetch } = useQuery(
     "payment shops",
     async () => await queryPayments({ shop, paymentStatus: "DUE" }),
-    { enabled: false, onSuccess: (data) => setPayments(data.payments) }
+    {
+      enabled: false,
+      onSuccess: (data) => {
+        setPayments(data.payments);
+      },
+    }
   );
 
   return (
-    <div style={{ width: "100%" }}>
+    <div style={{ overflow: "hidden", flexGrow: 1 }}>
       <div style={{ display: "flex", padding: 10 }}>
         <Autocomplete
           autoSelect
@@ -50,24 +59,37 @@ const SearchShop = () => {
           </Button>
         </div>
       </div>
-      <div
-        style={{ display: "flex", flexWrap: "wrap", padding: "0 20px 0 20px" }}
-      >
+      <div style={{ padding: "0 20px 0 20px" }}>
         {shop && payments.length > 0 ? (
-          <Grid container spacing={1}>
-            {payments.map((p) => (
-              <Grid item xs={4} key={p._id}>
-                <UpdateDue payment={p} />
-              </Grid>
-            ))}
-          </Grid>
+          <Table size="small">
+            <TableHead>
+              <TableRow>
+                {[
+                  "Invoice",
+                  "Company",
+                  "Total",
+                  "Due",
+                  "Collector",
+                  "Date",
+                  "Action",
+                ].map((item) => (
+                  <TableCell key={item}>{item}</TableCell>
+                ))}
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {payments.map((p) => (
+                <UpdateDue payment={p} key={p._id} />
+              ))}
+            </TableBody>
+          </Table>
         ) : shop && payments.length === 0 ? (
           <Typography component="i" align="center">
             This shop has no due payments.
           </Typography>
         ) : (
           <Typography component="i" align="center">
-            Serach for a shop name to find due payments.
+            Search for a shop name to find due payments.
           </Typography>
         )}
       </div>

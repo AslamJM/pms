@@ -18,7 +18,7 @@ import { useShopContext } from "../../../context/ShopContext";
 import { useCollectorContext } from "../../../context/CollectorContext";
 import { usePaymentContext } from "../../../context/PaymentContext";
 import { useMutation, useQueryClient } from "react-query";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { apiClient, IPayment } from "../../../api/client";
 
 const EditPaymentForm = () => {
@@ -68,6 +68,10 @@ const EditPaymentForm = () => {
   const [freturn, setReturn] = useState(initialValues.returnAmount!);
   const [market, setMarket] = useState(initialValues.marketReturn!);
   const [total, setTotal] = useState(initialValues.totalAmount);
+
+  useEffect(() => {
+    setDue((Number(total) - Number(fpaid)).toString());
+  }, [fpaid]);
 
   return (
     <Formik

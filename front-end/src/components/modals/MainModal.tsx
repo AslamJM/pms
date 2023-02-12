@@ -29,7 +29,7 @@ const Modal = ({ title, children, type }: Props) => {
       }
     >
       <DialogTitle>
-        {title}{" "}
+        {title}
         <IconButton
           aria-label="close"
           onClick={() => {

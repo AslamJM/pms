@@ -1,31 +1,43 @@
 import {
+  Autocomplete,
   Box,
   Button,
   Checkbox,
-  Divider,
+  FormControl,
   FormControlLabel,
-  Paper,
+  TableCell,
+  TableRow,
   TextField,
   Typography,
 } from "@mui/material";
 import { apiClient, IPayment } from "../../api/client";
 import currencyFormatter from "currency-formatter";
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { useMutation, useQueryClient } from "react-query";
-import { PaymentCreateInput } from "../../api/payments";
+import { useCollectorContext } from "../../context/CollectorContext";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
+import dayjs, { Dayjs } from "dayjs";
 
 const UpdateDue = ({ payment }: { payment: IPayment }) => {
   const [amount, setAmount] = useState("");
   const [full, setFull] = useState(false);
+  const [collectorId, setCollectorId] = useState("");
+  const [date, setDate] = useState<Dayjs | null>(dayjs());
+
+  const { collectors } = useCollectorContext();
+  const collectorOptions = useMemo(() => {
+    return collectors.map((c) => ({ label: c.name, _id: c._id }));
+  }, []);
 
   const queryClient = useQueryClient();
 
   const { mutate, isLoading } = useMutation(
-    async (input: Partial<PaymentCreateInput>) =>
-      await apiClient.patch<{ payment: IPayment; message: string }>(
-        `/payments/update/${payment._id}`,
-        { input }
-      ),
+    async (input: any) =>
+      await apiClient.post<{ message: string }>(`/history/create`, {
+        ...input,
+      }),
     {
       onSettled: () => {
         queryClient.refetchQueries("payment shops");
@@ -34,59 +46,95 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
     }
   );
 
+  const handleChange = async (newValue: Dayjs | null) => {
+    setDate(newValue);
+  };
+
   return (
-    <Paper sx={{ background: "#f1f1f1", px: 1, py: 1 }}>
-      <Typography component="em"># {payment.invoice}</Typography>
-      <Typography sx={{ color: "GrayText" }}>{payment.company.name}</Typography>
-      <Divider />
-      <Box display="flex" justifyContent="space-between">
-        <Typography sx={{ fontSize: 14 }}>Total :</Typography>
+    <TableRow>
+      <TableCell size="small">
+        <Typography sx={{ fontSize: 14 }}> {payment.invoice}</Typography>
+      </TableCell>
+      <TableCell size="small">
+        <Typography sx={{ fontSize: 14 }}>{payment.company.name}</Typography>
+      </TableCell>
+      <TableCell size="small">
         <Typography sx={{ fontSize: 14 }}>
           {currencyFormatter.format(payment.totalAmount, {})}
         </Typography>
-      </Box>
-      <Box display="flex" justifyContent="space-between">
-        <Typography sx={{ fontSize: 14 }}> Due :</Typography>
+      </TableCell>
+      <TableCell size="small">
         <Typography sx={{ fontSize: 14 }}>
           {currencyFormatter.format(payment.dueAmount, {})}
         </Typography>
-      </Box>
-      <Box display="flex" mt={1}>
-        <TextField
-          size="small"
-          value={amount}
-          onChange={(e) => setAmount(e.target.value)}
-          placeholder="Amount"
-        />
-        <FormControlLabel
-          control={
-            <Checkbox
-              size="small"
-              value={full}
-              onChange={() => {
-                setFull(true);
-                setAmount(payment.dueAmount.toString());
-              }}
+      </TableCell>
+      <TableCell>
+        <FormControl fullWidth>
+          <Autocomplete
+            autoSelect
+            options={collectorOptions}
+            renderInput={(params) => (
+              <TextField {...params} label="Collector" size="small" />
+            )}
+            onChange={(e, v) => setCollectorId(v?._id!)}
+          />
+        </FormControl>
+      </TableCell>
+      <TableCell>
+        <LocalizationProvider dateAdapter={AdapterDayjs}>
+          <Box style={{ marginRight: 10, width: 200 }}>
+            <DesktopDatePicker
+              label="PaymentDate"
+              inputFormat="DD/MM/YYYY"
+              value={date}
+              onChange={handleChange}
+              renderInput={(params) => (
+                <TextField {...params} sx={{ mr: 1 }} size="small" />
+              )}
             />
-          }
-          label="Full"
-          sx={{ ml: 1 }}
-        />
-        <Button
-          variant="contained"
-          size="small"
-          onClick={() =>
-            mutate({
-              paidAmount: payment.paidAmount + Number(amount),
-              dueAmount: payment.dueAmount - Number(amount),
-              paymentStatus: full ? "PAID" : "DUE",
-            })
-          }
-        >
-          update
-        </Button>
-      </Box>
-    </Paper>
+          </Box>
+        </LocalizationProvider>
+      </TableCell>
+      <TableCell size="small">
+        <Box display="flex" mt={1}>
+          <TextField
+            size="small"
+            value={amount}
+            onChange={(e) => setAmount(e.target.value)}
+            placeholder="Amount"
+            sx={{ width: 100, fontSize: 14 }}
+          />
+          <FormControlLabel
+            control={
+              <Checkbox
+                size="small"
+                value={full}
+                onChange={() => {
+                  setFull(true);
+                  setAmount(payment.dueAmount.toString());
+                }}
+              />
+            }
+            label="Full"
+            sx={{ ml: 1, fontSize: 12 }}
+          />
+          <Button
+            variant="contained"
+            size="small"
+            onClick={() =>
+              mutate({
+                payment: payment._id,
+                amount: Number(amount),
+                collector: collectorId,
+                updateDate: date?.toISOString(),
+              })
+            }
+          >
+            update
+          </Button>
+        </Box>
+      </TableCell>
+    </TableRow>
   );
 };
 

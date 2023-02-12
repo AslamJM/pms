@@ -76,7 +76,7 @@ const columns: IColumn[] = [
   },
   { id: "paymentStatus", label: "Status" },
   { id: "collector", label: "Collector" },
-  { id: "paymentDate", label: "Payment Date" },
+  { id: "paymentDate", label: "Invoice Date" },
 ];
 
 function createPaymentData(payment: IPayment) {

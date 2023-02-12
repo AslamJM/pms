@@ -26,22 +26,20 @@ const Home = () => {
         <Divider />
         <Box display="flex">
           <CompanyPayments />
-          {user?.role === "ADMIN" && <SearchShop />}
+          {user?.role === "ADMIN" && (
+            <div style={{ flexGrow: 1, padding: 10 }}>
+              <Typography variant="h5">Payments</Typography>
+              <Divider />
+              <Box display="flex" mt={1}>
+                <AddButton title="add new payment" />
+                <Divider sx={{ height: 50, mx: 1 }} orientation="vertical" />
+                <InvoiceSearch />
+              </Box>
+            </div>
+          )}
         </Box>
       </Box>
-      <div>
-        {user?.role === "ADMIN" && (
-          <>
-            <Typography variant="h5">Payments</Typography>
-            <Divider />
-            <Box display="flex" mt={1}>
-              <AddButton title="add new payment" />
-              <Divider sx={{ height: 50, mx: 1 }} orientation="vertical" />
-              <InvoiceSearch />
-            </Box>
-          </>
-        )}
-      </div>
+      <div> {user?.role === "ADMIN" && <SearchShop />}</div>
     </div>
   );
 };

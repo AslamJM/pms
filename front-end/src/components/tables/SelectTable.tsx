@@ -8,7 +8,7 @@ import { useShopContext } from "../../context/ShopContext";
 import { useQuery } from "react-query";
 import { useMemo, useState } from "react";
 import { write, utils, writeFile } from "xlsx";
-import { Box, Button } from "@mui/material";
+import { Box, Button, Link } from "@mui/material";
 import TextField from "@mui/material/TextField";
 import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
@@ -20,12 +20,16 @@ import autoTable from "jspdf-autotable";
 import dayjs, { Dayjs } from "dayjs";
 import Typography from "@mui/material/Typography";
 import currencyFormatter from "currency-formatter";
+import PaymentHistoryModal from "../../pages/reports/PaymenthistoryModal";
 
 const PaymentTableSelect = () => {
   //report states
   const [payments, setAllPayments] = useState<IPayment[] | null>();
-  const [params, setParams] = useState<any>({ verified: true });
+  const [params, setParams] = useState<any>({});
   //
+
+  const [paymentId, setPaymentId] = useState("");
+  const [pInvoice, setPInvoice] = useState("");
 
   //for date picker
   const [from, setFrom] = useState<string | null>(dayjs().toISOString());
@@ -33,7 +37,7 @@ const PaymentTableSelect = () => {
   //
 
   //contexts
-  const { companies } = useGlobalContext();
+  const { companies, setAddModalOpen } = useGlobalContext();
   const { collectors } = useCollectorContext();
   const { shops } = useShopContext();
   //
@@ -43,7 +47,25 @@ const PaymentTableSelect = () => {
     MRT_ColumnDef<ReturnType<typeof createPaymentData>>[]
   >(
     () => [
-      { accessorKey: "invoice", header: "Invoice", size: 50 },
+      {
+        accessorKey: "invoice",
+        header: "Invoice",
+        size: 50,
+        Cell: ({ cell, row }) => {
+          return (
+            <Link
+              sx={{ cursor: "pointer" }}
+              onClick={() => {
+                setPaymentId(row.original._id);
+                setPInvoice(row.original.invoice);
+                setAddModalOpen(true);
+              }}
+            >
+              {cell.getValue<string>()}
+            </Link>
+          );
+        },
+      },
       { accessorKey: "shop", header: "Shop", size: 50 },
       {
         accessorKey: "company",
@@ -273,13 +295,14 @@ const PaymentTableSelect = () => {
         filterVariant: "select",
         filterSelectOptions: collectors.map((c) => c.name),
       },
-      { accessorKey: "paymentDate", header: "Payment Date", maxSize: 6 },
+      { accessorKey: "paymentDate", header: "Invoice Date", maxSize: 6 },
       { accessorKey: "lastPaid", header: "Last Paid", maxSize: 6 },
     ],
     []
   );
   //
 
+  // rect query
   const { isLoading, refetch } = useQuery(
     ["all reports", params],
     async () => await queryPayments(params),
@@ -325,6 +348,7 @@ const PaymentTableSelect = () => {
 
   return (
     <>
+      <PaymentHistoryModal paymentId={paymentId} invoice={pInvoice} />
       {/*filters with date range*/}
       <Typography sx={{ mb: 0.8 }}>select a date range</Typography>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -350,7 +374,7 @@ const PaymentTableSelect = () => {
           <Button
             variant="contained"
             onClick={() => {
-              setParams({ from, to, verified: true });
+              setParams({ from, to });
               refetch();
             }}
           >
@@ -373,6 +397,7 @@ const PaymentTableSelect = () => {
             },
           },
         }}
+        //top tool bar actions
         renderTopToolbarCustomActions={({ table }) => (
           <Box
             sx={{ display: "flex", gap: "1rem", p: "0.5rem", flexWrap: "wrap" }}

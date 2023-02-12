@@ -119,7 +119,7 @@ const AddPaymentForm = () => {
         <form onSubmit={handleSubmit}>
           <Box>
             <Box display="flex" width="100%" my={2}>
-              <Box sx={{ mx: 0.5 }} width="50%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <Autocomplete
                     autoSelect
@@ -137,8 +137,26 @@ const AddPaymentForm = () => {
                   />
                 </FormControl>
               </Box>
+              <Box sx={{ mx: 0.5 }} width="33%">
+                <FormControl fullWidth>
+                  <InputLabel>Company</InputLabel>
+                  <Select
+                    onChange={handleChange}
+                    fullWidth
+                    name={FORM_MODEL.company}
+                    value={values.company}
+                    size="small"
+                  >
+                    {companies.map((item, index) => (
+                      <MenuItem key={index} value={item._id}>
+                        {item.name}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
 
-              <Box sx={{ mx: 0.5 }} width="50%">
+              <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
                   <InputLabel>Collector</InputLabel>
                   <Select
@@ -171,19 +189,10 @@ const AddPaymentForm = () => {
               </Box>
               <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth>
-                  <InputLabel>Company</InputLabel>
-                  <Select
-                    onChange={handleChange}
-                    fullWidth
-                    name={FORM_MODEL.company}
-                    value={values.company}
-                  >
-                    {companies.map((item, index) => (
-                      <MenuItem key={index} value={item._id}>
-                        {item.name}
-                      </MenuItem>
-                    ))}
-                  </Select>
+                  <DatePicker
+                    label="Invoice Date"
+                    name={FORM_MODEL.paymentDate}
+                  />
                 </FormControl>
               </Box>
               <Box sx={{ mx: 0.3 }} width="33%">
@@ -284,23 +293,6 @@ const AddPaymentForm = () => {
             <Box display="flex" width="100%" my={2}>
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth>
-                  <InputLabel>Payment Method</InputLabel>
-                  <Select
-                    onChange={handleChange}
-                    fullWidth
-                    name={FORM_MODEL.paymentMethod}
-                    value={values.paymentMethod}
-                  >
-                    {PAYMENT_METHOD.map((item, index) => (
-                      <MenuItem key={index} value={item}>
-                        {item}
-                      </MenuItem>
-                    ))}
-                  </Select>
-                </FormControl>
-              </Box>
-              <Box sx={{ mx: 0.5 }} width="50%">
-                <FormControl fullWidth>
                   <InputLabel>Payment Status</InputLabel>
                   <Select
                     onChange={handleChange}
@@ -318,19 +310,7 @@ const AddPaymentForm = () => {
               </Box>
             </Box>
             <Box display="flex" width="100%" my={2}>
-              <Box sx={{ mx: 0.5 }} width="50%">
-                <FormControl fullWidth>
-                  <DatePicker
-                    label="Payment Date"
-                    name={FORM_MODEL.paymentDate}
-                  />
-                </FormControl>
-              </Box>
-              <Box sx={{ mx: 0.5 }} width="50%">
-                <FormControl fullWidth>
-                  <DatePicker label="Due Date" name={FORM_MODEL.dueDate} />
-                </FormControl>
-              </Box>
+              <Box sx={{ mx: 0.5 }} width="50%"></Box>
             </Box>
           </Box>
           <DialogActions>

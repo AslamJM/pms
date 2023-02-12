@@ -44,8 +44,6 @@ export class Payment {
   paymentDate: Date;
   @prop()
   paymentStatus: PaymentStatus;
-  @prop()
-  paymentMethod: PaymentMethod;
   @prop({ default: false })
   verified: boolean;
 

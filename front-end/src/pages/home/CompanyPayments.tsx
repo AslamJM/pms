@@ -33,7 +33,7 @@ const CompanyPayments = () => {
   }
 
   return (
-    <Paper sx={{ width: 600, my: 1, p: 1 }}>
+    <Paper sx={{ width: 400, my: 1, p: 1 }}>
       <Typography>Payments collections for this month</Typography>
       <TableContainer>
         <Table size="small">

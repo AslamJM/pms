@@ -22,6 +22,10 @@ export const createPaymentHistoryController = async (
     } else {
       payment.paidAmount = payment?.paidAmount! + history.amount;
       payment.dueAmount = payment.dueAmount - history.amount;
+      if (payment.dueAmount === 0) {
+        payment.paymentStatus = 'PAID';
+      }
+
       await payment.save();
       return res.status(200).json({
         message: 'payment updated successfully',
