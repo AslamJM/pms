@@ -132,7 +132,7 @@ const CustomTable = ({
                   {col.label}
                 </TableCell>
               ))}
-              <TableCell align="center">last payment</TableCell>
+              <TableCell align="center">Credit Period</TableCell>
               {user?.role === "ADMIN" && (
                 <TableCell align="center">Actions</TableCell>
               )}

@@ -30,6 +30,7 @@ const PaymentTableSelect = () => {
 
   const [paymentId, setPaymentId] = useState("");
   const [pInvoice, setPInvoice] = useState("");
+  const [ptotal, setPtotal] = useState(0);
 
   //for date picker
   const [from, setFrom] = useState<string | null>(dayjs().toISOString());
@@ -47,6 +48,8 @@ const PaymentTableSelect = () => {
     MRT_ColumnDef<ReturnType<typeof createPaymentData>>[]
   >(
     () => [
+      { accessorKey: "paymentDate", header: "Invoice Date", maxSize: 6 },
+
       {
         accessorKey: "invoice",
         header: "Invoice",
@@ -58,6 +61,7 @@ const PaymentTableSelect = () => {
               onClick={() => {
                 setPaymentId(row.original._id);
                 setPInvoice(row.original.invoice);
+                setPtotal(row.original.totalAmount);
                 setAddModalOpen(true);
               }}
             >
@@ -138,6 +142,43 @@ const PaymentTableSelect = () => {
             )}
           </Typography>
         ),
+      },
+      {
+        accessorKey: "dueAmount",
+        header: "Due",
+        muiTableHeadCellProps: { align: "right" },
+        muiTableBodyCellProps: {
+          align: "right",
+        },
+        Cell: ({ cell }) => (
+          <Typography component="p" variant="subtitle2">
+            {currencyFormatter.format(cell.getValue<number>(), {})}
+          </Typography>
+        ),
+        size: 50,
+        enableColumnFilter: false,
+        Footer: ({ table }) => (
+          <Typography align="right" sx={{ fontSize: 14, fontWeight: "800" }}>
+            {currencyFormatter.format(
+              table
+                .getFilteredRowModel()
+                .rows.reduce(
+                  (total, row) => total + row.getValue<number>("dueAmount"),
+                  0
+                ),
+              {}
+            )}
+          </Typography>
+        ),
+      },
+      { accessorKey: "lastPaid", header: "Credit Period", maxSize: 6 },
+      {
+        accessorKey: "paymentStatus",
+        header: "Status",
+        maxSize: 5,
+        size: 30,
+        filterVariant: "select",
+        filterSelectOptions: ["PAID", "DUE"],
       },
       {
         accessorKey: "free",
@@ -252,42 +293,7 @@ const PaymentTableSelect = () => {
           </Typography>
         ),
       },
-      {
-        accessorKey: "dueAmount",
-        header: "Due",
-        muiTableHeadCellProps: { align: "right" },
-        muiTableBodyCellProps: {
-          align: "right",
-        },
-        Cell: ({ cell }) => (
-          <Typography component="p" variant="subtitle2">
-            {currencyFormatter.format(cell.getValue<number>(), {})}
-          </Typography>
-        ),
-        size: 50,
-        enableColumnFilter: false,
-        Footer: ({ table }) => (
-          <Typography align="right" sx={{ fontSize: 14, fontWeight: "800" }}>
-            {currencyFormatter.format(
-              table
-                .getFilteredRowModel()
-                .rows.reduce(
-                  (total, row) => total + row.getValue<number>("dueAmount"),
-                  0
-                ),
-              {}
-            )}
-          </Typography>
-        ),
-      },
-      {
-        accessorKey: "paymentStatus",
-        header: "Status",
-        maxSize: 5,
-        size: 30,
-        filterVariant: "select",
-        filterSelectOptions: ["PAID", "DUE"],
-      },
+
       {
         accessorKey: "collector",
         header: "Collector",
@@ -295,8 +301,6 @@ const PaymentTableSelect = () => {
         filterVariant: "select",
         filterSelectOptions: collectors.map((c) => c.name),
       },
-      { accessorKey: "paymentDate", header: "Invoice Date", maxSize: 6 },
-      { accessorKey: "lastPaid", header: "Last Paid", maxSize: 6 },
     ],
     []
   );
@@ -304,11 +308,13 @@ const PaymentTableSelect = () => {
 
   // rect query
   const { isLoading, refetch } = useQuery(
-    ["all reports", params],
+    ["all reports"],
     async () => await queryPayments(params),
     {
       enabled: false,
-      onSuccess: (data) => setAllPayments(data.payments),
+      onSuccess: (data) => {
+        setAllPayments(data.payments);
+      },
     }
   );
 
@@ -340,15 +346,21 @@ const PaymentTableSelect = () => {
   //date picker utils functions
   const handleChangeFrom = (newValue: Dayjs | null) => {
     setFrom(newValue?.toISOString()!);
+    setParams((params: any) => ({ ...params, from: newValue?.toISOString()! }));
   };
   const handleChangeTo = (newValue: Dayjs | null) => {
     setTo(newValue?.toISOString()!);
+    setParams((params: any) => ({ ...params, to: newValue?.toISOString()! }));
   };
   //
 
   return (
     <>
-      <PaymentHistoryModal paymentId={paymentId} invoice={pInvoice} />
+      <PaymentHistoryModal
+        paymentId={paymentId}
+        invoice={pInvoice}
+        total={ptotal}
+      />
       {/*filters with date range*/}
       <Typography sx={{ mb: 0.8 }}>select a date range</Typography>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -374,8 +386,8 @@ const PaymentTableSelect = () => {
           <Button
             variant="contained"
             onClick={() => {
-              setParams({ from, to });
               refetch();
+              setParams({ from, to });
             }}
           >
             {isLoading ? "Fetching...." : "Fetch Payments"}

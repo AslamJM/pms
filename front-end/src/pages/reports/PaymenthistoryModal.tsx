@@ -26,6 +26,7 @@ import { useQuery, useQueryClient } from "react-query";
 type Props = {
   paymentId: string;
   invoice: string;
+  total: number;
 };
 interface IPaymentHisory {
   _id: string;
@@ -40,8 +41,8 @@ const HistoryComponent = ({ prop }: { prop: IPaymentHisory }) => {
   const { amount, collector, updateDate } = prop;
   const [edit, setEdit] = useState(false);
   const [deleteH, setDeleteH] = useState(false);
-  const [collectorId, setCollectorId] = useState("");
-  const [date, setDate] = useState<Dayjs | null>(dayjs());
+  const [collectorId, setCollectorId] = useState(collector._id);
+  const [date, setDate] = useState<Dayjs | null>(dayjs(updateDate));
   const [amountUpdate, setAmount] = useState(amount.toString());
 
   const { collectors } = useCollectorContext();
@@ -99,27 +100,6 @@ const HistoryComponent = ({ prop }: { prop: IPaymentHisory }) => {
   if (edit) {
     return (
       <Box display="flex" alignItems="center" my={1}>
-        <TextField
-          value={amountUpdate}
-          onChange={(e) => setAmount(e.target.value)}
-          variant="standard"
-          sx={{ mx: 1, width: 100 }}
-          size="small"
-        />
-        <Autocomplete
-          autoSelect
-          options={collectorOptions}
-          sx={{ mx: 1 }}
-          renderInput={(params) => (
-            <TextField
-              {...params}
-              label="Collector"
-              size="small"
-              sx={{ mx: 1 }}
-            />
-          )}
-          onChange={(e, v) => setCollectorId(v?._id!)}
-        />
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Box mx={1} style={{ width: 200 }}>
             <DesktopDatePicker
@@ -133,6 +113,29 @@ const HistoryComponent = ({ prop }: { prop: IPaymentHisory }) => {
             />
           </Box>
         </LocalizationProvider>
+        <TextField
+          value={amountUpdate}
+          onChange={(e) => setAmount(e.target.value)}
+          variant="standard"
+          sx={{ mx: 1, width: 100 }}
+          size="small"
+        />
+        <Autocomplete
+          autoSelect
+          options={collectorOptions}
+          defaultValue={{ label: collector.name, _id: collector._id }}
+          sx={{ mx: 1 }}
+          renderInput={(params) => (
+            <TextField
+              {...params}
+              label="Collector"
+              size="small"
+              sx={{ mx: 1 }}
+            />
+          )}
+          onChange={(e, v) => setCollectorId(v?._id!)}
+        />
+
         <Divider orientation="vertical" flexItem />
 
         <Tooltip title="cancel" sx={{ mx: 1 }}>
@@ -156,15 +159,16 @@ const HistoryComponent = ({ prop }: { prop: IPaymentHisory }) => {
   return (
     <Box display="flex" alignItems="center" my={1}>
       <Typography mx={1} sx={{ flex: 1 }}>
+        {dayjs(updateDate).format("DD/MM/YYYY")}
+      </Typography>
+
+      <Divider orientation="vertical" flexItem />
+      <Typography mx={1} sx={{ flex: 1 }}>
         {currencyFormatter.format(amount, {})}
       </Typography>
       <Divider orientation="vertical" flexItem />
       <Typography mx={1} sx={{ flex: 1 }}>
         {collector.name}
-      </Typography>
-      <Divider orientation="vertical" flexItem />
-      <Typography mx={1} sx={{ flex: 1 }}>
-        {dayjs(updateDate).format("DD/MM/YYYY")}
       </Typography>
       <Divider orientation="vertical" flexItem />
       <Tooltip title="edit" sx={{ mx: 1 }}>
@@ -191,7 +195,7 @@ const HistoryComponent = ({ prop }: { prop: IPaymentHisory }) => {
 
 // payment history modal
 
-const PaymentHistoryModal = ({ paymentId, invoice }: Props) => {
+const PaymentHistoryModal = ({ paymentId, invoice, total }: Props) => {
   const [paymentHistory, setPaymentHistory] = useState<IPaymentHisory[] | null>(
     null
   );
@@ -222,9 +226,12 @@ const PaymentHistoryModal = ({ paymentId, invoice }: Props) => {
           <Box>you have no previous payments</Box>
         ) : (
           <Box>
-            <Typography component="em" my={1}>
-              #{invoice}
-            </Typography>
+            <Box display="flex" justifyContent="space-between" my={2}>
+              <Typography>Invoice No: {invoice}</Typography>
+              <Typography>
+                Invoice Amount: {currencyFormatter.format(total, {})}
+              </Typography>
+            </Box>
             <Divider />
             {paymentHistory?.map((p) => (
               <HistoryComponent key={p._id} prop={p} />
