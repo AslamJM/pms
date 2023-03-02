@@ -65,6 +65,7 @@ const SearchShop = () => {
             <TableHead>
               <TableRow>
                 {[
+                  "Invoice Date",
                   "Invoice",
                   "Company",
                   "Total",

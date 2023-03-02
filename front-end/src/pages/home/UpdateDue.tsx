@@ -53,6 +53,11 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
   return (
     <TableRow>
       <TableCell size="small">
+        <Typography sx={{ fontSize: 14 }}>
+          {dayjs(payment.paymentDate).format("DD/MM/YYYY")}
+        </Typography>
+      </TableCell>
+      <TableCell size="small">
         <Typography sx={{ fontSize: 14 }}> {payment.invoice}</Typography>
       </TableCell>
       <TableCell size="small">
