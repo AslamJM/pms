@@ -6,7 +6,7 @@ import { useCollectorContext } from "../../context/CollectorContext";
 import { IPayment, queryPayments } from "../../api/client";
 import { useShopContext } from "../../context/ShopContext";
 import { useQuery } from "react-query";
-import { useMemo, useState } from "react";
+import { useCallback, useMemo, useState } from "react";
 import { write, utils, writeFile } from "xlsx";
 import { Box, Button, Link } from "@mui/material";
 import TextField from "@mui/material/TextField";
@@ -26,6 +26,7 @@ const PaymentTableSelect = () => {
   //report states
   const [payments, setAllPayments] = useState<IPayment[] | null>();
   const [params, setParams] = useState<any>({});
+
   //
 
   const [paymentId, setPaymentId] = useState("");
@@ -33,8 +34,8 @@ const PaymentTableSelect = () => {
   const [ptotal, setPtotal] = useState(0);
 
   //for date picker
-  const [from, setFrom] = useState<string | null>(dayjs().toISOString());
-  const [to, setTo] = useState<string | null>(dayjs().toISOString());
+  const [from, setFrom] = useState<string | null>(null);
+  const [to, setTo] = useState<string | null>(null);
   //
 
   //contexts
@@ -42,6 +43,14 @@ const PaymentTableSelect = () => {
   const { collectors } = useCollectorContext();
   const { shops } = useShopContext();
   //
+
+  const areaNamesForFilter = useCallback(() => {
+    return Array.from(new Set(shops.map((c) => c.region.name)));
+  }, [shops]);
+
+  const companyNamesForFilter = useCallback(() => {
+    return companies.map((c) => c.name);
+  }, [companies]);
 
   //column definitions for table
   const columns = useMemo<
@@ -76,16 +85,14 @@ const PaymentTableSelect = () => {
         header: "Company",
         size: 50,
         filterVariant: "multi-select",
-        filterSelectOptions: companies.map((c) => c.name),
+        filterSelectOptions: companyNamesForFilter(),
       },
       {
         accessorKey: "area",
         header: "Area",
         size: 50,
         filterVariant: "multi-select",
-        filterSelectOptions: Array.from(
-          new Set(shops.map((c) => c.region.name))
-        ),
+        filterSelectOptions: areaNamesForFilter(),
       },
       {
         accessorKey: "totalAmount",
@@ -302,7 +309,7 @@ const PaymentTableSelect = () => {
         filterSelectOptions: collectors.map((c) => c.name),
       },
     ],
-    []
+    [areaNamesForFilter, companyNamesForFilter]
   );
   //
 
@@ -314,6 +321,8 @@ const PaymentTableSelect = () => {
       enabled: false,
       onSuccess: (data) => {
         setAllPayments(data.payments);
+        setFrom(null);
+        setTo(null);
       },
     }
   );
@@ -389,6 +398,7 @@ const PaymentTableSelect = () => {
               refetch();
               setParams({ from, to });
             }}
+            disabled={!from || !to}
           >
             {isLoading ? "Fetching...." : "Fetch Payments"}
           </Button>
@@ -465,7 +475,16 @@ const PaymentTableSelect = () => {
                     let temp: any[] = [];
                     colIds.map((c) => {
                       if (r[c as keyof typeof r] !== null) {
-                        temp.push(r[c as keyof typeof r].toString());
+                        if (typeof r[c as keyof typeof r] === "number") {
+                          temp.push(
+                            currencyFormatter.format(
+                              r[c as keyof typeof r] as number,
+                              {}
+                            )
+                          );
+                        } else {
+                          temp.push(r[c as keyof typeof r].toString());
+                        }
                       }
                     });
                     return temp;
