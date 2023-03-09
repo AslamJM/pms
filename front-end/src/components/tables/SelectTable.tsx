@@ -1,6 +1,6 @@
 import MaterialReactTable, { MRT_ColumnDef } from "material-react-table";
 import { createPaymentData } from "./data";
-import _ from "underscore";
+import _, { omit } from "underscore";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { useCollectorContext } from "../../context/CollectorContext";
 import { IPayment, queryPayments } from "../../api/client";
@@ -340,14 +340,53 @@ const PaymentTableSelect = () => {
 
   //function for pdf export
   const exportPdf = (cols: any, data: any) => {
+    let colss = _.keys(data[0]).map((key, index) => ({
+      header: cols[index],
+      dataKey: key,
+    }));
+
+    let totalCol: Record<string, string | number> = _.mapObject(
+      data[0],
+      function (val, key) {
+        if (typeof val === "number") {
+          return 0;
+        } else {
+          return "";
+        }
+      }
+    );
+
+    let processedData = data.map((row: any) =>
+      _.mapObject(row, function (val, key) {
+        if (typeof val === "number") {
+          totalCol[key] = (totalCol[key] as number) + val;
+          return currencyFormatter.format(val, {});
+        } else {
+          return val;
+        }
+      })
+    );
+
+    const totalColRow = _.values(totalCol).map((val) =>
+      typeof val === "number" ? currencyFormatter.format(val, {}) : val
+    );
+
     const doc = new jsPDF({ orientation: "landscape" });
-    doc.text(`Payments - ${dayjs().format("DD/MM/YYYY")}`, 5, 10);
+
+    doc.setFontSize(15);
+    doc.text("HS Enterprises Credit Payment", 100, 10);
+    doc.setFontSize(12);
+    doc.text(`Date - ${dayjs().format("DD/MM/YYYY")}`, 15, 15);
+    doc.text(`Company - ${data[0].company}`, 15, 20);
+
     autoTable(doc, {
-      head: [cols],
-      body: data,
+      body: processedData,
+      columns: colss,
+      foot: [totalColRow],
+      margin: { top: 25 },
       styles: { cellPadding: 1, fontSize: 10 },
-      columnStyles: { text: { cellWidth: "auto" } },
     });
+
     doc.save(`table-${dayjs().format("DD/MM/YYYY")}.pdf`);
   };
   //
@@ -463,32 +502,10 @@ const PaymentTableSelect = () => {
                   .map((c) => c.columnDef.header)
                   .filter((c) => c !== "Select") as string[];
 
-                let colIds = table
-                  .getVisibleFlatColumns()
-                  .map((c) => c.id)
-                  .filter((c) => c !== "mrt-row-select");
-
                 let rows = table
                   .getSelectedRowModel()
-                  .rows.map((r) => r.original)
-                  .map((r) => {
-                    let temp: any[] = [];
-                    colIds.map((c) => {
-                      if (r[c as keyof typeof r] !== null) {
-                        if (typeof r[c as keyof typeof r] === "number") {
-                          temp.push(
-                            currencyFormatter.format(
-                              r[c as keyof typeof r] as number,
-                              {}
-                            )
-                          );
-                        } else {
-                          temp.push(r[c as keyof typeof r].toString());
-                        }
-                      }
-                    });
-                    return temp;
-                  });
+                  .rows.map((r) => omit(r.original, "_id"));
+
                 exportPdf(cols, rows);
               }}
             >
