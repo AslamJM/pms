@@ -27,6 +27,7 @@ import IconButton from "@mui/material/IconButton";
 import currencyFormatter from "currency-formatter";
 
 const columns: IColumn[] = [
+  { id: "paymentDate", label: "Invoice Date" },
   { id: "invoice", label: "Invoice", maxWidth: 6 },
   { id: "shop", label: "Shop" },
   { id: "company", label: "Company" },
@@ -43,6 +44,13 @@ const columns: IColumn[] = [
     align: "right",
     format: (val) => currencyFormatter.format(val, {}),
   },
+  {
+    id: "dueAmount",
+    label: "Due",
+    align: "right",
+    format: (val) => currencyFormatter.format(val, {}),
+  },
+
   {
     id: "free",
     label: "Free",
@@ -68,15 +76,7 @@ const columns: IColumn[] = [
     align: "right",
     format: (val) => currencyFormatter.format(val, {}),
   },
-  {
-    id: "dueAmount",
-    label: "Due",
-    align: "right",
-    format: (val) => currencyFormatter.format(val, {}),
-  },
   { id: "paymentStatus", label: "Status" },
-  { id: "collector", label: "Collector" },
-  { id: "paymentDate", label: "Invoice Date" },
 ];
 
 function createPaymentData(payment: IPayment) {
@@ -93,7 +93,6 @@ function createPaymentData(payment: IPayment) {
     paymentStatus,
     company,
     paymentDate,
-    collector,
   } = payment;
   return {
     invoice,
@@ -107,7 +106,6 @@ function createPaymentData(payment: IPayment) {
     dueAmount,
     paymentStatus,
     company: company ? company.name : "-",
-    collector: collector ? collector.name : "-",
     paymentDate: dayjs(new Date(paymentDate)).format("DD/MM/YYYY"),
   };
 }
@@ -175,7 +173,7 @@ const PaymentTable = () => {
     let tSaleable = payments.reduce((acc, curr) => curr.returnAmount + acc, 0);
     let tDiscount = payments.reduce((acc, curr) => curr.discount + acc, 0);
     let tDue = payments.reduce((acc, curr) => curr.dueAmount + acc, 0);
-    return [tTotal, tPaid, tFree, tDiscount, tSaleable, tMarket, tDue];
+    return [tTotal, tPaid, tDue, tFree, tDiscount, tSaleable, tMarket];
   }, [payments]);
 
   useEffect(() => {
@@ -234,6 +232,7 @@ const PaymentTable = () => {
                   <Checkbox
                     checked={isItemSelected}
                     onClick={(event) => handleClick(event, rowPayment._id)}
+                    size="small"
                   />
                 </TableCell>
                 {columns.map((col, index) => {
@@ -263,6 +262,11 @@ const PaymentTable = () => {
                       key={index}
                       align={col.align}
                       width={col.maxWidth}
+                      sx={
+                        col.id === "dueAmount"
+                          ? { backgroundColor: "lightskyblue" }
+                          : {}
+                      }
                     >
                       {col.format
                         ? col.format(
@@ -357,9 +361,9 @@ const PaymentTable = () => {
           <TableCell>
             <Typography>Total</Typography>
           </TableCell>
-          <TableCell colSpan={2} />
+          <TableCell colSpan={3} />
           {totalAmounts().map((val, index) => (
-            <TableCell key={index}>
+            <TableCell key={index} align="right">
               <Typography
                 component="b"
                 sx={{ fontWeight: "bold", fontSize: 14 }}
