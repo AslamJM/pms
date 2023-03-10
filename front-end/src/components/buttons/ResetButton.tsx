@@ -1,4 +1,5 @@
 import Button from "@mui/material/Button";
+import dayjs from "dayjs";
 import { useGlobalContext } from "../../context/GlobalContext";
 import { usePaymentContext } from "../../context/PaymentContext";
 
@@ -9,7 +10,7 @@ const ResetButton = () => {
     <Button
       onClick={() => {
         setCheckedPayments([]);
-        resetParams({ count: 50 });
+        resetParams({ paymentDate: dayjs() });
       }}
       variant="contained"
       sx={{ ml: 1 }}

@@ -18,6 +18,7 @@ const PaymentFilters = () => {
         <FilterByCompany />
         <FilterByCollector />
         <FilterByStatus />
+        <VerifedFilter />
         {/* //<FilterByRegion /> */}
       </div>
       <div
@@ -29,8 +30,8 @@ const PaymentFilters = () => {
         }}
       >
         <PaymentDateFilter />
-        <LimitFilter />
-        <VerifedFilter />
+        {/* <LimitFilter /> */}
+        <DateRangeFilter />
         <ResetButton />
       </div>
     </>

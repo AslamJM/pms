@@ -11,7 +11,7 @@ const FilterByCollector = () => {
 
   const collectorOptions = useMemo(() => {
     return collectors.map((c) => ({ label: c.name, _id: c._id }));
-  }, []);
+  }, [collectors]);
 
   return (
     <div style={{ width: 200, marginRight: 10 }}>

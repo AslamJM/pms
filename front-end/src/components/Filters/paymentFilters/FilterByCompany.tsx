@@ -9,7 +9,7 @@ const FilterByCompany = () => {
 
   const companyOptions = useMemo(() => {
     return companies.map((c) => ({ label: c.name, _id: c._id }));
-  }, []);
+  }, [companies]);
 
   return (
     <div style={{ width: 200, marginRight: 10 }}>

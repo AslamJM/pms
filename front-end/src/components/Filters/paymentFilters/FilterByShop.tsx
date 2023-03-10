@@ -3,12 +3,15 @@ import { useGlobalContext } from "../../../context/GlobalContext";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import Autocomplete from "@mui/material/Autocomplete";
+import { useMemo } from "react";
 
 const FilterByShop = () => {
   const { shops } = useShopContext();
   const { setParams } = useGlobalContext();
 
-  const shopOptions = shops.map((s) => ({ label: s.name, _id: s._id }));
+  const shopOptions = useMemo(() => {
+    return shops.map((s) => ({ label: s.name, _id: s._id }));
+  }, [shops]);
 
   return (
     <div style={{ width: 200, marginRight: 10 }}>

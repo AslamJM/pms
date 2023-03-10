@@ -8,7 +8,7 @@ import { useGlobalContext } from "../../../context/GlobalContext";
 import { useState } from "react";
 
 const PaymentDateFilter = () => {
-  const [date, setDate] = useState<Dayjs | null>(dayjs());
+  const [date, setDate] = useState<Dayjs | null>(null);
   const { setParams } = useGlobalContext();
 
   const handleChange = async (newValue: Dayjs | null) => {

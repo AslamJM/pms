@@ -9,7 +9,7 @@ const FilterByStatus = () => {
   return (
     <div style={{ width: 200, marginRight: 10 }}>
       <FormControl fullWidth>
-        <InputLabel>Payment Status</InputLabel>
+        <InputLabel size="small">Payment Status</InputLabel>
         <Select
           fullWidth
           onChange={(e) => setParams({ paymentStatus: e.target.value })}

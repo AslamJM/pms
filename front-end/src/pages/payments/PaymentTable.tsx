@@ -278,7 +278,7 @@ const PaymentTable = () => {
                   <TableCell
                     sx={{
                       display: "flex",
-                      flexDirection: "column",
+                      justifyContent: "space-between",
                       alignItems: "center",
                     }}
                   >

@@ -116,10 +116,10 @@ const CustomTable = ({
           </Box>
         </Toolbar>
       )}
-      <TableContainer>
-        <Table stickyHeader>
+      <TableContainer sx={{ width: "max-content" }}>
+        <Table stickyHeader size="small">
           <TableHead>
-            <TableRow>
+            <TableRow sx={{ height: 20 }}>
               <TableCell align="center" sx={{ maxWidth: 0.5 }}>
                 <Checkbox
                   //indeterminate={numSelected > 0 && numSelected < count}

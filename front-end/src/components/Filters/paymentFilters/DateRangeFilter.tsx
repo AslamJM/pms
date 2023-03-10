@@ -3,14 +3,14 @@ import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
 import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
 import { DesktopDatePicker } from "@mui/x-date-pickers/DesktopDatePicker";
 import Box from "@mui/material/Box";
-import dayjs, { Dayjs } from "dayjs";
+import { Dayjs } from "dayjs";
 import { useState } from "react";
 import { useGlobalContext } from "../../../context/GlobalContext";
 import Button from "@mui/material/Button";
 
 const DateRangeFilter = () => {
-  const [from, setFrom] = useState<Dayjs | null>(dayjs());
-  const [to, setTo] = useState<Dayjs | null>(dayjs());
+  const [from, setFrom] = useState<Dayjs | null>(null);
+  const [to, setTo] = useState<Dayjs | null>(null);
 
   const { setParams } = useGlobalContext();
 
@@ -42,7 +42,15 @@ const DateRangeFilter = () => {
             <TextField {...params} sx={{ mr: 1 }} size="small" />
           )}
         />
-        <Button variant="contained" onClick={() => setParams({ from, to })}>
+        <Button
+          variant="contained"
+          onClick={() => {
+            setParams({ from, to });
+            setFrom(null);
+            setTo(null);
+          }}
+          disabled={!from || !to}
+        >
           Fetch Payments
         </Button>
       </Box>
