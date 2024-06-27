@@ -32,6 +32,7 @@ const Shops = () => {
       <AddShopModal />
 
       <AreaList />
+      <h1>List of Shops</h1>
       <ShopTable />
     </div>
   );

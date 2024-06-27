@@ -37,6 +37,7 @@ export default function InvoiceSearch() {
         alignItems: "center",
         width: 400,
         flexGrow: 1,
+        boxShadow: 5
       }}
     >
       <InputBase
@@ -73,7 +74,7 @@ export default function InvoiceSearch() {
           </Button>
         </>
       ) : (
-        <Typography sx={{ ml: 2 }}>search an invoice....</Typography>
+        <Typography sx={{ ml: 2 }}>Search an Invoice...</Typography>
       )}
     </Paper>
   );

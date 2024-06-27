@@ -33,14 +33,14 @@ const CompanyPayments = () => {
   }
 
   return (
-    <Paper sx={{ width: 400, my: 1, p: 1 }}>
-      <Typography>Payments collections for this month</Typography>
+    <Paper sx={{ width: 400, my: 1, p: 1, boxShadow: 5 }}>
+      <Typography align="center" mt={1} mb={1} sx={{ fontWeight: 'bold' }}>PAYMENTS COLLECTIONS FOR THIS MONTH</Typography>
       <TableContainer>
         <Table size="small">
-          <TableHead sx={{ bgcolor: "#BB892D" }}>
+          <TableHead sx={{ bgcolor: "#BB892D", color: "white"}}>
             <TableRow>
-              <TableCell>Company</TableCell>
-              <TableCell align="right">Amount</TableCell>
+              <TableCell sx={{ color: "white"}}>Company</TableCell>
+              <TableCell sx={{color: "white"}} align="right">Amount</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

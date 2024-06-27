@@ -5,13 +5,14 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import { useQuery } from "react-query";
 import { IPayment, queryPayments } from "../../api/client";
-import { CircularProgress, Grid, Table } from "@mui/material";
+import { CircularProgress, Grid, Paper, Table, Box } from "@mui/material";
 import UpdateDue from "./UpdateDue";
 import Typography from "@mui/material/Typography";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 const SearchShop = () => {
   const [shop, setShop] = useState<string | null>(null);
@@ -60,8 +61,9 @@ const SearchShop = () => {
         </div>
       </div>
       <div style={{ padding: "0 20px 0 20px" }}>
-        {shop && payments.length > 0 ? (
-          <Table size="small">
+      <Paper sx={{ width: 750, my: 1, p: 1, boxShadow: 5 }}>
+          <TableContainer style={{ maxHeight: 400 }}>
+          <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
                 {[
@@ -79,20 +81,31 @@ const SearchShop = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              {payments.map((p) => (
+            {shop && payments.length > 0 ? (
+              payments.map((p) => (
                 <UpdateDue payment={p} key={p._id} />
-              ))}
-            </TableBody>
+              ))
+            ) : shop && payments.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8}>
+                  <Typography component="i" align="center">
+                    This shop has no due payments.
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            ) : (
+              <TableRow>
+                <TableCell colSpan={8}>
+                  <Typography component="i" align="left">
+                    Search for a shop name to find due payments.
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
           </Table>
-        ) : shop && payments.length === 0 ? (
-          <Typography component="i" align="center">
-            This shop has no due payments.
-          </Typography>
-        ) : (
-          <Typography component="i" align="center">
-            Search for a shop name to find due payments.
-          </Typography>
-        )}
+          </TableContainer>
+      </Paper>
       </div>
     </div>
   );
