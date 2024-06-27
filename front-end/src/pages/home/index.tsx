@@ -10,10 +10,28 @@ import CompanyPayments from "./CompanyPayments";
 import dayjs from "dayjs";
 import UpdateInvoiceModal from "./modals/UpdateInvoiceModal";
 import SearchShop from "./SearchShop";
+import WebFont from 'webfontloader';
+import React, { useEffect } from 'react';
 
 const Home = () => {
   const { companies } = useGlobalContext();
   const { user } = useAuthContext();
+
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: [
+          'Roboto:400,700',
+          'Open Sans:400,700',
+          'Lato:400,700',
+          'Montserrat:400,700',
+          'Merriweather:400,700',
+          'Playfair Display:400,700',
+          'Poppins:400,700'
+        ]
+      }
+    });
+  }, []);
 
   return (
     <div>
@@ -22,10 +40,10 @@ const Home = () => {
       <UpdateInvoiceModal />
       <Box mt={2}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h5" sx={{ fontWeight: 'bold' }}>
+          <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Merriweather' }}>
             Welcome {user?.role}
           </Typography>
-          <Typography variant="h6">
+          <Typography variant="h6" sx={{ fontFamily: 'Roboto'}}>
             {dayjs().format("DD/MM/YYYY")}
           </Typography>
         </Box>
@@ -34,7 +52,7 @@ const Home = () => {
           <CompanyPayments />
           {user?.role === "ADMIN" && (
             <Box ml={2} flexGrow={1} >
-              <Typography variant="h5" sx={{ fontWeight: 'bold' }}>Payments</Typography>
+              <Typography variant="h5" sx={{ fontFamily: 'Poppins' }}>Payments</Typography>
               <Divider />
               <Box mb={4} display="flex" mt={3} >
                 <AddButton title="Add New Payment" />

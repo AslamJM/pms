@@ -65,7 +65,7 @@ const SearchShop = () => {
           <TableContainer style={{ maxHeight: 400 }}>
           <Table size="small" stickyHeader>
             <TableHead>
-              <TableRow>
+              <TableRow >
                 {[
                   "Invoice Date",
                   "Invoice",
@@ -76,7 +76,7 @@ const SearchShop = () => {
                   "Date",
                   "Action",
                 ].map((item) => (
-                  <TableCell key={item}>{item}</TableCell>
+                  <TableCell key={item} sx={{ fontFamily: 'Poppins' }}>{item}</TableCell>
                 ))}
               </TableRow>
             </TableHead>
@@ -88,7 +88,7 @@ const SearchShop = () => {
             ) : shop && payments.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={8}>
-                  <Typography component="i" align="center">
+                  <Typography align="center" style={{ fontFamily: 'Poppins', color: "grey" }}>
                     This shop has no due payments.
                   </Typography>
                 </TableCell>
@@ -96,7 +96,7 @@ const SearchShop = () => {
             ) : (
               <TableRow>
                 <TableCell colSpan={8}>
-                  <Typography component="i" align="left">
+                  <Typography align="left" style={{ fontFamily: 'Poppins', color: "grey" }}>
                     Search for a shop name to find due payments.
                   </Typography>
                 </TableCell>

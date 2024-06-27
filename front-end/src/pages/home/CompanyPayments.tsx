@@ -12,6 +12,9 @@ import {
 import currencyFormatter from "currency-formatter";
 import TableContainer from "@mui/material/TableContainer";
 import { useGlobalContext } from "../../context/GlobalContext";
+import WebFont from 'webfontloader';
+import React, { useEffect } from 'react';
+
 const CompanyPayments = () => {
   const getCompanyIncome = async () =>
     (await apiClient.get<Record<string, number>>("/payments/company-income"))
@@ -21,6 +24,22 @@ const CompanyPayments = () => {
     "company-income",
     getCompanyIncome
   );
+
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: [
+          'Roboto:400,700',
+          'Open Sans:400,700',
+          'Lato:400,700',
+          'Montserrat:400,700',
+          'Merriweather:400,700',
+          'Playfair Display:400,700',
+          'Poppins:400,700'
+        ]
+      }
+    });
+  }, []);
 
   const { companies } = useGlobalContext();
 
@@ -34,21 +53,21 @@ const CompanyPayments = () => {
 
   return (
     <Paper sx={{ width: 400, my: 1, p: 1, boxShadow: 5 }}>
-      <Typography align="center" mt={1} mb={1} sx={{ fontWeight: 'bold' }}>PAYMENTS COLLECTIONS FOR THIS MONTH</Typography>
+      <Typography align="center" mt={1} mb={1} sx={{ fontWeight: 'bold', fontFamily: 'Poppins' }}>Payments Collections For This Month</Typography>
       <TableContainer>
         <Table size="small">
           <TableHead sx={{ bgcolor: "#BB892D", color: "white"}}>
             <TableRow>
-              <TableCell sx={{ color: "white"}}>Company</TableCell>
-              <TableCell sx={{color: "white"}} align="right">Amount</TableCell>
+              <TableCell sx={{ color: "white", fontWeight: 'bold', fontFamily: 'Lato'}}>Company</TableCell>
+              <TableCell sx={{color: "white", fontWeight: 'bold', fontFamily: 'Lato'}} align="right">Amount</TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {data &&
               companies.map((c) => (
                 <TableRow key={c._id}>
-                  <TableCell>{c.name}</TableCell>
-                  <TableCell align="right">
+                  <TableCell sx={{ fontFamily: 'Poppins'}}>{c.name}</TableCell>
+                  <TableCell align="right" sx={{ fontFamily: 'Poppins'}}>
                     {currencyFormatter.format(data[c.name], {})}
                   </TableCell>
                 </TableRow>

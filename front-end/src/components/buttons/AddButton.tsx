@@ -16,6 +16,7 @@ const AddButton = ({ title }: Props) => {
       variant="outlined"
       color="primary"
       onClick={() => setAddModalOpen(true)}
+      sx={{ fontFamily: 'Poppins' }}
     >
       {title}
     </Button>
