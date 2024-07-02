@@ -120,12 +120,12 @@ const AddPaymentForm = () => {
         <form onSubmit={handleSubmit}>
           <Box>
             <Box display="flex" width="100%" my={2}>
-              <Box sx={{ mx: 0.5 }} width="33%">
-                <FormControl fullWidth>
+              <Box sx={{ mx: 0.5, fontFamily: 'Poppins' }} width="33%">
+                <FormControl fullWidth sx={{ fontFamily: 'Poppins' }}>
                   <Autocomplete
                     autoSelect
                     options={shopOptions}
-                    sx={{ mx: 1 }}
+                    sx={{ mx: 1, fontFamily: 'Poppins' }}
                     renderInput={(params) => (
                       <TextField
                         {...params}
@@ -140,7 +140,7 @@ const AddPaymentForm = () => {
               </Box>
               <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth variant="outlined">
-                <InputLabel> Company</InputLabel>
+                <InputLabel sx={{ fontFamily: 'Poppins' }}> Company</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
@@ -148,6 +148,7 @@ const AddPaymentForm = () => {
                     value={values.company}
                     input={<OutlinedInput label="Company" />}
                     size="small"
+                    sx={{ fontFamily:"Poppins" }}
                   >
                     {companies.map((item, index) => (
                       <MenuItem key={index} value={item._id}>
@@ -160,7 +161,7 @@ const AddPaymentForm = () => {
 
               <Box sx={{ mx: 0.5 }} width="33%">
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel>Collector</InputLabel>
+                  <InputLabel sx={{ fontFamily: 'Poppins' }}>Collector</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
@@ -168,6 +169,7 @@ const AddPaymentForm = () => {
                     value={values.collector}
                     input={<OutlinedInput label="Collector" />}
                     size="small"
+                    sx={{ fontFamily: 'Poppins' }}
                   >
                     {collectors.map((item, index) => (
                       <MenuItem key={index} value={item._id}>

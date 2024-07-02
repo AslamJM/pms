@@ -22,7 +22,7 @@ const SearchShop = () => {
   const shopOptions = shops.map((s) => ({ label: s.name, _id: s._id }));
 
   const { isLoading, refetch } = useQuery(
-    "payment shops",
+    "Payment Shops",
     async () => await queryPayments({ shop, paymentStatus: "DUE" }),
     {
       enabled: false,
@@ -33,19 +33,22 @@ const SearchShop = () => {
   );
 
   return (
-    <div style={{ overflow: "hidden", flexGrow: 1 }}>
+    <div style={{ overflow: "hidden", flexGrow: 1, fontFamily: 'Poppins' }}>
       <div style={{ display: "flex", padding: 10 }}>
         <Autocomplete
           autoSelect
           options={shopOptions}
           fullWidth
-          sx={{ mx: 1 }}
+          sx={{ mx: 1, fontFamily: 'Poppins' }}
           renderInput={(params) => (
             <TextField
               {...params}
               label="Search the shop name"
               size="small"
               fullWidth
+              InputLabelProps={{
+                style: { fontFamily: 'Poppins, sans-serif' }
+              }}
             />
           )}
           onChange={(e, v) => setShop(v?._id!)}
@@ -55,17 +58,18 @@ const SearchShop = () => {
             variant="contained"
             disabled={!shop}
             onClick={() => refetch()}
+            sx={{ fontFamily: 'Poppins' }}
           >
             {isLoading ? <CircularProgress /> : "search"}
           </Button>
         </div>
       </div>
       <div style={{ padding: "0 20px 0 20px" }}>
-      <Paper sx={{ width: 750, my: 1, p: 1, boxShadow: 5 }}>
-          <TableContainer style={{ maxHeight: 400 }}>
+      <Paper sx={{ width: 750, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins' }}>
+        <TableContainer style={{ maxHeight: 400 }}>
           <Table size="small" stickyHeader>
             <TableHead>
-              <TableRow >
+              <TableRow>
                 {[
                   "Invoice Date",
                   "Invoice",
@@ -74,13 +78,14 @@ const SearchShop = () => {
                   "Due",
                   "Collector",
                   "Date",
+                  "Amount",
                   "Action",
                 ].map((item) => (
                   <TableCell key={item} sx={{ fontFamily: 'Poppins' }}>{item}</TableCell>
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody>
+            <TableBody >
             {shop && payments.length > 0 ? (
               payments.map((p) => (
                 <UpdateDue payment={p} key={p._id} />

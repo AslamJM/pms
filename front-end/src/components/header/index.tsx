@@ -5,7 +5,7 @@ import { Box } from "@mui/system";
 export const PageHeader = ({ title }: { title: string }) => {
   return (
     <Box>
-      <Typography variant="h5" sx={{ mt: 1, fontWeight: 'bold' }}>
+      <Typography variant="h5" sx={{ mt: 2, fontWeight: 'bold', fontFamily: 'Merriweather' }}>
         {title}
       </Typography>
       <Divider sx={{ mb: 2 }} />

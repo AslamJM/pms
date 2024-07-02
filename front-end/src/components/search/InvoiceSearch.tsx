@@ -41,7 +41,7 @@ export default function InvoiceSearch() {
       }}
     >
       <InputBase
-        sx={{ ml: 1, flexShrink: 1 }}
+        sx={{ ml: 1, flexShrink: 1, fontFamily: 'Poppins' }}
         placeholder="Search invoice number"
         value={search}
         onChange={(e) => setSearch(e.target.value)}
@@ -58,6 +58,7 @@ export default function InvoiceSearch() {
           <Chip
             label={selectedPayment.invoice + " - " + selectedPayment.shop.name}
             color="success"
+            sx={{ ml: 1, fontFamily: 'Poppins' }}
             onDelete={() => {
               setSelectedPayment(null);
               setSearch("");
@@ -66,7 +67,7 @@ export default function InvoiceSearch() {
           <Button
             size="small"
             variant="outlined"
-            sx={{ ml: 1 }}
+            sx={{ ml: 1, fontFamily: 'Poppins' }}
             onClick={() => setEditModalOpen(true)}
             startIcon={<UpgradeIcon />}
           >
@@ -74,7 +75,7 @@ export default function InvoiceSearch() {
           </Button>
         </>
       ) : (
-        <Typography sx={{ ml: 2 }}>Search an Invoice...</Typography>
+        <Typography sx={{ ml: 2, fontFamily: 'Poppins' }}>Search an Invoice...</Typography>
       )}
     </Paper>
   );

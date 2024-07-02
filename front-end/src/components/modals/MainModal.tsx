@@ -28,7 +28,7 @@ const Modal = ({ title, children, type }: Props) => {
           : addModalOpen
       }
     >
-      <DialogTitle>
+      <DialogTitle sx={{ fontFamily: 'Poppins' }}>
         {title}
         <IconButton
           aria-label="close"
@@ -46,6 +46,7 @@ const Modal = ({ title, children, type }: Props) => {
             right: 8,
             top: 8,
             color: (theme) => theme.palette.grey[500],
+            fontFamily: 'Poppins'
           }}
         >
           <CloseIcon />

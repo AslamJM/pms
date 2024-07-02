@@ -7,7 +7,7 @@ const FilterByStatus = () => {
   const { setParams } = useGlobalContext();
 
   return (
-    <div style={{ width: 200, marginRight: 10 }}>
+    <div style={{ width: 242, marginRight: 17 }}>
       <FormControl fullWidth variant="outlined" size="small">
         <InputLabel>Payment Status</InputLabel>
         <Select

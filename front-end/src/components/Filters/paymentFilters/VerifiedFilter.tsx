@@ -20,7 +20,7 @@ const VerifedFilter = () => {
               size="small"
             />
           }
-          label="verified"
+          label="Verified"
         />
         <FormControlLabel
           value="not"
@@ -30,7 +30,7 @@ const VerifedFilter = () => {
               size="small"
             />
           }
-          label="not"
+          label="Not"
         />
       </RadioGroup>
     </FormControl>

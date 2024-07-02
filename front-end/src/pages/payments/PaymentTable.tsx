@@ -190,7 +190,7 @@ const PaymentTable = () => {
 
   if (payments && payments.length === 0) {
     return (
-      <Box mt={5}>
+      <Box mt={5} >
         <Typography color="GrayText" align="center">
           You have no payments to display
         </Typography>
@@ -319,7 +319,7 @@ const PaymentTable = () => {
                   <TableCell
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Tooltip title="edit">
+                    <Tooltip title="Edit">
                       <IconButton
                         onClick={() => {
                           setSelectedPayment(rowPayment);
@@ -329,7 +329,7 @@ const PaymentTable = () => {
                         <BorderColorIcon color="primary" fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="delete">
+                    <Tooltip title="Delete">
                       <IconButton
                         onClick={() => {
                           setSelectedPayment(rowPayment);
@@ -339,7 +339,7 @@ const PaymentTable = () => {
                         <ClearIcon color="error" fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="verify">
+                    <Tooltip title="Verify">
                       <IconButton
                         onClick={async () => {
                           await verifyPayment(rowPayment._id);

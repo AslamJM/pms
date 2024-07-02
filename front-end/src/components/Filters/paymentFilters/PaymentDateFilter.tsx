@@ -18,9 +18,9 @@ const PaymentDateFilter = () => {
 
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
-      <Box style={{ marginRight: 10, width: 200 }}>
+      <Box style={{ marginRight: 10, width: 250 }}>
         <DesktopDatePicker
-          label="PaymentDate"
+          label="Payment Date"
           inputFormat="DD/MM/YYYY"
           value={date}
           onChange={handleChange}

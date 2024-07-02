@@ -7,6 +7,7 @@ import {
   InputLabel,
   Box,
   CircularProgress,
+  OutlinedInput,
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Formik } from "formik";
@@ -118,13 +119,16 @@ const EditPaymentForm = () => {
           <Box>
             <Box display="flex" width="100%" my={2}>
               <Box sx={{ mx: 0.5 }} width="50%">
-                <FormControl fullWidth>
-                  <InputLabel>Shop</InputLabel>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel sx={{ fontFamily: 'Poppins' }}>Shop</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
                     name={FORM_MODEL.shop}
                     value={values.shop}
+                    input={<OutlinedInput label="Shop" />}
+                    size="small"
+                    sx={{ fontFamily:"Poppins" }}
                   >
                     {shops.map((item, index) => (
                       <MenuItem key={index} value={item._id}>
@@ -136,13 +140,16 @@ const EditPaymentForm = () => {
               </Box>
 
               <Box sx={{ mx: 0.5 }} width="50%">
-                <FormControl fullWidth>
-                  <InputLabel>Collector</InputLabel>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel sx={{ fontFamily: 'Poppins' }}>Collector</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
                     name={FORM_MODEL.collector}
                     value={values.collector}
+                    input={<OutlinedInput label="Collector" />}
+                    size="small"
+                    sx={{ fontFamily:"Poppins" }}
                   >
                     {collectors.map((item, index) => (
                       <MenuItem key={index} value={item._id}>
@@ -166,13 +173,16 @@ const EditPaymentForm = () => {
                 </FormControl>
               </Box>
               <Box sx={{ mx: 0.5 }} width="33%">
-                <FormControl fullWidth>
-                  <InputLabel>Company</InputLabel>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel sx={{ fontFamily: 'Poppins' }}>Company</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
                     name={FORM_MODEL.company}
                     value={values.company}
+                    input={<OutlinedInput label="Company" />}
+                    size="small"
+                    sx={{ fontFamily:"Poppins" }}
                   >
                     {companies.map((item, index) => (
                       <MenuItem key={index} value={item._id}>
@@ -281,13 +291,16 @@ const EditPaymentForm = () => {
             </Box>
             <Box display="flex" width="100%" my={2}>
               <Box sx={{ mx: 0.5 }} width="50%">
-                <FormControl fullWidth>
-                  <InputLabel>Payment Method</InputLabel>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel sx={{ fontFamily:"Poppins" }}>Payment Method</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
                     name={FORM_MODEL.paymentMethod}
                     value={values.paymentMethod}
+                    input={<OutlinedInput label="Payment Method" />}
+                    size="small"
+                    sx={{ fontFamily:"Poppins" }}
                   >
                     {PAYMENT_METHOD.map((item, index) => (
                       <MenuItem key={index} value={item}>
@@ -298,13 +311,16 @@ const EditPaymentForm = () => {
                 </FormControl>
               </Box>
               <Box sx={{ mx: 0.5 }} width="50%">
-                <FormControl fullWidth>
-                  <InputLabel>Payment Status</InputLabel>
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel sx={{ fontFamily:"Poppins" }}>Payment Status</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
                     name={FORM_MODEL.paymentStatus}
                     value={values.paymentStatus}
+                    input={<OutlinedInput label="Payment Method" />}
+                    size="small"
+                    sx={{ fontFamily:"Poppins" }}
                   >
                     {PAYMENT_STATUS.map((item, index) => (
                       <MenuItem key={index} value={item}>

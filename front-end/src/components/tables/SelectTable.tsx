@@ -410,9 +410,9 @@ const PaymentTableSelect = () => {
         total={ptotal}
       />
       {/*filters with date range*/}
-      <Typography sx={{ mb: 0.8 }}>select a date range</Typography>
+      <Typography sx={{ mb: 1, fontFamily: 'Poppins' }}>Select a Date Range to Fetch Data</Typography>
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Box display="flex" alignItems="flex-end" mb={2}>
+        <Box display="flex" alignItems="flex-end" mb={2} >
           <DesktopDatePicker
             label="From"
             inputFormat="DD/MM/YYYY"
@@ -454,15 +454,14 @@ const PaymentTableSelect = () => {
         muiTableBodyProps={{
           sx: {
             "& tr:nth-of-type(even)": {
-              backgroundColor: "#ADADC9",
+              backgroundColor: "#ADADC9",width: "100%", maxHeight: 400, overflowY: 'auto', boxShadow: 5
             },
           },
         }}
         //top tool bar actions
         renderTopToolbarCustomActions={({ table }) => (
           <Box
-            sx={{ display: "flex", gap: "1rem", p: "0.5rem", flexWrap: "wrap" }}
-          >
+            sx={{ display: "flex", gap: "1rem", p: "0.5rem", flexWrap: "wrap", }}>
             <Button
               color="primary"
               disabled={!table.getIsSomeRowsSelected}

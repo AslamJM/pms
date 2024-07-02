@@ -58,18 +58,18 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
         </Typography>
       </TableCell>
       <TableCell size="small">
-        <Typography sx={{ fontSize: 14 }}> {payment.invoice}</Typography>
+        <Typography sx={{ fontSize: 14, fontFamily: 'Poppins' }}> {payment.invoice}</Typography>
       </TableCell>
       <TableCell size="small">
-        <Typography sx={{ fontSize: 14 }}>{payment.company.name}</Typography>
+        <Typography sx={{ fontSize: 14, fontFamily: 'Poppins' }}>{payment.company.name}</Typography>
       </TableCell>
       <TableCell size="small">
-        <Typography sx={{ fontSize: 14 }}>
+        <Typography sx={{ fontSize: 14, fontFamily: 'Poppins' }}>
           {currencyFormatter.format(payment.totalAmount, {})}
         </Typography>
       </TableCell>
       <TableCell size="small">
-        <Typography sx={{ fontSize: 14 }}>
+        <Typography sx={{ fontSize: 14, fontFamily: 'Poppins' }}>
           {currencyFormatter.format(payment.dueAmount, {})}
         </Typography>
       </TableCell>
@@ -78,37 +78,75 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
           <Autocomplete
             autoSelect
             options={collectorOptions}
+            getOptionLabel={(option) => option.label}
             renderInput={(params) => (
-              <TextField {...params} label="Collector" size="small" />
+              <TextField {...params} label="Collector" size="small" style={{ width: '150px' }} InputLabelProps={{
+                style: { fontFamily: 'Poppins, sans-serif' }
+              }}/>
             )}
             onChange={(e, v) => setCollectorId(v?._id!)}
+            sx={{ fontFamily: 'Poppins, sans-serif',
+              '& .MuiInputBase-option': {
+                fontFamily: 'Poppins, sans-serif',
+              },
+            }}
           />
         </FormControl>
       </TableCell>
       <TableCell>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Box style={{ marginRight: 10, width: 200 }}>
+          <Box style={{ marginRight: 10, width: 200, fontFamily: 'Poppins' }}>
             <DesktopDatePicker
-              label="PaymentDate"
+              label="Payment Date"
               inputFormat="DD/MM/YYYY"
               value={date}
               onChange={handleChange}
               renderInput={(params) => (
-                <TextField {...params} sx={{ mr: 1 }} size="small" />
+                <TextField 
+                  {...params} 
+                  size="small" 
+                  InputLabelProps={{
+                    style: { fontFamily: 'Poppins, sans-serif' }
+                  }} 
+                  sx={{
+                    mr: 1, 
+                    fontFamily: 'Poppins, sans-serif',
+                    '& .MuiInputBase-input': {
+                      fontFamily: 'Poppins, sans-serif',
+                    }
+                  }}
+                />
               )}
             />
           </Box>
         </LocalizationProvider>
       </TableCell>
       <TableCell size="small">
-        <Box display="flex" mt={1}>
+        <Box display="flex" mt={1} sx={{ alignItems: "center" }}>
           <TextField
             size="small"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Amount"
-            sx={{ width: 100, fontSize: 14 }}
+            sx={{ width: 100, fontSize: 14, fontFamily: 'Poppins, sans-serif',
+              '& .MuiInputBase-input': {
+                fontFamily: 'Poppins, sans-serif',
+              },
+              '& .MuiInputBase-input::placeholder': {
+                fontFamily: 'Poppins, sans-serif',
+              },
+              '& .MuiInputLabel-root': {
+                fontFamily: 'Poppins, sans-serif',
+              },
+            }}
+            InputLabelProps={{
+              style: { fontFamily: 'Poppins, sans-serif' }
+            }}
           />
+        </Box>
+      </TableCell>
+      <TableCell size="small">
+        <Box display="flex" mt={1} sx={{ alignItems: "center" }}>
           <FormControlLabel
             control={
               <Checkbox
@@ -118,14 +156,16 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
                   setFull(true);
                   setAmount(payment.dueAmount.toString());
                 }}
+                style={{ fontFamily: 'Poppins, sans-serif' }}
               />
             }
             label="Full"
-            sx={{ ml: 1, fontSize: 12 }}
+            sx={{ fontSize: 12 }}
           />
           <Button
             variant="contained"
             size="small"
+            style={{ alignContent: 'center' }}
             onClick={() =>
               mutate({
                 payment: payment._id,
@@ -135,7 +175,7 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
               })
             }
           >
-            update
+            Update
           </Button>
         </Box>
       </TableCell>

@@ -15,11 +15,21 @@ import { useGlobalContext } from "../../../context/GlobalContext";
 import { useMutation } from "react-query";
 import { PaymentCreateInput } from "../../../api/payments";
 import { apiClient, IPayment } from "../../../api/client";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import Checkbox from "@mui/material/Checkbox";
 import currencyFormatter from "currency-formatter";
+import WebFont from "webfontloader";
 
 const UpdateInvoiceModal = () => {
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: ['Poppins:400,700']
+      }
+    });
+  }, []);
+  
+
   const { selectedPayment, setSelectedPayment } = usePaymentContext();
   const {
     setEditModalOpen,
@@ -43,58 +53,59 @@ const UpdateInvoiceModal = () => {
   );
 
   return (
-    <Modal title="update invoice" type="edit">
+    <Modal title="Update Invoice" type="edit">
       <DialogContent>
-        <Typography>Invoice no: {selectedPayment?.invoice}</Typography>
-        <Typography>
+        <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }}>Invoice no: {selectedPayment?.invoice}</Typography>
+        <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }}>
           Last Payment:
-          {dayjs(selectedPayment?.updatedAt).format("DD/MM/YYYY")}
+           {dayjs(selectedPayment?.updatedAt).format(" DD/MM/YYYY")}
         </Typography>
         <Divider sx={{ mb: 1 }} />
         <Box display="flex">
-          <Typography>Shop: </Typography>
-          <Typography color="GrayText">{selectedPayment?.shop.name}</Typography>
+          <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }}>Shop: </Typography>
+          <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }} color="GrayText">{selectedPayment?.shop.name}</Typography>
         </Box>
         <Box display="flex">
-          <Typography>Region: </Typography>
-          <Typography color="GrayText">
+          <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }}>Region: </Typography>
+          <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }} color="GrayText">
             {selectedPayment?.shop.region.name}
           </Typography>
         </Box>
         <Box display="flex">
-          <Typography>Company: </Typography>
-          <Typography color="GrayText">
+          <Typography sx={{ fontFamily: 'Poppins', mr: 0.5, }}>Company: </Typography>
+          <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }} color="GrayText">
             {selectedPayment?.company.name}
           </Typography>
         </Box>
         <Box display="flex">
-          <Typography>Collector: </Typography>
-          <Typography color="GrayText">
+          <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }}>Collector: </Typography>
+          <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }} color="GrayText">
             {selectedPayment?.collector.name}
           </Typography>
         </Box>
         <Divider sx={{ mb: 1 }} />
         <Box>
-          <Typography>
+          <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }}>
             Paid Amount:{" "}
             {currencyFormatter.format(selectedPayment?.paidAmount!, {})}
           </Typography>
-          <Box
+          <Box sx={{ mr: 0.5, fontFamily: 'Poppins' }}
             display="flex"
             alignItems="center"
             justifyContent="space-between"
           >
-            <Typography sx={{ mr: 0.5 }}>
-              Due:{currencyFormatter.format(selectedPayment?.dueAmount!, {})}
+            <Typography sx={{ mr: 0.5, fontFamily: 'Poppins' }}>
+              Due: {currencyFormatter.format(selectedPayment?.dueAmount!, {})}
             </Typography>
             <TextField
-              placeholder="enter amount"
+              placeholder="Enter Amount"
               size="small"
-              sx={{ mr: 0.5 }}
+              sx={{ mr: 0.5, fontFamily: 'Poppins' }}
               value={due}
               onChange={(e) => setDue(e.target.value)}
             />
             <FormControlLabel
+              sx={{ fontFamily: 'Poppins' }}
               control={
                 <Checkbox
                   checked={paid}
@@ -104,6 +115,7 @@ const UpdateInvoiceModal = () => {
               label="Fully Paid"
             />
             <Button
+              sx={{ fontFamily: 'Poppins' }}
               variant="contained"
               onClick={() => {
                 mutate(
