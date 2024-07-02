@@ -65,6 +65,7 @@ const AddCollectorForm = () => {
                   fullWidth
                   value={values.name}
                   onChange={handleChange}
+                  sx={{ mt: 1 }}
                 />
               </FormControl>
             </Grid>

@@ -7,6 +7,7 @@ import {
   FormControl,
   InputLabel,
   CircularProgress,
+  OutlinedInput,
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Formik } from "formik";
@@ -64,24 +65,28 @@ const AddShopForm = () => {
         <form onSubmit={handleSubmit}>
           <Grid container rowGap={1} columnGap={1}>
             <Grid item xs={6}>
-              <FormControl fullWidth>
+              <FormControl fullWidth >
                 <TextField
                   name="name"
                   label="Name"
                   fullWidth
                   value={values.name}
                   onChange={handleChange}
+                  sx={{ marginTop: 2 }}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={6}>
-              <FormControl fullWidth>
-                <InputLabel>select region</InputLabel>
+              <FormControl fullWidth variant="outlined">
+                <InputLabel sx={{ fontFamily: 'Poppins' }}>Select Region</InputLabel>
                 <Select
                   onChange={handleChange}
                   fullWidth
                   name="region"
                   value={values.region}
+                  input={<OutlinedInput label="Select Region" />}
+                    size="small"
+                    sx={{ fontFamily:"Poppins" }}
                 >
                   {areas.map((item, index) => (
                     <MenuItem key={index} value={item._id}>

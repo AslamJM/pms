@@ -185,7 +185,7 @@ const PaymentTable = () => {
   }
 
   if (isError) {
-    return <div>an error occurred</div>;
+    return <div>An error occurred</div>;
   }
 
   if (payments && payments.length === 0) {
@@ -210,6 +210,7 @@ const PaymentTable = () => {
         setRowsPerPage={setRowsPerPage}
         onSelectAllClick={handleSelectAllClick}
         numSelected={checkedPayments.length}
+        
       >
         {payments
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

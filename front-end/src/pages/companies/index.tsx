@@ -7,6 +7,8 @@ import { PageHeader } from "../../components/header";
 import { createCompany } from "../../api/company";
 import Typography from "@mui/material/Typography/Typography";
 import CompanyName from "./CompanyName";
+import Paper from '@mui/material/Paper';
+import TableContainer from '@mui/material/TableContainer';
 
 const CompanyPage = () => {
   const [company, setCompany] = useState("");
@@ -35,7 +37,7 @@ const CompanyPage = () => {
             sx={{ mr: 1, flexGrow: 1 }}
             size="medium"
             fullWidth
-            placeholder="enter the company name to add"
+            placeholder="Enter the company name to add"
           />
           <Button
             variant="contained"
@@ -51,19 +53,26 @@ const CompanyPage = () => {
           </Button>
         </Box>
       )}
-      <Box>
-        <Typography variant="h5" sx={{ mt: 1, mb: 1 }}>
-          List of companies
-        </Typography>
-        <Divider />
-        {companies.length === 0 ? (
-          <Typography>you have no companies.</Typography>
-        ) : (
-          companies.map((c) => (
-            <CompanyName name={c.name} id={c._id} key={c._id} />
-          ))
-        )}
-      </Box>
+      <div style={{ padding: '8px 0', fontFamily: 'Poppins' }}>
+      <Paper sx={{ width: "30%", overflowY: "auto", overflowX: "hidden", mt: 1, boxShadow: 5, fontFamily: 'Poppins', p: 2, maxHeight: 450, ml: 3, borderRadius: '8px' }}>
+        <TableContainer>
+          <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Montserrat', textAlign: 'center', mb: 1 }}>
+            List of companies
+          </Typography>
+            <Divider />
+            {companies.length === 0 ? (
+              <Typography>You have no companies.</Typography>
+            ) : (
+              companies.map((c) => (
+                <div key={c._id}>
+                <CompanyName name={c.name} id={c._id} />
+                <Divider />
+                </div>
+              ))
+            )}
+          </TableContainer>
+        </Paper>
+      </div>
     </div>
   );
 };

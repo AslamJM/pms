@@ -4,7 +4,7 @@ import AddCollectorForm from "../forms/AddCollectorForm";
 
 const AddCollectorModal = () => {
   return (
-    <Modal title="add new collector" type="add">
+    <Modal title="Add New Collector" type="add">
       <DialogContent>
         <AddCollectorForm />
       </DialogContent>

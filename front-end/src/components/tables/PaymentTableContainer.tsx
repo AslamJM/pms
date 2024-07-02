@@ -82,7 +82,7 @@ const CustomTable = ({
   };
 
   return (
-    <Paper sx={{ width: 1200, overflow: "hidden", mt: 3, boxShadow: 5, p: 1 }}>
+    <Paper sx={{ width: 1200, overflow: "hidden", mt: 3, boxShadow: 5, p: 1 , borderRadius: '8px'}}>
   {numSelected > 0 && (
     <Toolbar sx={{ bgcolor: "#BB892D33" }}>
       <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
@@ -110,13 +110,13 @@ const CustomTable = ({
             />
           </TableCell>
           {columns.map((col) => (
-            <TableCell key={col.id} style={{ minWidth: col.minWidth }}>
+            <TableCell key={col.id} style={{ minWidth: col.minWidth }} sx={{ fontWeight: 'bold', fontFamily: 'Poppins' }}>
               {col.label}
             </TableCell>
           ))}
-          <TableCell align="center">Credit Period</TableCell>
+          <TableCell align="center" sx={{ fontWeight: 'bold', fontFamily: 'Poppins' }}>Credit Period</TableCell>
           {user?.role === "ADMIN" && (
-            <TableCell align="center">Actions</TableCell>
+            <TableCell align="center" sx={{ fontWeight: 'bold', fontFamily: 'Poppins' }}>Actions</TableCell>
           )}
         </TableRow>
       </TableHead>

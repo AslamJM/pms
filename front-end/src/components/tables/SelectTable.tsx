@@ -21,6 +21,8 @@ import dayjs, { Dayjs } from "dayjs";
 import Typography from "@mui/material/Typography";
 import currencyFormatter from "currency-formatter";
 import PaymentHistoryModal from "../../pages/reports/PaymenthistoryModal";
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
 
 const PaymentTableSelect = () => {
   //report states
@@ -404,6 +406,7 @@ const PaymentTableSelect = () => {
 
   return (
     <>
+    
       <PaymentHistoryModal
         paymentId={paymentId}
         invoice={pInvoice}
@@ -411,6 +414,7 @@ const PaymentTableSelect = () => {
       />
       {/*filters with date range*/}
       <Typography sx={{ mb: 1, fontFamily: 'Poppins' }}>Select a Date Range to Fetch Data</Typography>
+      
       <LocalizationProvider dateAdapter={AdapterDayjs}>
         <Box display="flex" alignItems="flex-end" mb={2} >
           <DesktopDatePicker
@@ -444,7 +448,8 @@ const PaymentTableSelect = () => {
         </Box>
       </LocalizationProvider>
       {/******************************/}
-
+      <Paper sx={{ width: 1195, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', borderRadius: '8px' }}>
+      <TableContainer style={{ maxHeight: 600 }}>
       <MaterialReactTable
         columns={columns}
         data={payments ? payments.map((d) => createPaymentData(d)) : []}
@@ -454,7 +459,7 @@ const PaymentTableSelect = () => {
         muiTableBodyProps={{
           sx: {
             "& tr:nth-of-type(even)": {
-              backgroundColor: "#ADADC9",width: "100%", maxHeight: 400, overflowY: 'auto', boxShadow: 5
+              backgroundColor: "#ADADC9",width: "100%"
             },
           },
         }}
@@ -521,6 +526,8 @@ const PaymentTableSelect = () => {
           </Box>
         )}
       />
+      </TableContainer>
+      </Paper>
     </>
   );
 };

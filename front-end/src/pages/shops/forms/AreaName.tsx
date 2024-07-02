@@ -73,7 +73,7 @@ const AreaName = ({ name, id }: { name: string; id: string }) => {
       )}
       {!edit && user?.role === "ADMIN" && (
         <Box display="flex" alignItems="flex-end">
-          <Tooltip title="edit">
+          <Tooltip title="Edit">
             <IconButton
               onClick={() => {
                 setEditVal(name);
@@ -84,7 +84,7 @@ const AreaName = ({ name, id }: { name: string; id: string }) => {
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="delete">
+          <Tooltip title="Delete">
             <IconButton onClick={() => setDelete(true)}>
               <DeleteIcon color="error" fontSize="small" />
             </IconButton>

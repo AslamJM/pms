@@ -7,6 +7,7 @@ import SnackBar from "../../components/snackbar";
 import { PageHeader } from "../../components/header";
 import AddArea from "./forms/AddArea";
 import AreaList from "./AreaList";
+import { Box, Grid } from "@mui/material";
 
 const Shops = () => {
   const { user } = useAuthContext();
@@ -23,17 +24,22 @@ const Shops = () => {
             justifyContent: "space-between",
           }}
         >
-          <AddButton title="add new shop" />
+          <AddButton title="Add New Shop" />
           <AddArea />
         </div>
       )}
 
       <EditShopModel />
       <AddShopModal />
-
-      <AreaList />
-      <h1>List of Shops</h1>
-      <ShopTable />
+      
+      <Grid container spacing={1}>
+        <Grid item xs={12} md={4}>
+          <AreaList />
+        </Grid>
+        <Grid item xs={1} md={4}>
+          <ShopTable />
+        </Grid>
+      </Grid>
     </div>
   );
 };

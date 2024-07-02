@@ -52,7 +52,7 @@ const CompanyPayments = () => {
   }
 
   return (
-    <Paper sx={{ width: 400, my: 1, p: 1, boxShadow: 5 }}>
+    <Paper sx={{ width: 400, my: 1, p: 1, boxShadow: 5, borderRadius: '8px' }}>
       <Typography align="center" mt={1} mb={1} sx={{ fontWeight: 'bold', fontFamily: 'Poppins' }}>Payments Collections For This Month</Typography>
       <TableContainer>
         <Table size="small">

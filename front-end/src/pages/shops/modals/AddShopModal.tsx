@@ -4,7 +4,7 @@ import AddShopForm from "../forms/AddShopForm";
 
 const AddShopModal = () => {
   return (
-    <Modal title="add new shop" type="add">
+    <Modal title="Add New Shop" type="add">
       <DialogContent>
         <AddShopForm />
       </DialogContent>

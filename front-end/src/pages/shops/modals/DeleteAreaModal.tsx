@@ -32,9 +32,9 @@ const DeleteAreaModal = ({ open, id, setOpen }: Props) => {
 
   return (
     <Dialog open={open}>
-      <DialogTitle>delete area</DialogTitle>
+      <DialogTitle>Delete Area</DialogTitle>
       <DialogContent>
-        <DialogContentText>do you want to delete this area?</DialogContentText>
+        <DialogContentText>Do you want to delete this area?</DialogContentText>
       </DialogContent>
       <DialogActions>
         <Button variant="contained" color="error" onClick={() => mutate()}>
