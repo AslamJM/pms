@@ -65,7 +65,7 @@ const SearchShop = () => {
         </div>
       </div>
       <div style={{ padding: "0 20px 0 20px" }}>
-      <Paper sx={{ width: 750, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', borderRadius: '8px' }}>
+      <Paper sx={{ width: 750, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', borderRadius: '10px' }}>
         <TableContainer style={{ maxHeight: 400 }}>
           <Table size="small" stickyHeader>
             <TableHead>

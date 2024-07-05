@@ -50,7 +50,7 @@ const CustomTable = ({
   const { user } = useAuthContext();
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+    <Paper sx={{ width: "100%", overflow: "hidden", fontFamily: 'Poppins' }}>
       <TableContainer>
         <Table stickyHeader>
           <TableHead sx={{ bgcolor: "#BB892D" }}>

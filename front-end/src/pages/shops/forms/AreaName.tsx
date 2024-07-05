@@ -67,7 +67,7 @@ const AreaName = ({ name, id }: { name: string; id: string }) => {
           />
         </FormControl>
       ) : (
-        <Typography variant="body1" sx={{ my: 1, minWidth: 200 }}>
+        <Typography variant="body1" sx={{ my: 1, minWidth: 200, fontFamily: 'Poppins' }}>
           {name}
         </Typography>
       )}

@@ -32,10 +32,10 @@ const DeleteCompany = ({ open, id, setOpen }: Props) => {
 
   return (
     <Dialog open={open}>
-      <DialogTitle>delete company</DialogTitle>
+      <DialogTitle>Delete Company</DialogTitle>
       <DialogContent>
         <DialogContentText>
-          do you want to delete this company?
+          Do you want to delete this company?
         </DialogContentText>
       </DialogContent>
       <DialogActions>

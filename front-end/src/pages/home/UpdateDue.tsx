@@ -58,18 +58,18 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
         </Typography>
       </TableCell>
       <TableCell size="small">
-        <Typography sx={{ fontSize: 14, fontFamily: 'Poppins' }}> {payment.invoice}</Typography>
+        <Typography sx={{ fontSize: 14 }}> {payment.invoice}</Typography>
       </TableCell>
       <TableCell size="small">
-        <Typography sx={{ fontSize: 14, fontFamily: 'Poppins' }}>{payment.company.name}</Typography>
+        <Typography sx={{ fontSize: 14 }}>{payment.company.name}</Typography>
       </TableCell>
       <TableCell size="small">
-        <Typography sx={{ fontSize: 14, fontFamily: 'Poppins' }}>
+        <Typography sx={{ fontSize: 14 }}>
           {currencyFormatter.format(payment.totalAmount, {})}
         </Typography>
       </TableCell>
       <TableCell size="small">
-        <Typography sx={{ fontSize: 14, fontFamily: 'Poppins' }}>
+        <Typography sx={{ fontSize: 14 }}>
           {currencyFormatter.format(payment.dueAmount, {})}
         </Typography>
       </TableCell>
@@ -80,22 +80,15 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
             options={collectorOptions}
             getOptionLabel={(option) => option.label}
             renderInput={(params) => (
-              <TextField {...params} label="Collector" size="small" style={{ width: '150px' }} InputLabelProps={{
-                style: { fontFamily: 'Poppins, sans-serif' }
-              }}/>
+              <TextField {...params} label="Collector" size="small" style={{ width: '150px' }}/>
             )}
             onChange={(e, v) => setCollectorId(v?._id!)}
-            sx={{ fontFamily: 'Poppins, sans-serif',
-              '& .MuiInputBase-option': {
-                fontFamily: 'Poppins, sans-serif',
-              },
-            }}
           />
         </FormControl>
       </TableCell>
       <TableCell>
         <LocalizationProvider dateAdapter={AdapterDayjs}>
-          <Box style={{ marginRight: 10, width: 200, fontFamily: 'Poppins' }}>
+          <Box style={{ marginRight: 10, width: 200 }}>
             <DesktopDatePicker
               label="Payment Date"
               inputFormat="DD/MM/YYYY"
@@ -110,10 +103,6 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
                   }} 
                   sx={{
                     mr: 1, 
-                    fontFamily: 'Poppins, sans-serif',
-                    '& .MuiInputBase-input': {
-                      fontFamily: 'Poppins, sans-serif',
-                    }
                   }}
                 />
               )}
@@ -128,19 +117,7 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Amount"
-            sx={{ width: 100, fontSize: 14, fontFamily: 'Poppins, sans-serif',
-              '& .MuiInputBase-input': {
-                fontFamily: 'Poppins, sans-serif',
-              },
-              '& .MuiInputBase-input::placeholder': {
-                fontFamily: 'Poppins, sans-serif',
-              },
-              '& .MuiInputLabel-root': {
-                fontFamily: 'Poppins, sans-serif',
-              },
-            }}
-            InputLabelProps={{
-              style: { fontFamily: 'Poppins, sans-serif' }
+            sx={{ width: 100, fontSize: 14
             }}
           />
         </Box>
@@ -156,7 +133,6 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
                   setFull(true);
                   setAmount(payment.dueAmount.toString());
                 }}
-                style={{ fontFamily: 'Poppins, sans-serif' }}
               />
             }
             label="Full"

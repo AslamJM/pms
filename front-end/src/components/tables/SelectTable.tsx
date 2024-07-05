@@ -23,7 +23,6 @@ import currencyFormatter from "currency-formatter";
 import PaymentHistoryModal from "../../pages/reports/PaymenthistoryModal";
 import TableContainer from '@mui/material/TableContainer';
 import Paper from '@mui/material/Paper';
-
 const PaymentTableSelect = () => {
   //report states
   const [payments, setAllPayments] = useState<IPayment[] | null>();
@@ -339,6 +338,7 @@ const PaymentTableSelect = () => {
     writeFile(workBook, "paymentData.xlsx");
   };
   //
+  
 
   //function for pdf export
   const exportPdf = (cols: any, data: any) => {
@@ -373,7 +373,8 @@ const PaymentTableSelect = () => {
       typeof val === "number" ? currencyFormatter.format(val, {}) : val
     );
 
-    const doc = new jsPDF({ orientation: "landscape" });
+    const doc = new jsPDF({ orientation: "landscape" })
+    ;
 
     doc.setFontSize(15);
     doc.text("HS Enterprises Credit Payment", 100, 10);
@@ -448,7 +449,7 @@ const PaymentTableSelect = () => {
         </Box>
       </LocalizationProvider>
       {/******************************/}
-      <Paper sx={{ width: 1195, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', borderRadius: '8px' }}>
+      <Paper sx={{ width: 1195, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', borderRadius: '10px' }}>
       <TableContainer style={{ maxHeight: 600 }}>
       <MaterialReactTable
         columns={columns}
@@ -495,6 +496,7 @@ const PaymentTableSelect = () => {
             >
               Export to Excel
             </Button>
+
             <Button
               color="primary"
               disabled={!table.getIsSomeRowsSelected}
@@ -515,6 +517,7 @@ const PaymentTableSelect = () => {
             >
               export pdf
             </Button>
+
             <Button
               variant="contained"
               onClick={() => {

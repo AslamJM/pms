@@ -40,7 +40,7 @@ const CollectorTable = () => {
   }
 
   return (
-    <Paper sx={{ width: 1200, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', mt: 3, borderRadius: '8px' }}>
+    <Paper sx={{ width: 1200, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', mt: 3, borderRadius: '10px' }}>
       <TableContainer style={{ maxHeight: 430 }}>
         <CustomTable
           columns={columns}

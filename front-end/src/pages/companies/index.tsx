@@ -54,9 +54,8 @@ const CompanyPage = () => {
         </Box>
       )}
       <div style={{ padding: '8px 0', fontFamily: 'Poppins' }}>
-      <Paper sx={{ width: "30%", overflowY: "auto", overflowX: "hidden", mt: 1, boxShadow: 5, fontFamily: 'Poppins', p: 2, maxHeight: 450, ml: 3, borderRadius: '8px' }}>
-        <TableContainer>
-          <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Montserrat', textAlign: 'center', mb: 1 }}>
+      <Paper sx={{ width: "25%", overflowY: "auto", overflowX: "hidden", mt: 1, boxShadow: 5, fontFamily: 'Poppins', p: 2, maxHeight: 450, ml: 3, borderRadius: '10px' }}>
+          <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Poppins', textAlign: 'center', mb: 1 }}>
             List of companies
           </Typography>
             <Divider />
@@ -70,7 +69,6 @@ const CompanyPage = () => {
                 </div>
               ))
             )}
-          </TableContainer>
         </Paper>
       </div>
     </div>

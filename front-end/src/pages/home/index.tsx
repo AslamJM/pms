@@ -40,10 +40,10 @@ const Home = () => {
       <UpdateInvoiceModal />
       <Box mt={2}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Merriweather' }}>
+          <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Poppins' }}>
             Welcome {user?.role}
           </Typography>
-          <Typography variant="h6" sx={{ fontFamily: 'Roboto'}}>
+          <Typography variant="h6" sx={{ fontFamily: 'Poppins'}}>
             {dayjs().format("DD/MM/YYYY")}
           </Typography>
         </Box>

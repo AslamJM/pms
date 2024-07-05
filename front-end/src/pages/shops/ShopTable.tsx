@@ -39,9 +39,9 @@ const ShopTable = () => {
   return (
     <>
       <DeleteShopModel />
-      <Paper sx={{ width: 750, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', mt: 2, ml: 3, borderRadius: '8px' }}>
+      <Paper sx={{ width: 750, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', mt: 2, ml: 3, borderRadius: '10px' }}>
         <TableContainer style={{ maxHeight: 430 }}>
-        <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Montserrat', textAlign: 'center', mt: 1 }}>List of Shops</Typography>
+        <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Poppins', textAlign: 'center', mt: 1 }}>List of Shops</Typography>
           <CustomTable
             columns={columns}
             count={shops.length!}
@@ -60,18 +60,18 @@ const ShopTable = () => {
                   '& .MuiTableCell-root': {
                     padding: '4px 8px', 
                   },
-                  height: '48px', 
+                  height: '48px'
                 }}>
                   {columns.map((col, index) => {
                     if (col.id === "region") {
                       return (
-                        <TableCell key={index} align={col.align}>
+                        <TableCell key={index} align={col.align} sx={{ fontFamily: 'Poppins'}}>
                           {row["region"].name}
                         </TableCell>
                       );
                     }
                     return (
-                      <TableCell key={index} align={col.align}>
+                      <TableCell key={index} align={col.align} sx={{ fontFamily: 'Poppins' }}>
                         {row[col.id as keyof Omit<typeof row, "_id" | "region">]}
                       </TableCell>
                     );

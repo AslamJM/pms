@@ -93,6 +93,7 @@ const Login = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          boxShadow: 10,
 
           position: "relative",
         }}

@@ -61,7 +61,7 @@ const SideNav = ({ open, setOpen }: Props) => {
         </IconButton>
       </DrawerHeader>
       <Divider />
-      <List>
+      <List >
         {listItems.map((item) => (
           <div key={item.title}>
             <NavLink
@@ -72,11 +72,12 @@ const SideNav = ({ open, setOpen }: Props) => {
                   textDecoration: "none",
                 };
               }}
+
             >
               <ListItem
                 key={item.title}
                 disablePadding
-                sx={{ display: "block" }}
+                sx={{ display: "block"}}
               >
                 <ListItemButton
                   sx={{

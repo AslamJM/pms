@@ -39,7 +39,7 @@ const DateRangeFilter = () => {
           value={to}
           onChange={handleChangeTo}
           renderInput={(params) => (
-            <TextField {...params} sx={{ mr: 1 }} size="small" />
+            <TextField {...params} sx={{ mr: 1, width: 244 }} size="small" />
           )}
         />
         <Button

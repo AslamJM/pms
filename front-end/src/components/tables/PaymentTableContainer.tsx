@@ -82,7 +82,7 @@ const CustomTable = ({
   };
 
   return (
-    <Paper sx={{ width: 1200, overflow: "hidden", mt: 3, boxShadow: 5, p: 1 , borderRadius: '8px'}}>
+    <Paper sx={{ width: 1200, overflow: "hidden", mt: 3, boxShadow: 5, p: 1 , borderRadius: '10px'}}>
   {numSelected > 0 && (
     <Toolbar sx={{ bgcolor: "#BB892D33" }}>
       <Box display="flex" alignItems="center" justifyContent="space-between" width="100%">
@@ -101,7 +101,7 @@ const CustomTable = ({
   <TableContainer sx={{ width: "100%", maxHeight: 400, overflowY: 'auto' }}>
     <Table stickyHeader size="small">
       <TableHead>
-        <TableRow sx={{ height: 20, fontFamily: 'Poppins' }}>
+        <TableRow sx={{ height: 20 }}>
           <TableCell align="center" sx={{ maxWidth: 0.5 }}>
             <Checkbox
               //indeterminate={numSelected > 0 && numSelected < count}
@@ -110,7 +110,7 @@ const CustomTable = ({
             />
           </TableCell>
           {columns.map((col) => (
-            <TableCell key={col.id} style={{ minWidth: col.minWidth }} sx={{ fontWeight: 'bold', fontFamily: 'Poppins' }}>
+            <TableCell key={col.id} style={{ minWidth: col.minWidth }} sx={{ fontWeight: 'bold' }}>
               {col.label}
             </TableCell>
           ))}

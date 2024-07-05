@@ -225,7 +225,7 @@ const PaymentTable = () => {
                 key={setkey}
                 style={
                   setkey % 2
-                    ? { background: "#f2752730" }
+                    ? { background: "#D3D3D3" }
                     : { background: "white" }
                 }
               >
@@ -294,7 +294,7 @@ const PaymentTable = () => {
                       size="small"
                     />
                     <Box display="flex" alignItems="center">
-                      <Tooltip title="edit">
+                      <Tooltip title="Edit">
                         <IconButton
                           onClick={() => {
                             setSelectedPayment(rowPayment);
@@ -304,7 +304,7 @@ const PaymentTable = () => {
                           <BorderColorIcon color="primary" fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="delete">
+                      <Tooltip title="Delete">
                         <IconButton
                           onClick={() => {
                             setSelectedPayment(rowPayment);

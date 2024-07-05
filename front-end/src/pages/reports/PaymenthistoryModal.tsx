@@ -79,7 +79,7 @@ const HistoryComponent = ({ prop }: { prop: IPaymentHisory }) => {
         <Typography>Do you want to delete this?</Typography>
         <Divider orientation="vertical" flexItem />
 
-        <Tooltip title="cancel" sx={{ mx: 1 }}>
+        <Tooltip title="Cancel" sx={{ mx: 1 }}>
           <IconButton
             onClick={() => {
               setDeleteH(false);
@@ -88,7 +88,7 @@ const HistoryComponent = ({ prop }: { prop: IPaymentHisory }) => {
             <CloseIcon color="error" fontSize="small" />
           </IconButton>
         </Tooltip>
-        <Tooltip title="delete" sx={{ mx: 1 }}>
+        <Tooltip title="Delete" sx={{ mx: 1 }}>
           <IconButton onClick={() => deleteHistory()}>
             <CheckIcon color="success" fontSize="small" />
           </IconButton>
@@ -171,7 +171,7 @@ const HistoryComponent = ({ prop }: { prop: IPaymentHisory }) => {
         {collector.name}
       </Typography>
       <Divider orientation="vertical" flexItem />
-      <Tooltip title="edit" sx={{ mx: 1 }}>
+      <Tooltip title="Edit" sx={{ mx: 1 }}>
         <IconButton
           onClick={() => {
             setEdit(true);
@@ -180,7 +180,7 @@ const HistoryComponent = ({ prop }: { prop: IPaymentHisory }) => {
           <BorderColorIcon color="success" fontSize="small" />
         </IconButton>
       </Tooltip>
-      <Tooltip title="delete" sx={{ mx: 1 }}>
+      <Tooltip title="Delete" sx={{ mx: 1 }}>
         <IconButton
           onClick={() => {
             setDeleteH(true);

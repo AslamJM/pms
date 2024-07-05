@@ -141,7 +141,7 @@ const EditPaymentForm = () => {
 
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth variant="outlined">
-                  <InputLabel sx={{ fontFamily: 'Poppins' }}>Collector</InputLabel>
+                  <InputLabel >Collector</InputLabel>
                   <Select
                     onChange={handleChange}
                     fullWidth
@@ -149,7 +149,6 @@ const EditPaymentForm = () => {
                     value={values.collector}
                     input={<OutlinedInput label="Collector" />}
                     size="small"
-                    sx={{ fontFamily:"Poppins" }}
                   >
                     {collectors.map((item, index) => (
                       <MenuItem key={index} value={item._id}>
