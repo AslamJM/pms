@@ -7,6 +7,8 @@ import {
   FormControl,
   InputLabel,
   CircularProgress,
+  OutlinedInput,
+  Autocomplete,
 } from "@mui/material";
 import MenuItem from "@mui/material/MenuItem";
 import { Formik } from "formik";
@@ -14,6 +16,7 @@ import { useMutation, useQueryClient } from "react-query";
 import { IShop } from "../../../api/client";
 import { shopClient } from "../../../api/shops";
 import { useGlobalContext } from "../../../context/GlobalContext";
+import { useMemo } from "react";
 
 const initialValues = {
   name: "",
@@ -22,13 +25,17 @@ const initialValues = {
 };
 
 const AddShopForm = () => {
-  const { setAddModalOpen, setLoading, setSnackMessage, setSnackOpen, areas } =
+  const { setAddModalOpen, setLoading, setSnackMessage, setSnackOpen, setParams, areas } =
     useGlobalContext();
   const { createShop } = shopClient;
   const { isLoading, mutate } = useMutation(
     async (input: { name: string; region: string; address: string }) =>
       await createShop(input)
   );
+
+  const regionOptions = useMemo(() => {
+    return areas.map((c) => ({ label: c.name, _id: c._id }));
+  }, [areas]);
 
   const queryClient = useQueryClient();
 
@@ -64,32 +71,29 @@ const AddShopForm = () => {
         <form onSubmit={handleSubmit}>
           <Grid container rowGap={1} columnGap={1}>
             <Grid item xs={6}>
-              <FormControl fullWidth>
+              <FormControl fullWidth sx={{ fontFamily: 'Poppins' }}>
                 <TextField
                   name="name"
                   label="Name"
                   fullWidth
                   value={values.name}
                   onChange={handleChange}
+                  sx={{ marginTop: 2, fontFamily: 'Poppins' }}
                 />
               </FormControl>
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth>
-                <InputLabel>select region</InputLabel>
-                <Select
-                  onChange={handleChange}
-                  fullWidth
-                  name="region"
-                  value={values.region}
-                >
-                  {areas.map((item, index) => (
-                    <MenuItem key={index} value={item._id}>
-                      {item.name}
-                    </MenuItem>
-                  ))}
-                </Select>
-              </FormControl>
+                  <Autocomplete
+                    autoSelect
+                    options={regionOptions}
+                    renderInput={(params) => (
+                      <TextField {...params} label="Select Region" size="small"
+                      sx={{  }} />
+                    )}
+                    onChange={(e, v) => setParams({ company: v?._id })}
+                  />
+                </FormControl>
             </Grid>
 
             <Grid item xs={12}>

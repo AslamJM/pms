@@ -37,25 +37,26 @@ const DeleteCollectorModel = () => {
   );
 
   return (
-    <Modal title="delete collector" type="delete">
+    <Modal title="Delete Collector" type="delete">
       <DialogContent>
         <DialogContentText>
           Do you want to delete this collector from your list?
         </DialogContentText>
         <DialogActions>
           <Button
-            onClick={() => setDeleteModalOpen(false)}
-            variant="outlined"
-            color="warning"
-          >
-            cancel
-          </Button>
-          <Button
             variant="contained"
             onClick={() => mutate()}
             disabled={isLoading}
+            color="error"
           >
             delete
+          </Button>
+          <Button
+            onClick={() => setDeleteModalOpen(false)}
+            variant="outlined"
+            
+          >
+            cancel
           </Button>
         </DialogActions>
       </DialogContent>

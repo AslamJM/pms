@@ -12,7 +12,7 @@ const FilterByCompany = () => {
   }, [companies]);
 
   return (
-    <div style={{ width: 200, marginRight: 10 }}>
+    <div style={{ width: 245, marginRight: 17 }}>
       <FormControl fullWidth>
         <Autocomplete
           autoSelect

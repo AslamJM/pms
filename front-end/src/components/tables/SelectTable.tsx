@@ -21,7 +21,8 @@ import dayjs, { Dayjs } from "dayjs";
 import Typography from "@mui/material/Typography";
 import currencyFormatter from "currency-formatter";
 import PaymentHistoryModal from "../../pages/reports/PaymenthistoryModal";
-
+import TableContainer from '@mui/material/TableContainer';
+import Paper from '@mui/material/Paper';
 const PaymentTableSelect = () => {
   //report states
   const [payments, setAllPayments] = useState<IPayment[] | null>();
@@ -337,6 +338,7 @@ const PaymentTableSelect = () => {
     writeFile(workBook, "paymentData.xlsx");
   };
   //
+  
 
   //function for pdf export
   const exportPdf = (cols: any, data: any) => {
@@ -371,7 +373,8 @@ const PaymentTableSelect = () => {
       typeof val === "number" ? currencyFormatter.format(val, {}) : val
     );
 
-    const doc = new jsPDF({ orientation: "landscape" });
+    const doc = new jsPDF({ orientation: "landscape" })
+    ;
 
     doc.setFontSize(15);
     doc.text("HS Enterprises Credit Payment", 100, 10);
@@ -404,15 +407,17 @@ const PaymentTableSelect = () => {
 
   return (
     <>
+    
       <PaymentHistoryModal
         paymentId={paymentId}
         invoice={pInvoice}
         total={ptotal}
       />
       {/*filters with date range*/}
-      <Typography sx={{ mb: 0.8 }}>select a date range</Typography>
+      <Typography sx={{ mb: 1, fontFamily: 'Poppins' }}>Select a Date Range to Fetch Data</Typography>
+      
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Box display="flex" alignItems="flex-end" mb={2}>
+        <Box display="flex" alignItems="flex-end" mb={2} >
           <DesktopDatePicker
             label="From"
             inputFormat="DD/MM/YYYY"
@@ -444,7 +449,8 @@ const PaymentTableSelect = () => {
         </Box>
       </LocalizationProvider>
       {/******************************/}
-
+      <Paper sx={{ width: 1195, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', borderRadius: '10px' }}>
+      <TableContainer style={{ maxHeight: 600 }}>
       <MaterialReactTable
         columns={columns}
         data={payments ? payments.map((d) => createPaymentData(d)) : []}
@@ -454,15 +460,14 @@ const PaymentTableSelect = () => {
         muiTableBodyProps={{
           sx: {
             "& tr:nth-of-type(even)": {
-              backgroundColor: "#ADADC9",
+              backgroundColor: "#ADADC9",width: "100%"
             },
           },
         }}
         //top tool bar actions
         renderTopToolbarCustomActions={({ table }) => (
           <Box
-            sx={{ display: "flex", gap: "1rem", p: "0.5rem", flexWrap: "wrap" }}
-          >
+            sx={{ display: "flex", gap: "1rem", p: "0.5rem", flexWrap: "wrap", }}>
             <Button
               color="primary"
               disabled={!table.getIsSomeRowsSelected}
@@ -491,6 +496,7 @@ const PaymentTableSelect = () => {
             >
               Export to Excel
             </Button>
+
             <Button
               color="primary"
               disabled={!table.getIsSomeRowsSelected}
@@ -511,6 +517,7 @@ const PaymentTableSelect = () => {
             >
               export pdf
             </Button>
+
             <Button
               variant="contained"
               onClick={() => {
@@ -522,6 +529,8 @@ const PaymentTableSelect = () => {
           </Box>
         )}
       />
+      </TableContainer>
+      </Paper>
     </>
   );
 };

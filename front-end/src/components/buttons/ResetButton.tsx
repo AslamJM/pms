@@ -13,7 +13,7 @@ const ResetButton = () => {
         resetParams({ paymentDate: dayjs() });
       }}
       variant="contained"
-      sx={{ ml: 1 }}
+      sx={{ ml: 1, width: 150 }}
     >
       Reset Filters
     </Button>

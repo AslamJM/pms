@@ -14,7 +14,7 @@ const FilterByShop = () => {
   }, [shops]);
 
   return (
-    <div style={{ width: 200, marginRight: 10 }}>
+    <div style={{ width: 242, marginRight: 17 }}>
       <FormControl fullWidth>
         <Autocomplete
           autoSelect

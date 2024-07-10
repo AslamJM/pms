@@ -50,18 +50,20 @@ const CustomTable = ({
   const { user } = useAuthContext();
 
   return (
-    <Paper sx={{ width: "100%", overflow: "hidden" }}>
+    <Paper sx={{ width: "100%", overflow: "hidden", fontFamily: 'Poppins' }}>
       <TableContainer>
         <Table stickyHeader>
           <TableHead sx={{ bgcolor: "#BB892D" }}>
-            <TableRow>
+            <TableRow >
               {columns.map((col) => (
-                <TableCell key={col.id} style={{ minWidth: col.minWidth }}>
+                <TableCell key={col.id} style={{ minWidth: col.minWidth }} sx={{
+                  fontWeight: 'bold', fontFamily: 'Poppins', fontSize: 15 }}>
                   {col.label}
                 </TableCell>
               ))}
               {user?.role === "ADMIN" && (
-                <TableCell align="center">Actions</TableCell>
+                <TableCell align="center" sx={{
+                  fontWeight: 'bold', fontFamily: 'Poppins', fontSize: 15 }}>Actions</TableCell>
               )}
             </TableRow>
           </TableHead>

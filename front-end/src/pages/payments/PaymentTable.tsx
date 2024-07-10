@@ -185,12 +185,12 @@ const PaymentTable = () => {
   }
 
   if (isError) {
-    return <div>an error occurred</div>;
+    return <div>An error occurred</div>;
   }
 
   if (payments && payments.length === 0) {
     return (
-      <Box mt={5}>
+      <Box mt={5} >
         <Typography color="GrayText" align="center">
           You have no payments to display
         </Typography>
@@ -210,6 +210,7 @@ const PaymentTable = () => {
         setRowsPerPage={setRowsPerPage}
         onSelectAllClick={handleSelectAllClick}
         numSelected={checkedPayments.length}
+        
       >
         {payments
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
@@ -224,7 +225,7 @@ const PaymentTable = () => {
                 key={setkey}
                 style={
                   setkey % 2
-                    ? { background: "#f2752730" }
+                    ? { background: "#D3D3D3" }
                     : { background: "white" }
                 }
               >
@@ -293,7 +294,7 @@ const PaymentTable = () => {
                       size="small"
                     />
                     <Box display="flex" alignItems="center">
-                      <Tooltip title="edit">
+                      <Tooltip title="Edit">
                         <IconButton
                           onClick={() => {
                             setSelectedPayment(rowPayment);
@@ -303,7 +304,7 @@ const PaymentTable = () => {
                           <BorderColorIcon color="primary" fontSize="small" />
                         </IconButton>
                       </Tooltip>
-                      <Tooltip title="delete">
+                      <Tooltip title="Delete">
                         <IconButton
                           onClick={() => {
                             setSelectedPayment(rowPayment);
@@ -319,7 +320,7 @@ const PaymentTable = () => {
                   <TableCell
                     sx={{ display: "flex", justifyContent: "space-between" }}
                   >
-                    <Tooltip title="edit">
+                    <Tooltip title="Edit">
                       <IconButton
                         onClick={() => {
                           setSelectedPayment(rowPayment);
@@ -329,7 +330,7 @@ const PaymentTable = () => {
                         <BorderColorIcon color="primary" fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="delete">
+                    <Tooltip title="Delete">
                       <IconButton
                         onClick={() => {
                           setSelectedPayment(rowPayment);
@@ -339,7 +340,7 @@ const PaymentTable = () => {
                         <ClearIcon color="error" fontSize="small" />
                       </IconButton>
                     </Tooltip>
-                    <Tooltip title="verify">
+                    <Tooltip title="Verify">
                       <IconButton
                         onClick={async () => {
                           await verifyPayment(rowPayment._id);

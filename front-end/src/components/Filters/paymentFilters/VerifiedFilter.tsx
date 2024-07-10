@@ -10,7 +10,7 @@ const VerifedFilter = () => {
 
   return (
     <FormControl>
-      <FormLabel>Verified Status</FormLabel>
+      <FormLabel sx={{ fontWeight: 'bold', color: 'black' }}>Verified Status</FormLabel>
       <RadioGroup row>
         <FormControlLabel
           value="verified"
@@ -20,7 +20,7 @@ const VerifedFilter = () => {
               size="small"
             />
           }
-          label="verified"
+          label="Verified"
         />
         <FormControlLabel
           value="not"
@@ -30,7 +30,7 @@ const VerifedFilter = () => {
               size="small"
             />
           }
-          label="not"
+          label="Not"
         />
       </RadioGroup>
     </FormControl>

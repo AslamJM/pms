@@ -4,7 +4,7 @@ import AddPaymentForm from "../forms/AddPaymentForm";
 
 const AddPaymentModal = () => {
   return (
-    <Modal title="add payment" type="add">
+    <Modal title="Add Payment" type="add">
       <DialogContent>
         <AddPaymentForm />
       </DialogContent>

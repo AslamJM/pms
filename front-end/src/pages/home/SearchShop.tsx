@@ -5,13 +5,14 @@ import { useState } from "react";
 import Button from "@mui/material/Button";
 import { useQuery } from "react-query";
 import { IPayment, queryPayments } from "../../api/client";
-import { CircularProgress, Grid, Table } from "@mui/material";
+import { CircularProgress, Grid, Paper, Table, Box } from "@mui/material";
 import UpdateDue from "./UpdateDue";
 import Typography from "@mui/material/Typography";
-import TableHead from "@mui/material/TableHead";
-import TableRow from "@mui/material/TableRow";
-import TableCell from "@mui/material/TableCell";
-import TableBody from "@mui/material/TableBody";
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableBody from '@mui/material/TableBody';
+import TableRow from '@mui/material/TableRow';
+import TableCell from '@mui/material/TableCell';
 
 const SearchShop = () => {
   const [shop, setShop] = useState<string | null>(null);
@@ -21,7 +22,7 @@ const SearchShop = () => {
   const shopOptions = shops.map((s) => ({ label: s.name, _id: s._id }));
 
   const { isLoading, refetch } = useQuery(
-    "payment shops",
+    "Payment Shops",
     async () => await queryPayments({ shop, paymentStatus: "DUE" }),
     {
       enabled: false,
@@ -32,19 +33,22 @@ const SearchShop = () => {
   );
 
   return (
-    <div style={{ overflow: "hidden", flexGrow: 1 }}>
+    <div style={{ overflow: "hidden", flexGrow: 1, fontFamily: 'Poppins' }}>
       <div style={{ display: "flex", padding: 10 }}>
         <Autocomplete
           autoSelect
           options={shopOptions}
           fullWidth
-          sx={{ mx: 1 }}
+          sx={{ mx: 1, fontFamily: 'Poppins' }}
           renderInput={(params) => (
             <TextField
               {...params}
               label="Search the shop name"
               size="small"
               fullWidth
+              InputLabelProps={{
+                style: { fontFamily: 'Poppins, sans-serif' }
+              }}
             />
           )}
           onChange={(e, v) => setShop(v?._id!)}
@@ -54,14 +58,16 @@ const SearchShop = () => {
             variant="contained"
             disabled={!shop}
             onClick={() => refetch()}
+            sx={{ fontFamily: 'Poppins' }}
           >
             {isLoading ? <CircularProgress /> : "search"}
           </Button>
         </div>
       </div>
       <div style={{ padding: "0 20px 0 20px" }}>
-        {shop && payments.length > 0 ? (
-          <Table size="small">
+      <Paper sx={{ width: 750, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', borderRadius: '10px' }}>
+        <TableContainer style={{ maxHeight: 400 }}>
+          <Table size="small" stickyHeader>
             <TableHead>
               <TableRow>
                 {[
@@ -72,27 +78,39 @@ const SearchShop = () => {
                   "Due",
                   "Collector",
                   "Date",
+                  "Amount",
                   "Action",
                 ].map((item) => (
-                  <TableCell key={item}>{item}</TableCell>
+                  <TableCell key={item} sx={{ fontFamily: 'Poppins' }}>{item}</TableCell>
                 ))}
               </TableRow>
             </TableHead>
-            <TableBody>
-              {payments.map((p) => (
+            <TableBody >
+            {shop && payments.length > 0 ? (
+              payments.map((p) => (
                 <UpdateDue payment={p} key={p._id} />
-              ))}
-            </TableBody>
+              ))
+            ) : shop && payments.length === 0 ? (
+              <TableRow>
+                <TableCell colSpan={8}>
+                  <Typography align="center" style={{ fontFamily: 'Poppins', color: "grey" }}>
+                    This shop has no due payments.
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            ) : (
+              <TableRow>
+                <TableCell colSpan={8}>
+                  <Typography align="left" style={{ fontFamily: 'Poppins', color: "grey" }}>
+                    Search for a shop name to find due payments.
+                  </Typography>
+                </TableCell>
+              </TableRow>
+            )}
+          </TableBody>
           </Table>
-        ) : shop && payments.length === 0 ? (
-          <Typography component="i" align="center">
-            This shop has no due payments.
-          </Typography>
-        ) : (
-          <Typography component="i" align="center">
-            Search for a shop name to find due payments.
-          </Typography>
-        )}
+          </TableContainer>
+      </Paper>
       </div>
     </div>
   );

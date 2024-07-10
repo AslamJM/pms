@@ -67,13 +67,13 @@ const AreaName = ({ name, id }: { name: string; id: string }) => {
           />
         </FormControl>
       ) : (
-        <Typography variant="body1" sx={{ my: 1, minWidth: 200 }}>
+        <Typography variant="body1" sx={{ my: 1, minWidth: 200, fontFamily: 'Poppins' }}>
           {name}
         </Typography>
       )}
       {!edit && user?.role === "ADMIN" && (
         <Box display="flex" alignItems="flex-end">
-          <Tooltip title="edit">
+          <Tooltip title="Edit">
             <IconButton
               onClick={() => {
                 setEditVal(name);
@@ -84,7 +84,7 @@ const AreaName = ({ name, id }: { name: string; id: string }) => {
             </IconButton>
           </Tooltip>
 
-          <Tooltip title="delete">
+          <Tooltip title="Delete">
             <IconButton onClick={() => setDelete(true)}>
               <DeleteIcon color="error" fontSize="small" />
             </IconButton>

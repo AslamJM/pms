@@ -38,25 +38,25 @@ const DeleteShopModel = () => {
   );
 
   return (
-    <Modal title="delete shop" type="delete">
+    <Modal title="Delete Shop" type="delete">
       <DialogContent>
         <DialogContentText>
           Do you want to delete this shop from your list?
         </DialogContentText>
         <DialogActions>
           <Button
-            onClick={() => setDeleteModalOpen(false)}
-            variant="outlined"
-            color="warning"
-          >
-            cancel
-          </Button>
-          <Button
             variant="contained"
             onClick={() => mutate()}
             disabled={isLoading}
+            color="error"
           >
             {isLoading ? <CircularProgress /> : "delete"}
+          </Button>
+          <Button
+            onClick={() => setDeleteModalOpen(false)}
+            variant="outlined"
+          >
+            cancel
           </Button>
         </DialogActions>
       </DialogContent>

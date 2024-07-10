@@ -78,8 +78,9 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
           <Autocomplete
             autoSelect
             options={collectorOptions}
+            getOptionLabel={(option) => option.label}
             renderInput={(params) => (
-              <TextField {...params} label="Collector" size="small" />
+              <TextField {...params} label="Collector" size="small" style={{ width: '150px' }}/>
             )}
             onChange={(e, v) => setCollectorId(v?._id!)}
           />
@@ -89,26 +90,40 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
         <LocalizationProvider dateAdapter={AdapterDayjs}>
           <Box style={{ marginRight: 10, width: 200 }}>
             <DesktopDatePicker
-              label="PaymentDate"
+              label="Payment Date"
               inputFormat="DD/MM/YYYY"
               value={date}
               onChange={handleChange}
               renderInput={(params) => (
-                <TextField {...params} sx={{ mr: 1 }} size="small" />
+                <TextField 
+                  {...params} 
+                  size="small" 
+                  InputLabelProps={{
+                    style: { fontFamily: 'Poppins, sans-serif' }
+                  }} 
+                  sx={{
+                    mr: 1, 
+                  }}
+                />
               )}
             />
           </Box>
         </LocalizationProvider>
       </TableCell>
       <TableCell size="small">
-        <Box display="flex" mt={1}>
+        <Box display="flex" mt={1} sx={{ alignItems: "center" }}>
           <TextField
             size="small"
             value={amount}
             onChange={(e) => setAmount(e.target.value)}
             placeholder="Amount"
-            sx={{ width: 100, fontSize: 14 }}
+            sx={{ width: 100, fontSize: 14
+            }}
           />
+        </Box>
+      </TableCell>
+      <TableCell size="small">
+        <Box display="flex" mt={1} sx={{ alignItems: "center" }}>
           <FormControlLabel
             control={
               <Checkbox
@@ -121,11 +136,12 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
               />
             }
             label="Full"
-            sx={{ ml: 1, fontSize: 12 }}
+            sx={{ fontSize: 12 }}
           />
           <Button
             variant="contained"
             size="small"
+            style={{ alignContent: 'center' }}
             onClick={() =>
               mutate({
                 payment: payment._id,
@@ -135,7 +151,7 @@ const UpdateDue = ({ payment }: { payment: IPayment }) => {
               })
             }
           >
-            update
+            Update
           </Button>
         </Box>
       </TableCell>
