@@ -7,6 +7,7 @@ import shopRouter from './shop';
 import companyRouter from './company';
 import areaRouter from './area';
 import historyRouter from './history';
+import seedRouter from './seed'
 
 const authRouter = Router();
 
@@ -20,4 +21,5 @@ export {
   areaRouter,
   authRouter,
   historyRouter,
+  seedRouter
 };
