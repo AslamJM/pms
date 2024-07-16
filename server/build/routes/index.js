@@ -1,0 +1,25 @@
+"use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", { value: true });
+exports.seedRouter = exports.historyRouter = exports.authRouter = exports.areaRouter = exports.companyRouter = exports.shopRouter = exports.collectorRouter = exports.paymentRouter = void 0;
+const express_1 = require("express");
+const auth_1 = require("../services/auth");
+const payments_1 = __importDefault(require("./payments"));
+exports.paymentRouter = payments_1.default;
+const collectors_1 = __importDefault(require("./collectors"));
+exports.collectorRouter = collectors_1.default;
+const shop_1 = __importDefault(require("./shop"));
+exports.shopRouter = shop_1.default;
+const company_1 = __importDefault(require("./company"));
+exports.companyRouter = company_1.default;
+const area_1 = __importDefault(require("./area"));
+exports.areaRouter = area_1.default;
+const history_1 = __importDefault(require("./history"));
+exports.historyRouter = history_1.default;
+const seed_1 = __importDefault(require("./seed"));
+exports.seedRouter = seed_1.default;
+const authRouter = (0, express_1.Router)();
+exports.authRouter = authRouter;
+authRouter.post('/login', auth_1.loginUser);
