@@ -21,6 +21,7 @@ const createShopController = (req, res) => __awaiter(void 0, void 0, void 0, fun
         });
     }
     catch (error) {
+        console.log(error);
         return res.status(500).json({
             message: error.message,
         });
