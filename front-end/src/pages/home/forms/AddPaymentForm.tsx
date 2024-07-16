@@ -57,12 +57,8 @@ const AddPaymentForm = () => {
 
   const [shop, setShop] = useState("");
 
-  const {
-    setAddModalOpen,
-    setLoading,
-    setSnackMessage,
-    setSnackOpen,
-  } = useGlobalContext();
+  const { setAddModalOpen, setLoading, setSnackMessage, setSnackOpen } =
+    useGlobalContext();
   const { shops } = useShopContext();
   const { collectors } = useCollectorContext();
 
@@ -70,7 +66,9 @@ const AddPaymentForm = () => {
 
   const queryClient = useQueryClient();
 
- const { setParams, companies } = useGlobalContext();
+  const { setParams, companies, params } = useGlobalContext();
+
+  console.log(params);
 
   const companyOptions = useMemo(() => {
     return companies.map((c) => ({ label: c.name, _id: c._id }));
@@ -104,6 +102,7 @@ const AddPaymentForm = () => {
             marketReturn: Number(market),
             paymentDate: new Date(paymentDate),
             dueDate: new Date(dueDate),
+            ...params,
           },
           {
             onSuccess: (data) => {
@@ -128,7 +127,7 @@ const AddPaymentForm = () => {
     >
       {({ values, handleChange, handleSubmit }) => (
         <form onSubmit={handleSubmit}>
-          <Box >
+          <Box>
             <Box display="flex" width="100%" my={2}>
               <Box sx={{ mx: 0.5 }} width="50%">
                 <FormControl fullWidth>
@@ -151,9 +150,9 @@ const AddPaymentForm = () => {
               </Box>
             </Box>
 
-            <Box display="flex" width="100%" my={2} >
+            <Box display="flex" width="100%" my={2}>
               <Box sx={{ mx: 0.3 }} width="33%">
-                <FormControl fullWidth >
+                <FormControl fullWidth>
                   <Autocomplete
                     autoSelect
                     options={shopOptions}
@@ -196,120 +195,120 @@ const AddPaymentForm = () => {
             </Box>
 
             <Box display="flex" width="100%" my={2}>
-                <Box sx={{ mx: 0.3 }} width="33%">
-                  <FormControl fullWidth>
-                    <TextField
-                      name={FORM_MODEL.totalAmount}
-                      label="Total Amount"
-                      fullWidth
-                      value={total}
-                      onChange={(e) => {
-                        setTotal(e.target.value);
-                      }}
-                    />
-                  </FormControl>
-                </Box>
-                <Box sx={{ mx: 0.3 }} width="33%">
-                  <FormControl fullWidth>
-                    <TextField
-                        name={FORM_MODEL.paidAmount}
-                        label="Paid Amount"
-                        fullWidth
-                        value={fpaid}
-                        onChange={(e) => {
-                        setPaid(e.target.value);
-                        }}
-                    />
-                    </FormControl>
-                </Box>
-                <Box sx={{ mx: 0.5 }} width="33%">
-                    <FormControl fullWidth>
-                        <TextField
-                            name={FORM_MODEL.dueAmount}
-                            label="Due Amount"
-                            fullWidth
-                            value={due}
-                            disabled
-                        />
-                        </FormControl>
-                </Box>
+              <Box sx={{ mx: 0.3 }} width="33%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.totalAmount}
+                    label="Total Amount"
+                    fullWidth
+                    value={total}
+                    onChange={(e) => {
+                      setTotal(e.target.value);
+                    }}
+                  />
+                </FormControl>
+              </Box>
+              <Box sx={{ mx: 0.3 }} width="33%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.paidAmount}
+                    label="Paid Amount"
+                    fullWidth
+                    value={fpaid}
+                    onChange={(e) => {
+                      setPaid(e.target.value);
+                    }}
+                  />
+                </FormControl>
+              </Box>
+              <Box sx={{ mx: 0.5 }} width="33%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.dueAmount}
+                    label="Due Amount"
+                    fullWidth
+                    value={due}
+                    disabled
+                  />
+                </FormControl>
+              </Box>
             </Box>
 
             <Box display="flex" width="100%" my={2}>
-                <Box sx={{ mx: 0.3 }} width="33%">
-                    <FormControl fullWidth>
-                    <TextField
-                        name={FORM_MODEL.free}
-                        label="Free"
-                        fullWidth
-                        value={ffree}
-                        onChange={(e) => {
-                        setFree(e.target.value);
-                        }}
-                    />
-                    </FormControl>
-                </Box>
-                <Box sx={{ mx: 0.3 }} width="33%">
-                    <FormControl fullWidth>
-                        <TextField
-                            name={FORM_MODEL.discount}
-                            label="Discount"
-                            fullWidth
-                            value={fdiscount}
-                            onChange={(e) => {
-                            setDiscount(e.target.value);
-                            }}
-                        />
-                    </FormControl>
-                </Box>
-                
-                <Box sx={{ mx: 0.5 }} width="33%">
-                  <FormControl fullWidth variant="outlined">
-                    <InputLabel>Payment Status</InputLabel>
-                      <Select
-                          onChange={handleChange}
-                          fullWidth
-                          name={FORM_MODEL.paymentStatus}
-                          value={values.paymentStatus}
-                          input={<OutlinedInput label="Payment Status" />}
-                      >
-                          {PAYMENT_STATUS.map((item, index) => (
-                          <MenuItem key={index} value={item}>
-                              {item}
-                          </MenuItem>
-                          ))}
-                      </Select>
-                  </FormControl>
-                </Box>
+              <Box sx={{ mx: 0.3 }} width="33%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.free}
+                    label="Free"
+                    fullWidth
+                    value={ffree}
+                    onChange={(e) => {
+                      setFree(e.target.value);
+                    }}
+                  />
+                </FormControl>
+              </Box>
+              <Box sx={{ mx: 0.3 }} width="33%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.discount}
+                    label="Discount"
+                    fullWidth
+                    value={fdiscount}
+                    onChange={(e) => {
+                      setDiscount(e.target.value);
+                    }}
+                  />
+                </FormControl>
+              </Box>
+
+              <Box sx={{ mx: 0.5 }} width="33%">
+                <FormControl fullWidth variant="outlined">
+                  <InputLabel>Payment Status</InputLabel>
+                  <Select
+                    onChange={handleChange}
+                    fullWidth
+                    name={FORM_MODEL.paymentStatus}
+                    value={values.paymentStatus}
+                    input={<OutlinedInput label="Payment Status" />}
+                  >
+                    {PAYMENT_STATUS.map((item, index) => (
+                      <MenuItem key={index} value={item}>
+                        {item}
+                      </MenuItem>
+                    ))}
+                  </Select>
+                </FormControl>
+              </Box>
             </Box>
 
             <Box display="flex" width="100%" my={2}>
-                <Box sx={{ mx: 0.5 }} width="50%">
-                    <FormControl fullWidth>
-                        <TextField
-                            name={FORM_MODEL.returnAmount}
-                            label="Saleble Return"
-                            fullWidth
-                            value={freturn}
-                            onChange={(e) => {
-                            setReturn(e.target.value);
-                            }}
-                        />
-                    </FormControl>
-                </Box>
-                <Box sx={{ mx: 0.5 }} width="50%">
-                  <FormControl fullWidth>
-                    <TextField
-                        name={FORM_MODEL.marketReturn}
-                        label="Market Return"
-                        fullWidth
-                        value={market}
-                        onChange={(e) => {
-                        setMarket(e.target.value);
-                        }}
-                    />
-                  </FormControl>
-                </Box>
+              <Box sx={{ mx: 0.5 }} width="50%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.returnAmount}
+                    label="Saleble Return"
+                    fullWidth
+                    value={freturn}
+                    onChange={(e) => {
+                      setReturn(e.target.value);
+                    }}
+                  />
+                </FormControl>
+              </Box>
+              <Box sx={{ mx: 0.5 }} width="50%">
+                <FormControl fullWidth>
+                  <TextField
+                    name={FORM_MODEL.marketReturn}
+                    label="Market Return"
+                    fullWidth
+                    value={market}
+                    onChange={(e) => {
+                      setMarket(e.target.value);
+                    }}
+                  />
+                </FormControl>
+              </Box>
             </Box>
 
             <Box display="flex" width="100%" my={2}>
