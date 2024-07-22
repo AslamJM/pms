@@ -25,12 +25,19 @@ const initialValues = {
 };
 
 const AddShopForm = () => {
-  const { setAddModalOpen, setLoading, setSnackMessage, setSnackOpen, setParams, areas } =
-    useGlobalContext();
+  const {
+    setAddModalOpen,
+    setLoading,
+    setSnackMessage,
+    setSnackOpen,
+    setParams,
+    areas,
+  } = useGlobalContext();
   const { createShop } = shopClient;
   const { isLoading, mutate } = useMutation(
-    async (input: { name: string; region: string; address: string }) =>
-      await createShop(input)
+    async (input: { name: string; region: string; address: string }) => {
+      return await createShop(input);
+    }
   );
 
   const regionOptions = useMemo(() => {
@@ -71,14 +78,14 @@ const AddShopForm = () => {
         <form onSubmit={handleSubmit}>
           <Grid container rowGap={1} columnGap={1}>
             <Grid item xs={6}>
-              <FormControl fullWidth sx={{ fontFamily: 'Poppins' }}>
+              <FormControl fullWidth sx={{ fontFamily: "Poppins" }}>
                 <TextField
                   name="name"
                   label="Name"
                   fullWidth
                   value={values.name}
                   onChange={handleChange}
-                  sx={{ marginTop: 2, fontFamily: 'Poppins' }}
+                  sx={{ marginTop: 2, fontFamily: "Poppins" }}
                 />
               </FormControl>
             </Grid>
@@ -88,11 +95,25 @@ const AddShopForm = () => {
                   autoSelect
                   options={regionOptions}
                   renderInput={(params) => (
+<<<<<<< HEAD
                     <TextField {...params} label="Select Region" size="small" />
                   )}
                   onChange={(e, v) => {
                     setFieldValue("region", v?._id);
                     setParams({ company: v?._id });
+=======
+                    <TextField
+                      {...params}
+                      label="Select Region"
+                      size="small"
+                      sx={{}}
+                    />
+                  )}
+                  onChange={(e, v) => {
+                    if (!v) return;
+                    setFieldValue("region", v._id);
+                    setParams({ company: v._id });
+>>>>>>> e061a6c6d06022164cc9d4df20aa2033991cc1b3
                   }}
                 />
               </FormControl>

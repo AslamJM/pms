@@ -14,6 +14,7 @@ export const createShopController = async (
   res: Response
 ) => {
   const { input } = req.body;
+
   try {
     const created = await createShop(input);
     return res.status(200).json({
@@ -21,6 +22,8 @@ export const createShopController = async (
       shop: created,
     });
   } catch (error: any) {
+    console.log(error);
+
     return res.status(500).json({
       message: error.message,
     });
