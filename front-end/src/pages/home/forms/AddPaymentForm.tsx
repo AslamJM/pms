@@ -18,7 +18,7 @@ import {
   FORM_MODEL,
   PAYMENT_METHOD,
   PAYMENT_STATUS,
-} from "../../payments/forms/data";
+} from "../../dailysales/forms/data";
 import { paymentClient } from "../../../api/payments";
 import { useShopContext } from "../../../context/ShopContext";
 import { useCollectorContext } from "../../../context/CollectorContext";

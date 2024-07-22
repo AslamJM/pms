@@ -1,4 +1,4 @@
-import { Divider, Typography } from "@mui/material";
+import { Divider, Paper, Typography } from "@mui/material";
 import Box from "@mui/material/Box";
 import AddButton from "../../components/buttons/AddButton";
 import { useGlobalContext } from "../../context/GlobalContext";
@@ -10,28 +10,28 @@ import CompanyPayments from "./CompanyPayments";
 import dayjs from "dayjs";
 import UpdateInvoiceModal from "./modals/UpdateInvoiceModal";
 import SearchShop from "./SearchShop";
-import WebFont from 'webfontloader';
 import React, { useEffect } from 'react';
+import { LineGraph } from "../../components/charts/line";
+import { BarChart } from "../../components/charts/bar";
+import { PieChart } from "../../components/charts/pie";
+import HomePayment from "../../components/tables/HomePayment";
+import CompanyButton from '../../components/buttons/CompanyButton';
+import { useQuery } from "react-query";
+import { apiClient } from "../../api/client";
+import { MonthlyBarChart } from "../../components/charts/monthlyBar";
 
 const Home = () => {
   const { companies } = useGlobalContext();
   const { user } = useAuthContext();
 
-  useEffect(() => {
-    WebFont.load({
-      google: {
-        families: [
-          'Roboto:400,700',
-          'Open Sans:400,700',
-          'Lato:400,700',
-          'Montserrat:400,700',
-          'Merriweather:400,700',
-          'Playfair Display:400,700',
-          'Poppins:400,700'
-        ]
-      }
-    });
-  }, []);
+
+  const getCompanyPayment = async () =>
+    (await apiClient.get<Record<string, number>>("/payments/company-income"))
+      .data;
+  const { data, isLoading, isError } = useQuery(
+    "company-income",
+    getCompanyPayment
+  );
 
   return (
     <div>
@@ -48,23 +48,43 @@ const Home = () => {
           </Typography>
         </Box>
         <Divider />
-        <Box mt={2} display="flex">
-          <CompanyPayments />
-          {user?.role === "ADMIN" && (
-            <Box ml={2} flexGrow={1} >
-              <Typography variant="h5" sx={{ fontFamily: 'Poppins' }}>Payments</Typography>
-              <Divider />
-              <Box mb={4} display="flex" mt={3} >
-                <AddButton title="Add New Payment" />
-                <Divider sx={{ height: 50, mx: 1 }} orientation="vertical" />
-                <InvoiceSearch />
-              </Box>
-              <Divider />
-              <Box mt={2}>
-                <SearchShop />
-              </Box>
+        <Box mt={2} mb={3} display="flex">
+          <HomePayment />
+          <Paper sx={{ width: "50%", my: 1, p: 1, boxShadow: 5, mt: 2, ml: 3, borderRadius: '10px'}}>
+            <Typography align="center" sx={{ fontWeight: 'bold', mt: "20px"}}>
+              Percentage of Payments
+            </Typography>
+            <Box sx={{ width: "75%", ml: "10%" }}>
+              <PieChart />
             </Box>
-          )}
+          </Paper>
+        </Box>
+        <Box>
+          <Box sx={{ mt: "30px", width: "90%", boxShadow: 5, borderRadius: '10px', ml: "50px", alignItems: "center" }}>
+            <Typography p={3} align="center" sx={{ fontWeight: 'bold'}}>
+              Last Month Sales
+            </Typography>
+            <Box>
+              <MonthlyBarChart />
+            </Box>
+          </Box>
+        </Box>
+        <Box>
+          <Box sx={{ mt: "30px", width: "90%", boxShadow: 5, borderRadius: '10px', ml: "50px", alignItems: "center" }}>
+            <Typography p={3} align="center" sx={{ fontWeight: 'bold'}}>
+              Monthly Sales Report
+            </Typography>
+            <Box>
+              <Box sx={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: 2, ml: 2, mr: 2 }}>
+                  {data && companies.sort((a, b) => a.name.localeCompare(b.name)).map((c) => (
+                  <Box key={c.name} sx={{ flex: 1, minWidth: 120, maxWidth: 200 }}>
+                    <CompanyButton title={c.name} />
+                  </Box>
+                ))}
+              </Box>
+              <BarChart />
+            </Box>
+          </Box>
         </Box>
       </Box>
     </div>

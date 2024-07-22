@@ -7,6 +7,7 @@ import shopRouter from './shop';
 import companyRouter from './company';
 import areaRouter from './area';
 import historyRouter from './history';
+import chartRouter from  './chart'
 
 const authRouter = Router();
 
@@ -20,4 +21,5 @@ export {
   areaRouter,
   authRouter,
   historyRouter,
+  chartRouter
 };

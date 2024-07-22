@@ -8,6 +8,7 @@ import ListItemIcon from "@mui/material/ListItemIcon";
 import ListItemText from "@mui/material/ListItemText";
 import HomeIcon from "@mui/icons-material/Home";
 import PaidIcon from "@mui/icons-material/Paid";
+import MoneyIcon from "@mui/icons-material/Money";
 import SummarizeIcon from "@mui/icons-material/Summarize";
 import StorefrontIcon from "@mui/icons-material/Storefront";
 import FollowTheSignsIcon from "@mui/icons-material/FollowTheSigns";
@@ -30,6 +31,7 @@ type Props = {
 let listItems = [
   { title: "Home", icon: <HomeIcon />, to: "/" },
   { title: "Payments", icon: <PaidIcon />, to: "/payments" },
+  { title: "Daily Sales", icon: <MoneyIcon />, to: "/dailysales" },
   { title: "Reports", icon: <SummarizeIcon />, to: "/reports" },
   { title: "Shops", icon: <StorefrontIcon />, to: "/shops" },
   {

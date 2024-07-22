@@ -18,7 +18,8 @@ export interface IAction {
     | "SET_COMPANIES"
     | "SET_AREAS"
     | "SET_PARAMS"
-    | "RESET_PARAMS";
+    | "RESET_PARAMS"
+    | "SET_SELECTED_COMPANY";
 
   payload: any;
 }
@@ -43,6 +44,8 @@ export interface IGlobalState {
   params: any;
   setParams: (value: any) => void;
   resetParams: (value: any) => void;
+  selectedCompany: string | null;
+  setSelectedCompany: (company: string | null) => void;
 }
 
 const initialState: IGlobalState = {
@@ -65,6 +68,8 @@ const initialState: IGlobalState = {
   params: { paymentDate: dayjs() },
   setParams: () => {},
   resetParams: () => {},
+  selectedCompany: null,
+  setSelectedCompany: () => {},
 };
 
 const globalContext = createContext(initialState);
@@ -126,6 +131,11 @@ function globalReducer(state: IGlobalState, action: IAction): IGlobalState {
         ...state,
         params: action.payload,
       };
+    case "SET_SELECTED_COMPANY":
+      return {
+       ...state,
+        selectedCompany: action.payload,
+      };
     default:
       return state;
   }
@@ -163,6 +173,9 @@ function useGlobalReducer() {
   const setAreas = (value: ICompany[]) => {
     dispatch({ type: "SET_AREAS", payload: value });
   };
+  const setSelectedCompany = (company: string | null) => {
+    dispatch({ type: "SET_SELECTED_COMPANY", payload: company });
+  };
   return {
     ...state,
     setSnackOpen,
@@ -175,6 +188,7 @@ function useGlobalReducer() {
     setParams,
     resetParams,
     setAreas,
+    setSelectedCompany,
   };
 }
 

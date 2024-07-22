@@ -45,7 +45,7 @@ const AddShopForm = () => {
       onSubmit={(values, { resetForm }) => {
         if (isLoading) setLoading(true);
         mutate(
-          { ...values },
+          {...values },
           {
             onSuccess: (data) => {
               queryClient.invalidateQueries("all shops");
@@ -67,7 +67,7 @@ const AddShopForm = () => {
         );
       }}
     >
-      {({ handleChange, handleSubmit, values }) => (
+      {({ handleChange, handleSubmit, values, setFieldValue }) => (
         <form onSubmit={handleSubmit}>
           <Grid container rowGap={1} columnGap={1}>
             <Grid item xs={6}>
@@ -84,16 +84,18 @@ const AddShopForm = () => {
             </Grid>
             <Grid item xs={6}>
               <FormControl fullWidth>
-                  <Autocomplete
-                    autoSelect
-                    options={regionOptions}
-                    renderInput={(params) => (
-                      <TextField {...params} label="Select Region" size="small"
-                      sx={{  }} />
-                    )}
-                    onChange={(e, v) => setParams({ company: v?._id })}
-                  />
-                </FormControl>
+                <Autocomplete
+                  autoSelect
+                  options={regionOptions}
+                  renderInput={(params) => (
+                    <TextField {...params} label="Select Region" size="small" />
+                  )}
+                  onChange={(e, v) => {
+                    setFieldValue("region", v?._id);
+                    setParams({ company: v?._id });
+                  }}
+                />
+              </FormControl>
             </Grid>
 
             <Grid item xs={12}>
@@ -110,7 +112,7 @@ const AddShopForm = () => {
           </Grid>
           <DialogActions>
             <Button variant="contained" type="submit">
-              {isLoading ? <CircularProgress /> : "add"}
+              {isLoading? <CircularProgress /> : "add"}
             </Button>
             <Button
               onClick={() => setAddModalOpen(false)}

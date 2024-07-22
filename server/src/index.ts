@@ -9,7 +9,8 @@ import {
   companyRouter,
   areaRouter,
   authRouter,
-  historyRouter
+  historyRouter,
+  chartRouter
 } from './routes';
 import path from 'path';
 
@@ -26,6 +27,7 @@ app.use('/api/collectors', collectorRouter);
 app.use('/api/companies', companyRouter);
 app.use('/api/areas', areaRouter);
 app.use('/api/history',historyRouter );
+app.use("/api/chart",chartRouter)
 
 app.get('*', (_, res) => {
   res.sendFile(path.resolve(__dirname + '/../static/index.html'));

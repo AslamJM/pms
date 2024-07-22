@@ -1,19 +1,67 @@
-import PaymentTable from "./PaymentTable";
-import EditPaymentModel from "./modals/EditPaymentModal";
-import PaymentFilters from "./PaymentFilters";
+import { Divider, Typography } from "@mui/material";
+import Box from "@mui/material/Box";
+import AddButton from "../../components/buttons/AddButton";
+import { useGlobalContext } from "../../context/GlobalContext";
+import { useAuthContext } from "../../context/AuthContext";
+import AddPaymentModal from "./modals/AddPaymentModal";
+import InvoiceSearch from "../../components/search/InvoiceSearch";
 import SnackBar from "../../components/snackbar";
-import { PageHeader } from "../../components/header";
-import { Divider } from "@mui/material";
+import CompanyPayments from "./CompanyPayments";
+import dayjs from "dayjs";
+import UpdateInvoiceModal from "./modals/UpdateInvoiceModal";
+import SearchShop from "./SearchShop";
+import WebFont from 'webfontloader';
+import React, { useEffect } from 'react';
 
 const Payments = () => {
+  const { companies } = useGlobalContext();
+  const { user } = useAuthContext();
+
+  useEffect(() => {
+    WebFont.load({
+      google: {
+        families: [
+          'Roboto:400,700',
+          'Open Sans:400,700',
+          'Lato:400,700',
+          'Montserrat:400,700',
+          'Merriweather:400,700',
+          'Playfair Display:400,700',
+          'Poppins:400,700'
+        ]
+      }
+    });
+  }, []);
+
   return (
     <div>
-      <PageHeader title="Daily Sales"/>
       <SnackBar />
-      <PaymentFilters />
-      <Divider sx={{ mt: 2 }}/>
-      <EditPaymentModel />
-      <PaymentTable />
+      <AddPaymentModal />
+      <UpdateInvoiceModal />
+      <Box mt={2}>
+        <Box display="flex" justifyContent="space-between" alignItems="center">
+          <Typography variant="h5" sx={{ fontWeight: 'bold'}}>
+            Payments
+          </Typography>
+        </Box>
+        <Divider />
+        <Box mt={2} display="flex">
+          <CompanyPayments />
+          {user?.role === "ADMIN" && (
+            <Box ml={2} flexGrow={1} >
+              <Box mb={4} display="flex" mt={3} >
+                <AddButton title="Add New Payment" />
+                <Divider sx={{ height: 50, mx: 1 }} orientation="vertical" />
+                <InvoiceSearch />
+              </Box>
+              <Divider />
+              <Box mt={2}>
+                <SearchShop />
+              </Box>
+            </Box>
+          )}
+        </Box>
+      </Box>
     </div>
   );
 };

@@ -46,6 +46,7 @@ export interface IShop {
 }
 
 export interface ICompany {
+  [x: string]: string | number | Date;
   _id: string;
   name: string;
 }
@@ -92,6 +93,8 @@ const createOne = async <T, K>(route: string, body: K) => {
       ...body,
     },
   });
+  console.log(response.data);
+  
   return response.data;
 };
 
