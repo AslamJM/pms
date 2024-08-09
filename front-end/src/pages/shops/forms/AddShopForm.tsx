@@ -95,13 +95,6 @@ const AddShopForm = () => {
                   autoSelect
                   options={regionOptions}
                   renderInput={(params) => (
-<<<<<<< HEAD
-                    <TextField {...params} label="Select Region" size="small" />
-                  )}
-                  onChange={(e, v) => {
-                    setFieldValue("region", v?._id);
-                    setParams({ company: v?._id });
-=======
                     <TextField
                       {...params}
                       label="Select Region"
@@ -113,7 +106,6 @@ const AddShopForm = () => {
                     if (!v) return;
                     setFieldValue("region", v._id);
                     setParams({ company: v._id });
->>>>>>> e061a6c6d06022164cc9d4df20aa2033991cc1b3
                   }}
                 />
               </FormControl>

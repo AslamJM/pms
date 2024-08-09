@@ -1,5 +1,5 @@
 import { Request, Response } from 'express';
-import { verifyMany } from './../services/payment';
+import { getDuePaymentsByShop, getLastMonthCompanyPayments, verifyMany } from './../services/payment';
 import {
   createPayment,
   getSinglePayment,
@@ -24,7 +24,7 @@ export const createPaymentController = async (
     const created = await createPayment(input);
 
     return res.status(200).json({
-      message: 'payment created successfully',
+      message: 'Payment created successfully',
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -59,7 +59,7 @@ export const deletePaymentController = async (
     const payment = await deletePayment(id);
 
     return res.status(200).json({
-      message: 'payment deleted successfully',
+      message: 'Payment deleted successfully',
     });
   } catch (error: any) {
     return res.status(500).json({
@@ -186,6 +186,28 @@ export const getMonthlyCompanyIncome = async (req: Request, res: Response) => {
       resObj[p.company.name] += p.paidAmount;
     });
     return res.status(200).json(resObj);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const getDuePaymentsByShopController = async (req: Request, res: Response) => {
+  try {
+    const duePayments = await getDuePaymentsByShop();
+    return res.status(200).json(duePayments);
+  } catch (error: any) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+
+export const getLastMonthCompanyPaymentsController = async (req: Request, res: Response) => {
+  try {
+    const payments = await getLastMonthCompanyPayments();
+    return res.status(200).json(payments);
   } catch (error: any) {
     return res.status(500).json({
       message: error.message,

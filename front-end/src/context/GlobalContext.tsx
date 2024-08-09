@@ -1,9 +1,10 @@
 import React, { createContext, useContext, useReducer } from "react";
 import { useQuery } from "react-query";
-import { ICompany, IArea } from "../api/client";
-import { getAllCompanies, getAllAreas } from "../api/company";
+import { ICompany, IArea, IShop, IPayment, getCompanyPayments } from '../api/client';
+import { getAllCompanies, getAllAreas, getAllShops } from "../api/company";
 import dayjs from "dayjs";
 import timezone from "dayjs/plugin/timezone";
+import { paymentClient } from "../api/payments";
 
 dayjs.extend(timezone);
 dayjs.tz.setDefault("Asia/Colombo");
@@ -19,8 +20,12 @@ export interface IAction {
     | "SET_AREAS"
     | "SET_PARAMS"
     | "RESET_PARAMS"
-    | "SET_SELECTED_COMPANY";
-
+    | "SET_SELECTED_COMPANY"
+    | "SET_AREAS_FROM_IAREA"
+    | "SET_PAYMENTS"
+    | "SET_SHOPS"
+    | "SET_DUE_PAYMENTS"
+    | "SET_COMPANY_PAYMENTS";
   payload: any;
 }
 
@@ -40,13 +45,22 @@ export interface IGlobalState {
   companies: ICompany[];
   setComapnies: (value: ICompany[]) => void;
   areas: IArea[];
+  shops: IShop[];
   setAreas: (value: IArea[]) => void;
+  setShops: (value: IShop[]) => void;
   params: any;
   setParams: (value: any) => void;
   resetParams: (value: any) => void;
   selectedCompany: string | null;
   setSelectedCompany: (company: string | null) => void;
+  payments: Array<{ area: string, totalPayment: number }>;
+  setPayments: (value: Array<{ area: string, totalPayment: number }>) => void;
+  duePayments: IPayment[];
+  setDuePayments: (value: IPayment[]) => void;
+  companyPayments: { companyName: string, totalPayment: number, paid: number, due: number }[]; // Add this line
+  setCompanyPayments: (value: { companyName: string, totalPayment: number, paid: number, due: number }[]) => void;
 }
+
 
 const initialState: IGlobalState = {
   snackMessage: "",
@@ -64,12 +78,20 @@ const initialState: IGlobalState = {
   companies: [],
   setComapnies: () => {},
   areas: [],
+  shops: [],
   setAreas: () => {},
+  setShops: () => {},
   params: { paymentDate: dayjs() },
   setParams: () => {},
   resetParams: () => {},
   selectedCompany: null,
   setSelectedCompany: () => {},
+  payments: [],
+  setPayments: () => {},
+  duePayments: [],
+  setDuePayments: () => {},
+  companyPayments: [],
+  setCompanyPayments: () => {},
 };
 
 const globalContext = createContext(initialState);
@@ -121,6 +143,11 @@ function globalReducer(state: IGlobalState, action: IAction): IGlobalState {
         ...state,
         areas: action.payload,
       };
+    case "SET_AREAS_FROM_IAREA":
+      return {
+        ...state,
+        areas: action.payload,
+      };
     case "SET_PARAMS":
       return {
         ...state,
@@ -133,13 +160,34 @@ function globalReducer(state: IGlobalState, action: IAction): IGlobalState {
       };
     case "SET_SELECTED_COMPANY":
       return {
-       ...state,
+        ...state,
         selectedCompany: action.payload,
+      };
+    case "SET_PAYMENTS":
+        return {
+            ...state,
+            payments: action.payload,
+        };
+    case "SET_SHOPS":
+        return {
+            ...state,
+            shops: action.payload,
+        };
+    case "SET_DUE_PAYMENTS":
+      return {
+        ...state,
+        duePayments: action.payload,
+      };
+    case "SET_COMPANY_PAYMENTS":
+      return {
+        ...state,
+        companyPayments: action.payload,
       };
     default:
       return state;
   }
 }
+
 
 function useGlobalReducer() {
   const [state, dispatch] = useReducer(globalReducer, initialState);
@@ -170,11 +218,26 @@ function useGlobalReducer() {
   const resetParams = (value: any) => {
     dispatch({ type: "RESET_PARAMS", payload: value });
   };
-  const setAreas = (value: ICompany[]) => {
+  const setAreas = (value: IArea[]) => {
     dispatch({ type: "SET_AREAS", payload: value });
+  };
+  const setAreasFromIArea = (value: IArea[]) => {
+    dispatch({ type: "SET_AREAS_FROM_IAREA", payload: value });
   };
   const setSelectedCompany = (company: string | null) => {
     dispatch({ type: "SET_SELECTED_COMPANY", payload: company });
+  };
+  const setPayments = (value: Array<{ area: string, totalPayment: number }>) => {
+    dispatch({ type: "SET_PAYMENTS", payload: value });
+  };
+  const setShops = (value: IShop[]) => {
+    dispatch({ type: "SET_SHOPS", payload: value });
+  };
+  const setDuePayments = (value: IPayment[]) => {
+    dispatch({ type: "SET_DUE_PAYMENTS", payload: value });
+  };
+  const setCompanyPayments = (value: { companyName: string, totalPayment: number, paid: number, due: number }[]) => {
+    dispatch({ type: "SET_COMPANY_PAYMENTS", payload: value });
   };
   return {
     ...state,
@@ -188,9 +251,15 @@ function useGlobalReducer() {
     setParams,
     resetParams,
     setAreas,
+    setShops,
     setSelectedCompany,
+    setAreasFromIArea,
+    setPayments,
+    setDuePayments,
+    setCompanyPayments,
   };
 }
+
 
 export default function GlobalContextProvider({
   children,
@@ -201,7 +270,19 @@ export default function GlobalContextProvider({
   });
 
   useQuery("all areas", getAllAreas, {
-    onSuccess: (data) => globalState.setAreas(data.areas),
+    onSuccess: (data) => globalState.setAreasFromIArea(data.areas as IArea[]),
+  });
+
+  useQuery("all shops", getAllShops, {
+    onSuccess: (data) => globalState.setShops(data.shops as IShop[]),
+  });
+
+  useQuery("due payments", paymentClient.getDuePayments, {
+    onSuccess: (data) => globalState.setDuePayments(data),
+  });
+
+  useQuery("company payments", getCompanyPayments, {
+    onSuccess: (data) => globalState.setCompanyPayments(data),
   });
 
   return (

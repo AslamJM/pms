@@ -210,7 +210,6 @@ const PaymentTable = () => {
         setRowsPerPage={setRowsPerPage}
         onSelectAllClick={handleSelectAllClick}
         numSelected={checkedPayments.length}
-        
       >
         {payments
           .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)

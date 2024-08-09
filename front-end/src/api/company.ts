@@ -1,4 +1,5 @@
-import { apiMethods, ICompany, IArea } from "./client";
+import { apiMethods, ICompany, IArea, IShop } from "./client";
+import { createShop } from '../../../server/src/services/shop';
 
 const { getAll, getOne, deleteOne, updateOne, createOne } = apiMethods;
 
@@ -13,3 +14,11 @@ export const getAllAreas = async () =>
 
 export const createArea = async (name: string) =>
   await createOne("/areas/create", { name });
+
+export const getAllShops = async () =>
+  await getAll<{
+    shops: IShop[]; areas: IShop[] 
+}>("/shops/all");
+
+export const createShops = async (name: string) =>
+  await createOne("/shops/create", { name });

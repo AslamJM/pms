@@ -12,8 +12,6 @@ import {
 import currencyFormatter from "currency-formatter";
 import TableContainer from "@mui/material/TableContainer";
 import { useGlobalContext } from "../../context/GlobalContext";
-import WebFont from 'webfontloader';
-import React, { useEffect } from 'react';
 
 const CompanyPayments = () => {
   const getCompanyIncome = async () =>
@@ -25,6 +23,7 @@ const CompanyPayments = () => {
     getCompanyIncome
   );
 
+
   const { companies } = useGlobalContext();
 
   if (isLoading) {
@@ -34,7 +33,8 @@ const CompanyPayments = () => {
   if (isError) {
     return <div>Error Fetching Data</div>;
   }
-
+  console.log("Company names: ", companies);
+  console.log("Company payment: ", )
   return (
     <Paper sx={{ width: 400, my: 1, p: 1, boxShadow: 5, borderRadius: '10px' }}>
       <Typography align="center" mt={1} mb={1} sx={{ fontWeight: 'bold', fontFamily: 'Poppins' }}>Payments Collections For This Month</Typography>

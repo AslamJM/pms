@@ -13,12 +13,15 @@ import SearchShop from "./SearchShop";
 import React, { useEffect } from 'react';
 import { LineGraph } from "../../components/charts/line";
 import { BarChart } from "../../components/charts/bar";
-import { PieChart } from "../../components/charts/pie";
+import PieChart from "../../components/charts/pie";
 import HomePayment from "../../components/tables/HomePayment";
 import CompanyButton from '../../components/buttons/CompanyButton';
 import { useQuery } from "react-query";
 import { apiClient } from "../../api/client";
 import { MonthlyBarChart } from "../../components/charts/monthlyBar";
+import ShopList from "../../components/charts/chart";
+import { DuePayment } from "../../components/tables/DuePayment";
+import { BarCharts } from "../../components/charts/barChart";
 
 const Home = () => {
   const { companies } = useGlobalContext();
@@ -50,11 +53,12 @@ const Home = () => {
         <Divider />
         <Box mt={2} mb={3} display="flex">
           <HomePayment />
+          {/* <DuePayment /> */}
           <Paper sx={{ width: "50%", my: 1, p: 1, boxShadow: 5, mt: 2, ml: 3, borderRadius: '10px'}}>
             <Typography align="center" sx={{ fontWeight: 'bold', mt: "20px"}}>
               Percentage of Payments
             </Typography>
-            <Box sx={{ width: "75%", ml: "10%" }}>
+            <Box sx={{ width: "75%", ml: "10%", mt: "20px" }}>
               <PieChart />
             </Box>
           </Paper>
@@ -69,7 +73,7 @@ const Home = () => {
             </Box>
           </Box>
         </Box>
-        <Box>
+        {/* <Box>
           <Box sx={{ mt: "30px", width: "90%", boxShadow: 5, borderRadius: '10px', ml: "50px", alignItems: "center" }}>
             <Typography p={3} align="center" sx={{ fontWeight: 'bold'}}>
               Monthly Sales Report
@@ -85,7 +89,7 @@ const Home = () => {
               <BarChart />
             </Box>
           </Box>
-        </Box>
+        </Box> */}
       </Box>
     </div>
   );

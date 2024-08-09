@@ -24,7 +24,6 @@ import { useShopContext } from "../../../context/ShopContext";
 import { useCollectorContext } from "../../../context/CollectorContext";
 import { useMutation, useQueryClient } from "react-query";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
 import { useMemo } from "react";
 
 const initialValues = {
@@ -96,17 +95,21 @@ const AddPaymentForm = () => {
         const { dueDate, paymentDate } = values;
         mutate(
           {
-           ...params,
-           shop,
-            free: Number(ffree),
-            discount: Number(fdiscount),
+            ...params,
+            invoice: values.invoice,
+            shop,
+            company: params.company,
+            collector: params.collector,
             totalAmount: Number(total),
             paidAmount: Number(fpaid),
             dueAmount: Number(due),
+            free: Number(ffree),
+            discount: Number(fdiscount),
             returnAmount: Number(freturn),
             marketReturn: Number(market),
             paymentDate: new Date(values.paymentDate),
             dueDate: new Date(values.dueDate),
+            paymentStatus: values.paymentStatus,
           },
           {
             onSuccess: (data) => {
@@ -239,7 +242,7 @@ const AddPaymentForm = () => {
             </Box>
 
             <Box display="flex" width="100%" my={2}>
-                <Box sx={{ mx: 0.3 }} width="33%">
+                <Box sx={{ mx: 0.3 }} width="50%">
                     <FormControl fullWidth>
                     <TextField
                         name={FORM_MODEL.free}
@@ -252,7 +255,7 @@ const AddPaymentForm = () => {
                     />
                     </FormControl>
                 </Box>
-                <Box sx={{ mx: 0.3 }} width="33%">
+                <Box sx={{ mx: 0.3 }} width="50%">
                     <FormControl fullWidth>
                         <TextField
                             name={FORM_MODEL.discount}
@@ -265,8 +268,17 @@ const AddPaymentForm = () => {
                         />
                     </FormControl>
                 </Box>
-                
-                <Box sx={{ mx: 0.5 }} width="33%">
+              </Box>
+              <Box display="flex" width="100%" my={2} >
+                <Box sx={{ mx: 0.5 }} width="50%">
+                    <FormControl fullWidth >
+                      <DatePicker
+                        label="Due Date"
+                        name={FORM_MODEL.dueDate}
+                      />
+                    </FormControl>
+                </Box>
+                <Box sx={{ mx: 0.5 }} width="50%">
                   <FormControl fullWidth variant="outlined">
                     <InputLabel>Payment Status</InputLabel>
                       <Select
@@ -284,8 +296,7 @@ const AddPaymentForm = () => {
                       </Select>
                   </FormControl>
                 </Box>
-            </Box>
-
+              </Box>
             <Box display="flex" width="100%" my={2}>
                 <Box sx={{ mx: 0.5 }} width="50%">
                     <FormControl fullWidth>

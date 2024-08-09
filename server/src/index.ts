@@ -10,11 +10,6 @@ import {
   areaRouter,
   authRouter,
   historyRouter,
-<<<<<<< HEAD
-  chartRouter
-=======
-  seedRouter
->>>>>>> e061a6c6d06022164cc9d4df20aa2033991cc1b3
 } from './routes';
 import path from 'path';
 
@@ -30,13 +25,7 @@ app.use('/api/payments', paymentRouter);
 app.use('/api/collectors', collectorRouter);
 app.use('/api/companies', companyRouter);
 app.use('/api/areas', areaRouter);
-<<<<<<< HEAD
-app.use('/api/history',historyRouter );
-app.use("/api/chart",chartRouter)
-=======
 app.use('/api/history', historyRouter);
-app.use('/api/db', seedRouter)
->>>>>>> e061a6c6d06022164cc9d4df20aa2033991cc1b3
 
 app.get('*', (_, res) => {
   res.sendFile(path.resolve(__dirname + '/../static/index.html'));

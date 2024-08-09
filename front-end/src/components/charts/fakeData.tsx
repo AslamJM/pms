@@ -1,3 +1,7 @@
+import { useGlobalContext } from "../../context/GlobalContext";
+import { queryPayments, IPayment } from "../../api/client";
+import { useEffect, useState } from "react";
+
 export const lineChartData = {
     labels: [
         "Monday",
@@ -100,19 +104,52 @@ export const monthlyBarChartData = {
     ],
 };
 
-export const pieChartData = {
-    labels: ["First Zone", "Second Zone", "Third Zone", "Fourth Zone"],
-    datasets: [
-        {
-            label: "Payment",
-            data: [120, 60, 50, 20],
-            backgroundColor: [
-                "rgba(255, 99, 132, 0.9)",
-                "rgba(255, 206, 86, 0.9)",
-                "rgba(153, 102, 255, 0.9)",
-                "rgba(75, 192, 255, 0.9)",
-            ],
-            hoverOffSet: 4,
-        },
-    ],
-};
+// const MyComponent = () => {
+
+//   const [payments, setPayments] = useState<IPayment[]>([]);
+//     const [areas, setAreas] = useState([]);
+  
+//     useEffect(() => {
+//       // Fetch all payments data
+//       const fetchPayments = async () => {
+//         try {
+//           const { payments } = await queryPayments({});
+//           setPayments(payments);
+//         } catch (error) {
+//           console.error("Error fetching payments:", error);
+//         }
+//       };
+  
+//       fetchPayments();
+//     }, []);
+  
+//     // Aggregate payments by area
+//     const paymentDataByArea = payments.reduce((acc, payment) => {
+//       const areaName = payment.area.name;
+//       if (!acc[areaName]) {
+//         acc[areaName] = 0;
+//       }
+//       acc[areaName] += payment.totalAmount;
+//       return acc;
+//     }, {}as { [key: string]: number });
+  
+//     const areaNames = Object.keys(paymentDataByArea);
+//     const paymentData = Object.values(paymentDataByArea);
+  
+//     const pieChartData = {
+//       labels: areaNames,
+//       datasets: [
+//         {
+//           label: "Total Payment",
+//           data: paymentData,
+//           backgroundColor: [
+//             "rgba(255, 99, 132, 0.9)",
+//             "rgba(255, 206, 86, 0.9)",
+//             "rgba(153, 102, 255, 0.9)",
+//             "rgba(75, 192, 255, 0.9)",
+//           ],
+//           hoverOffset: 4,
+//         },
+//       ],
+//     };
+// }
