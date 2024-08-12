@@ -21,5 +21,4 @@ export {
   areaRouter,
   authRouter,
   historyRouter,
-  seedRouter
 };

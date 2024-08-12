@@ -377,7 +377,7 @@ const PaymentTableSelect = () => {
     ;
 
     doc.setFontSize(15);
-    doc.text("HS Enterprises Credit Payment", 100, 10);
+    doc.text("HS Enterprises  Payment", 100, 10);
     doc.setFontSize(12);
     doc.text(`Date - ${dayjs().format("DD/MM/YYYY")}`, 15, 15);
     doc.text(`Company - ${data[0].company}`, 15, 20);

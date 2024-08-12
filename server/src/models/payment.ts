@@ -43,6 +43,8 @@ export class Payment {
   @prop({ required: true })
   paymentDate: Date;
   @prop()
+  dueDate: Date;
+  @prop()
   paymentStatus: PaymentStatus;
   @prop({ default: false })
   verified: boolean;

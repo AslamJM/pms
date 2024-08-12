@@ -16,15 +16,13 @@ import { useGlobalContext } from "../../../context/GlobalContext";
 import DatePicker from "../../../components/datepicker";
 import {
   FORM_MODEL,
-  PAYMENT_METHOD,
   PAYMENT_STATUS,
-} from "../../payments/forms/data";
+} from "../../dailysales/forms/data";
 import { paymentClient } from "../../../api/payments";
 import { useShopContext } from "../../../context/ShopContext";
 import { useCollectorContext } from "../../../context/CollectorContext";
 import { useMutation, useQueryClient } from "react-query";
 import { useEffect, useState } from "react";
-import dayjs from "dayjs";
 import { useMemo } from "react";
 
 const initialValues = {
@@ -84,6 +82,7 @@ const AddPaymentForm = () => {
     setDue((Number(total) - Number(fpaid)).toString());
   }, [fpaid]);
 
+
   return (
     <Formik
       initialValues={initialValues}
@@ -102,6 +101,7 @@ const AddPaymentForm = () => {
             marketReturn: Number(market),
             paymentDate: new Date(paymentDate),
             dueDate: new Date(dueDate),
+            paymentStatus: values.paymentStatus,
             ...params,
           },
           {

@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import App from "./App";
 import Collectors from "./pages/collectors";
 import Home from "./pages/home";
+import DailySales from "./pages/dailysales";
 import Payments from "./pages/payments";
 import Shops from "./pages/shops";
 import CompanyPage from "./pages/companies";
@@ -37,6 +38,7 @@ ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
                   <Routes>
                     <Route element={<App />}>
                       <Route path="/" element={<Home />} />
+                      <Route path="/dailysales" element={<DailySales />} />
                       <Route path="/payments" element={<Payments />} />
                       <Route path="/reports" element={<Reports />} />
                       <Route path="/shops" element={<Shops />} />

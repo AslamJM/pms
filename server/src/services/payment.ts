@@ -2,6 +2,7 @@ import { paymentModel, Payment } from '../models/payment';
 import { FilterQuery, UpdateQuery } from 'mongoose';
 import dayjs from 'dayjs';
 import { omit } from 'underscore';
+import { queryCompanies } from './company';
 
 export const getSinglePayment = (id: string) => {
   return paymentModel
@@ -98,4 +99,55 @@ export const getInvoice = (invoice: string) => {
       },
     })
     .populate('company');
+};
+
+export const getDuePaymentsByShop = async () => {
+  const payments = await paymentModel.find({ dueAmount: { $gt: 0 } }).populate('shop');
+  const duePaymentsByShop = payments.reduce((acc, payment) => {
+    const shopId = payment.shop._id.toString();
+    if (!acc[shopId]) {
+      acc[shopId] = {
+        shop: payment.shop,
+        totalDue: 0,
+        lastPaymentDate: payment.paymentDate,
+      };
+    }
+    acc[shopId].totalDue += payment.dueAmount;
+    if (new Date(payment.paymentDate) > new Date(acc[shopId].lastPaymentDate)) {
+      acc[shopId].lastPaymentDate = payment.paymentDate;
+    }
+    return acc;
+  }, {} as Record<string, { shop: any; totalDue: number; lastPaymentDate: Date }>);
+
+  return Object.values(duePaymentsByShop);
+};
+
+export const getLastMonthCompanyPayments = async () => {
+  const startOfMonth = dayjs().subtract(1, 'month').startOf('month').toISOString();
+  const endOfMonth = dayjs().subtract(1, 'month').endOf('month').toISOString();
+
+  const payments = await paymentModel.find({
+    paymentDate: {
+      $gte: startOfMonth,
+      $lte: endOfMonth,
+    },
+  }).populate('company');
+
+  const companies = await queryCompanies({});
+
+  const result = companies.map((company) => {
+    const companyPayments = payments.filter(p => p.company._id.toString() === company._id.toString());
+    const totalPayment = companyPayments.reduce((sum, payment) => sum + payment.totalAmount, 0);
+    const paidPayment = companyPayments.reduce((sum, payment) => sum + payment.paidAmount, 0);
+    const duePayment = companyPayments.reduce((sum, payment) => sum + payment.dueAmount, 0);
+
+    return {
+      companyName: company.name,
+      totalPayment,
+      paidPayment,
+      duePayment,
+    };
+  });
+
+  return result;
 };

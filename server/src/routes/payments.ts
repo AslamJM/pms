@@ -10,6 +10,8 @@ import {
   getInvoiceController,
   verifyManyController,
   getMonthlyCompanyIncome,
+  getDuePaymentsByShopController,
+  getLastMonthCompanyPaymentsController,
 } from '../controllers/payment';
 
 router.post('/create', createPaymentController);
@@ -21,5 +23,7 @@ router.get('/invoice', getInvoiceController);
 router.get('/company-income', getMonthlyCompanyIncome);
 router.get('/all', queryPaymentController);
 router.get('/:id', getSinglePaymentController);
+router.get('/due-payments-by-shop', getDuePaymentsByShopController);
+router.get('/last-month-payments', getLastMonthCompanyPaymentsController);
 
 export default router;

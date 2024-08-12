@@ -38,7 +38,18 @@ export interface ICollector {
   email: string;
 }
 
+export interface ICompanyPaymentData {
+  payments: IPayment[];
+}
+
+export interface IShopResponse {
+  shop: IShop;
+  duePayments: IPayment[];
+}
+
 export interface IShop {
+  
+  company: ICompany;
   _id: string;
   name: string;
   address: string;
@@ -48,12 +59,16 @@ export interface IShop {
 export interface ICompany {
   _id: string;
   name: string;
+  shops: IShop[];
 }
 
 export interface IArea {
+  [x: string]: any;
   _id: string;
   name: string;
+  shops: IShop[];
 }
+
 
 export interface IUser {
   _id: string;
@@ -92,6 +107,8 @@ const createOne = async <T, K>(route: string, body: K) => {
       ...body,
     },
   });
+  console.log(response.data);
+  
   return response.data;
 };
 
@@ -113,6 +130,29 @@ export const getPaymentsForDate = async (params: { date: string }) => {
     }
   );
   return response.data;
+};
+
+export const queryShopNames = async (): Promise<string[]> => {
+  try {
+    console.log("Fetching shop names from API");
+    const response = await apiClient.get<{ shops: IShopResponse[] }>("/payments/due");
+    console.log("Response Data:", response.data);
+
+    if (!response.data.shops) {
+      throw new Error("Invalid response format");
+    }
+    const shopNames = response.data.shops.map(shopData => shopData.shop.name);
+
+    return shopNames;
+  } catch (error) {
+    console.error("Error fetching shop names:", error);
+    throw error;
+  }
+};
+
+export const getCompanyPayments = async () => {
+  const response = await apiClient.get<{ payments: { companyName: string, totalPayment: number, paid: number, due: number }[] }>("/payments/company");
+  return response.data.payments;
 };
 
 export const apiMethods = { getAll, getOne, updateOne, deleteOne, createOne };

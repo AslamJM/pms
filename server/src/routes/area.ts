@@ -14,4 +14,5 @@ router.delete('/delete/:id', deleteAreaController);
 router.get('/all', queryAreaController);
 router.get('/:id', getSingleAreaController);
 
+
 export default router;

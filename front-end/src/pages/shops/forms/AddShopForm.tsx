@@ -52,7 +52,7 @@ const AddShopForm = () => {
       onSubmit={(values, { resetForm }) => {
         if (isLoading) setLoading(true);
         mutate(
-          { ...values },
+          {...values },
           {
             onSuccess: (data) => {
               queryClient.invalidateQueries("all shops");
@@ -125,7 +125,7 @@ const AddShopForm = () => {
           </Grid>
           <DialogActions>
             <Button variant="contained" type="submit">
-              {isLoading ? <CircularProgress /> : "add"}
+              {isLoading? <CircularProgress /> : "add"}
             </Button>
             <Button
               onClick={() => setAddModalOpen(false)}

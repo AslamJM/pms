@@ -10,7 +10,6 @@ import {
   areaRouter,
   authRouter,
   historyRouter,
-  seedRouter
 } from './routes';
 import path from 'path';
 
@@ -27,7 +26,6 @@ app.use('/api/collectors', collectorRouter);
 app.use('/api/companies', companyRouter);
 app.use('/api/areas', areaRouter);
 app.use('/api/history', historyRouter);
-app.use('/api/db', seedRouter)
 
 app.get('*', (_, res) => {
   res.sendFile(path.resolve(__dirname + '/../static/index.html'));
