@@ -1,13 +1,10 @@
 import { Line } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend } from "chart.js";
 import { lineChartData } from "./fakeData";
-
-ChartJS.register(
-    CategoryScale, LinearScale, PointElement, LineElement, Title, Tooltip, Legend
-);
+import { Chart, registerables } from "chart.js";
+Chart.register(...registerables);
 
 export const LineGraph = () => {
-    const options = {};
+  const options = {};
 
-    return <Line options={options} data={lineChartData}/>;
+  return <Line options={options} data={lineChartData} />;
 };

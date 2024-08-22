@@ -103,6 +103,8 @@ export const getInvoice = (invoice: string) => {
 
 export const getDuePaymentsByShop = async () => {
   const payments = await paymentModel.find({ dueAmount: { $gt: 0 } }).populate('shop');
+  console.log(payments);
+
   const duePaymentsByShop = payments.reduce((acc, payment) => {
     const shopId = payment.shop._id.toString();
     if (!acc[shopId]) {

@@ -1,5 +1,13 @@
 import React, { useEffect, useState } from "react";
-import { Box, Typography, Paper, TableBody, TableCell, TableContainer, Table } from "@mui/material";
+import {
+  Box,
+  Typography,
+  Paper,
+  TableBody,
+  TableCell,
+  TableContainer,
+  Table,
+} from "@mui/material";
 import TableRow from "@mui/material/TableRow";
 import TableHead from "@mui/material/TableHead";
 import CircularLoader from "../../components/loader/CircularLoader";
@@ -34,6 +42,10 @@ const HomePayment = () => {
     return <div>An error occurred while fetching payments.</div>;
   }
 
+  if (payments.length === 0) {
+    return <div>No due payments</div>;
+  }
+
   // Sort payments by dueDate (ascending) and move paid payments to the bottom
   const sortedPayments = payments.sort((a, b) => {
     const dateA = new Date(a.dueDate);
@@ -53,35 +65,76 @@ const HomePayment = () => {
   const currentDate = new Date();
 
   return (
-    <Paper sx={{ width: '75%', my: 1, p: 1, boxShadow: 5, mt: 2, ml: 3, borderRadius: '10px' }}>
-      <Typography align="center" mt={1} mb={1} sx={{ fontWeight: 'bold', fontFamily: 'Poppins' }}>Due Collections For This Month</Typography>
+    <Paper
+      sx={{
+        width: "75%",
+        my: 1,
+        p: 1,
+        boxShadow: 5,
+        mt: 2,
+        ml: 3,
+        borderRadius: "10px",
+      }}
+    >
+      <Typography
+        align="center"
+        mt={1}
+        mb={1}
+        sx={{ fontWeight: "bold", fontFamily: "Poppins" }}
+      >
+        Due Collections For This Month
+      </Typography>
       <TableContainer style={{ maxHeight: 500 }}>
         <Table size="small">
-          <TableHead sx={{ bgcolor: "#BB892D", color: "white"}}>
+          <TableHead sx={{ bgcolor: "#BB892D", color: "white" }}>
             <TableRow>
-              <TableCell sx={{ fontWeight: 'bold', color: "white" }}>Shop</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: "white" }} align="center">Due Payment</TableCell>
-              <TableCell sx={{ fontWeight: 'bold', color: "white" }} align="right">Due Date</TableCell>
+              <TableCell sx={{ fontWeight: "bold", color: "white" }}>
+                Shop
+              </TableCell>
+              <TableCell
+                sx={{ fontWeight: "bold", color: "white" }}
+                align="center"
+              >
+                Due Payment
+              </TableCell>
+              <TableCell
+                sx={{ fontWeight: "bold", color: "white" }}
+                align="right"
+              >
+                Due Date
+              </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>
             {sortedPayments.length === 0 ? (
               <TableRow>
                 <TableCell colSpan={3} align="center">
-                  <Typography color="GrayText">No payments available.</Typography>
+                  <Typography color="GrayText">
+                    No payments available.
+                  </Typography>
                 </TableCell>
               </TableRow>
             ) : (
               sortedPayments.map((payment) => {
                 const dueDate = new Date(payment.dueDate);
-                const isPastDue = dueDate < currentDate && payment.dueAmount > 0;
+                const isPastDue =
+                  dueDate < currentDate && payment.dueAmount > 0;
 
                 return (
                   <TableRow key={payment._id}>
-                    <TableCell>{payment.shop?.name || "Unknown Shop"}</TableCell>
-                    <TableCell align="center">{payment.dueAmount.toFixed(2)}</TableCell>
-                    <TableCell align="right" sx={{ color: isPastDue ? 'red' : 'inherit' }}>
-                      {payment.dueAmount ? dueDate.toLocaleDateString() : "Due Finished"}
+                    <TableCell>
+                      {payment.shop?.name || "Unknown Shop"}
+                    </TableCell>
+                    <TableCell align="center">
+                      {payment.dueAmount?.toFixed(2)}
+                    </TableCell>
+                    <TableCell
+                      align="right"
+                      sx={{ color: isPastDue ? "red" : "inherit" }}
+                    >
+                      {payment.dueAmount
+                        ? dueDate.toLocaleDateString()
+                        : "Due Finished"}
                     </TableCell>
                   </TableRow>
                 );

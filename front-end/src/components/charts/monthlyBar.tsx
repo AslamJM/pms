@@ -1,16 +1,17 @@
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { useQuery } from "react-query";
 import { IPayment, queryPayments } from "../../api/client";
 import { useGlobalContext } from "../../context/GlobalContext";
-
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
 
 export const MonthlyBarChart = () => {
   const { companies, shops } = useGlobalContext();
 
   // Fetch payments data
-  const { data: paymentsData, isLoading, isError } = useQuery("all-payments", () => queryPayments({}));
+  const {
+    data: paymentsData,
+    isLoading,
+    isError,
+  } = useQuery("all-payments", () => queryPayments({}));
 
   if (isLoading) return <p>Loading...</p>;
   if (isError) return <p>Error loading payments.</p>;
@@ -19,13 +20,24 @@ export const MonthlyBarChart = () => {
 
   const payments: IPayment[] = paymentsData ? paymentsData.payments : [];
 
-  const companyPayments = companies.map(company => {
-    const companyPayments = payments.filter(payment => payment.company._id === company._id);
-  
-    const totalPayment = companyPayments.reduce((sum, payment) => sum + payment.totalAmount, 0);
-    const paidPayment = companyPayments.reduce((sum, payment) => sum + payment.paidAmount, 0);
-    const duePayment = companyPayments.reduce((sum, payment) => sum + (payment.totalAmount - payment.paidAmount), 0);
-  
+  const companyPayments = companies.map((company) => {
+    const companyPayments = payments.filter(
+      (payment) => payment.company._id === company._id
+    );
+
+    const totalPayment = companyPayments.reduce(
+      (sum, payment) => sum + payment.totalAmount,
+      0
+    );
+    const paidPayment = companyPayments.reduce(
+      (sum, payment) => sum + payment.paidAmount,
+      0
+    );
+    const duePayment = companyPayments.reduce(
+      (sum, payment) => sum + (payment.totalAmount - payment.paidAmount),
+      0
+    );
+
     return {
       companyName: company.name,
       totalPayment,
@@ -36,10 +48,10 @@ export const MonthlyBarChart = () => {
 
   console.log("Company Payments:", companyPayments);
 
-  const labels = companyPayments.map(company => company.companyName);
-  const totalPayments = companyPayments.map(company => company.totalPayment);
-  const paidPayments = companyPayments.map(company => company.paidPayment);
-  const duePayments = companyPayments.map(company => company.duePayment);
+  const labels = companyPayments.map((company) => company.companyName);
+  const totalPayments = companyPayments.map((company) => company.totalPayment);
+  const paidPayments = companyPayments.map((company) => company.paidPayment);
+  const duePayments = companyPayments.map((company) => company.duePayment);
 
   const monthlyBarChartData = {
     labels,
@@ -80,7 +92,7 @@ export const MonthlyBarChart = () => {
     },
     plugins: {
       legend: {
-        position: 'top',
+        position: "top",
         labels: {
           usePointStyle: true,
           padding: 20,

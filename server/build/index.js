@@ -29,7 +29,6 @@ app.use('/api/collectors', routes_1.collectorRouter);
 app.use('/api/companies', routes_1.companyRouter);
 app.use('/api/areas', routes_1.areaRouter);
 app.use('/api/history', routes_1.historyRouter);
-app.use('/api/db', routes_1.seedRouter);
 app.get('*', (_, res) => {
     res.sendFile(path_1.default.resolve(__dirname + '/../static/index.html'));
 });

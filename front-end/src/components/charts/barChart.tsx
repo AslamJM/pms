@@ -1,17 +1,16 @@
-import React from "react";
 import { Bar } from "react-chartjs-2";
-import { Chart as ChartJS, CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend } from "chart.js";
 import { useGlobalContext } from "../../context/GlobalContext";
 
-ChartJS.register(CategoryScale, LinearScale, BarElement, Title, Tooltip, Legend);
+import { Chart, registerables } from "chart.js";
+Chart.register(...registerables);
 
 export const BarCharts = () => {
   const { companyPayments } = useGlobalContext();
 
-  const labels = companyPayments.map(payment => payment.companyName);
-  const totalPayments = companyPayments.map(payment => payment.totalPayment);
-  const paidPayments = companyPayments.map(payment => payment.paid);
-  const duePayments = companyPayments.map(payment => payment.due);
+  const labels = companyPayments.map((payment) => payment.companyName);
+  const totalPayments = companyPayments.map((payment) => payment.totalPayment);
+  const paidPayments = companyPayments.map((payment) => payment.paid);
+  const duePayments = companyPayments.map((payment) => payment.due);
 
   const data = {
     labels: labels,
@@ -52,7 +51,7 @@ export const BarCharts = () => {
     },
     plugins: {
       legend: {
-        position: 'top' as const,
+        position: "top" as const,
         labels: {
           usePointStyle: true,
           padding: 20,

@@ -10,12 +10,12 @@ import CompanyPayments from "./CompanyPayments";
 import dayjs from "dayjs";
 import UpdateInvoiceModal from "./modals/UpdateInvoiceModal";
 import SearchShop from "./SearchShop";
-import React, { useEffect } from 'react';
+import React, { useEffect } from "react";
 import { LineGraph } from "../../components/charts/line";
 import { BarChart } from "../../components/charts/bar";
 import PieChart from "../../components/charts/pie";
 import HomePayment from "../../components/tables/HomePayment";
-import CompanyButton from '../../components/buttons/CompanyButton';
+import CompanyButton from "../../components/buttons/CompanyButton";
 import { useQuery } from "react-query";
 import { apiClient } from "../../api/client";
 import { MonthlyBarChart } from "../../components/charts/monthlyBar";
@@ -26,7 +26,6 @@ import { BarCharts } from "../../components/charts/barChart";
 const Home = () => {
   const { companies } = useGlobalContext();
   const { user } = useAuthContext();
-
 
   const getCompanyPayment = async () =>
     (await apiClient.get<Record<string, number>>("/payments/company-income"))
@@ -43,10 +42,13 @@ const Home = () => {
       <UpdateInvoiceModal />
       <Box mt={2}>
         <Box display="flex" justifyContent="space-between" alignItems="center">
-          <Typography variant="h5" sx={{ fontWeight: 'bold', fontFamily: 'Poppins' }}>
+          <Typography
+            variant="h5"
+            sx={{ fontWeight: "bold", fontFamily: "Poppins" }}
+          >
             Welcome {user?.role}
           </Typography>
-          <Typography variant="h6" sx={{ fontFamily: 'Poppins'}}>
+          <Typography variant="h6" sx={{ fontFamily: "Poppins" }}>
             {dayjs().format("DD/MM/YYYY")}
           </Typography>
         </Box>
@@ -54,8 +56,18 @@ const Home = () => {
         <Box mt={2} mb={3} display="flex">
           <HomePayment />
           {/* <DuePayment /> */}
-          <Paper sx={{ width: "50%", my: 1, p: 1, boxShadow: 5, mt: 2, ml: 3, borderRadius: '10px'}}>
-            <Typography align="center" sx={{ fontWeight: 'bold', mt: "20px"}}>
+          <Paper
+            sx={{
+              width: "50%",
+              my: 1,
+              p: 1,
+              boxShadow: 5,
+              mt: 2,
+              ml: 3,
+              borderRadius: "10px",
+            }}
+          >
+            <Typography align="center" sx={{ fontWeight: "bold", mt: "20px" }}>
               Percentage of Payments
             </Typography>
             <Box sx={{ width: "75%", ml: "10%", mt: "20px" }}>
@@ -64,8 +76,17 @@ const Home = () => {
           </Paper>
         </Box>
         <Box>
-          <Box sx={{ mt: "30px", width: "90%", boxShadow: 5, borderRadius: '10px', ml: "50px", alignItems: "center" }}>
-            <Typography p={3} align="center" sx={{ fontWeight: 'bold'}}>
+          <Box
+            sx={{
+              mt: "30px",
+              width: "90%",
+              boxShadow: 5,
+              borderRadius: "10px",
+              ml: "50px",
+              alignItems: "center",
+            }}
+          >
+            <Typography p={3} align="center" sx={{ fontWeight: "bold" }}>
               Last Month Sales
             </Typography>
             <Box>

@@ -103,6 +103,10 @@ __decorate([
 ], Payment.prototype, "paymentDate", void 0);
 __decorate([
     (0, typegoose_1.prop)(),
+    __metadata("design:type", Date)
+], Payment.prototype, "dueDate", void 0);
+__decorate([
+    (0, typegoose_1.prop)(),
     __metadata("design:type", String)
 ], Payment.prototype, "paymentStatus", void 0);
 __decorate([

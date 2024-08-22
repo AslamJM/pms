@@ -21,8 +21,8 @@ import dayjs, { Dayjs } from "dayjs";
 import Typography from "@mui/material/Typography";
 import currencyFormatter from "currency-formatter";
 import PaymentHistoryModal from "../../pages/reports/PaymenthistoryModal";
-import TableContainer from '@mui/material/TableContainer';
-import Paper from '@mui/material/Paper';
+import TableContainer from "@mui/material/TableContainer";
+import Paper from "@mui/material/Paper";
 const PaymentTableSelect = () => {
   //report states
   const [payments, setAllPayments] = useState<IPayment[] | null>();
@@ -46,11 +46,11 @@ const PaymentTableSelect = () => {
   //
 
   const areaNamesForFilter = useCallback(() => {
-    return Array.from(new Set(shops.map((c) => c.region.name)));
+    return Array.from(new Set(shops.map((c) => c.region?.name)));
   }, [shops]);
 
   const companyNamesForFilter = useCallback(() => {
-    return companies.map((c) => c.name);
+    return companies.map((c) => c?.name);
   }, [companies]);
 
   //column definitions for table
@@ -338,7 +338,6 @@ const PaymentTableSelect = () => {
     writeFile(workBook, "paymentData.xlsx");
   };
   //
-  
 
   //function for pdf export
   const exportPdf = (cols: any, data: any) => {
@@ -373,9 +372,7 @@ const PaymentTableSelect = () => {
       typeof val === "number" ? currencyFormatter.format(val, {}) : val
     );
 
-    const doc = new jsPDF({ orientation: "landscape" })
-    ;
-
+    const doc = new jsPDF({ orientation: "landscape" });
     doc.setFontSize(15);
     doc.text("HS Enterprises  Payment", 100, 10);
     doc.setFontSize(12);
@@ -407,17 +404,18 @@ const PaymentTableSelect = () => {
 
   return (
     <>
-    
       <PaymentHistoryModal
         paymentId={paymentId}
         invoice={pInvoice}
         total={ptotal}
       />
       {/*filters with date range*/}
-      <Typography sx={{ mb: 1, fontFamily: 'Poppins' }}>Select a Date Range to Fetch Data</Typography>
-      
+      <Typography sx={{ mb: 1, fontFamily: "Poppins" }}>
+        Select a Date Range to Fetch Data
+      </Typography>
+
       <LocalizationProvider dateAdapter={AdapterDayjs}>
-        <Box display="flex" alignItems="flex-end" mb={2} >
+        <Box display="flex" alignItems="flex-end" mb={2}>
           <DesktopDatePicker
             label="From"
             inputFormat="DD/MM/YYYY"
@@ -449,87 +447,103 @@ const PaymentTableSelect = () => {
         </Box>
       </LocalizationProvider>
       {/******************************/}
-      <Paper sx={{ width: 1195, my: 1, p: 1, boxShadow: 5, fontFamily: 'Poppins', borderRadius: '10px' }}>
-      <TableContainer style={{ maxHeight: 600 }}>
-      <MaterialReactTable
-        columns={columns}
-        data={payments ? payments.map((d) => createPaymentData(d)) : []}
-        state={{ isLoading }}
-        initialState={{ showColumnFilters: true }}
-        enableRowSelection
-        muiTableBodyProps={{
-          sx: {
-            "& tr:nth-of-type(even)": {
-              backgroundColor: "#ADADC9",width: "100%"
-            },
-          },
+      <Paper
+        sx={{
+          width: 1195,
+          my: 1,
+          p: 1,
+          boxShadow: 5,
+          fontFamily: "Poppins",
+          borderRadius: "10px",
         }}
-        //top tool bar actions
-        renderTopToolbarCustomActions={({ table }) => (
-          <Box
-            sx={{ display: "flex", gap: "1rem", p: "0.5rem", flexWrap: "wrap", }}>
-            <Button
-              color="primary"
-              disabled={!table.getIsSomeRowsSelected}
-              onClick={() => {
-                let cols = table.getVisibleFlatColumns().map((c) => ({
-                  id: c.id,
-                  header: c.columnDef.header as string,
-                }));
+      >
+        <TableContainer style={{ maxHeight: 600 }}>
+          <MaterialReactTable
+            columns={columns}
+            data={payments ? payments.map((d) => createPaymentData(d)) : []}
+            state={{ isLoading }}
+            initialState={{ showColumnFilters: true }}
+            enableRowSelection
+            muiTableBodyProps={{
+              sx: {
+                "& tr:nth-of-type(even)": {
+                  backgroundColor: "#ADADC9",
+                  width: "100%",
+                },
+              },
+            }}
+            //top tool bar actions
+            renderTopToolbarCustomActions={({ table }) => (
+              <Box
+                sx={{
+                  display: "flex",
+                  gap: "1rem",
+                  p: "0.5rem",
+                  flexWrap: "wrap",
+                }}
+              >
+                <Button
+                  color="primary"
+                  disabled={!table.getIsSomeRowsSelected}
+                  onClick={() => {
+                    let cols = table.getVisibleFlatColumns().map((c) => ({
+                      id: c.id,
+                      header: c.columnDef.header as string,
+                    }));
 
-                let rows = table
-                  .getSelectedRowModel()
-                  .rows.map((r) => r.original);
+                    let rows = table
+                      .getSelectedRowModel()
+                      .rows.map((r) => r.original);
 
-                const data = rows.map((row) => {
-                  let obj: any = {};
-                  cols.map((col) => {
-                    obj[col.header] = row[col.id as keyof typeof row];
-                  });
-                  return obj;
-                });
+                    const data = rows.map((row) => {
+                      let obj: any = {};
+                      cols.map((col) => {
+                        obj[col.header] = row[col.id as keyof typeof row];
+                      });
+                      return obj;
+                    });
 
-                downloadExcel(data);
-              }}
-              startIcon={<GridOnIcon />}
-              variant="outlined"
-            >
-              Export to Excel
-            </Button>
+                    downloadExcel(data);
+                  }}
+                  startIcon={<GridOnIcon />}
+                  variant="outlined"
+                >
+                  Export to Excel
+                </Button>
 
-            <Button
-              color="primary"
-              disabled={!table.getIsSomeRowsSelected}
-              startIcon={<PictureAsPdfIcon />}
-              variant="outlined"
-              onClick={() => {
-                let cols = table
-                  .getVisibleFlatColumns()
-                  .map((c) => c.columnDef.header)
-                  .filter((c) => c !== "Select") as string[];
+                <Button
+                  color="primary"
+                  disabled={!table.getIsSomeRowsSelected}
+                  startIcon={<PictureAsPdfIcon />}
+                  variant="outlined"
+                  onClick={() => {
+                    let cols = table
+                      .getVisibleFlatColumns()
+                      .map((c) => c.columnDef.header)
+                      .filter((c) => c !== "Select") as string[];
 
-                let rows = table
-                  .getSelectedRowModel()
-                  .rows.map((r) => omit(r.original, "_id"));
+                    let rows = table
+                      .getSelectedRowModel()
+                      .rows.map((r) => omit(r.original, "_id"));
 
-                exportPdf(cols, rows);
-              }}
-            >
-              export pdf
-            </Button>
+                    exportPdf(cols, rows);
+                  }}
+                >
+                  export pdf
+                </Button>
 
-            <Button
-              variant="contained"
-              onClick={() => {
-                table.resetColumnFilters();
-              }}
-            >
-              reset filters
-            </Button>
-          </Box>
-        )}
-      />
-      </TableContainer>
+                <Button
+                  variant="contained"
+                  onClick={() => {
+                    table.resetColumnFilters();
+                  }}
+                >
+                  reset filters
+                </Button>
+              </Box>
+            )}
+          />
+        </TableContainer>
       </Paper>
     </>
   );

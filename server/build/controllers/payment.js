@@ -9,7 +9,7 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
     });
 };
 Object.defineProperty(exports, "__esModule", { value: true });
-exports.getMonthlyCompanyIncome = exports.verifyManyController = exports.getInvoiceController = exports.verifyPaymentController = exports.getPaymentsOfSpecificDateController = exports.queryPaymentController = exports.updatePaymentController = exports.deletePaymentController = exports.getSinglePaymentController = exports.createPaymentController = void 0;
+exports.getLastMonthCompanyPaymentsController = exports.getDuePaymentsByShopController = exports.getMonthlyCompanyIncome = exports.verifyManyController = exports.getInvoiceController = exports.verifyPaymentController = exports.getPaymentsOfSpecificDateController = exports.queryPaymentController = exports.updatePaymentController = exports.deletePaymentController = exports.getSinglePaymentController = exports.createPaymentController = void 0;
 const payment_1 = require("./../services/payment");
 const payment_2 = require("../services/payment");
 const company_1 = require("../services/company");
@@ -19,7 +19,7 @@ const createPaymentController = (req, res) => __awaiter(void 0, void 0, void 0, 
     try {
         const created = yield (0, payment_2.createPayment)(input);
         return res.status(200).json({
-            message: 'payment created successfully',
+            message: 'Payment created successfully',
         });
     }
     catch (error) {
@@ -49,7 +49,7 @@ const deletePaymentController = (req, res) => __awaiter(void 0, void 0, void 0, 
     try {
         const payment = yield (0, payment_2.deletePayment)(id);
         return res.status(200).json({
-            message: 'payment deleted successfully',
+            message: 'Payment deleted successfully',
         });
     }
     catch (error) {
@@ -178,3 +178,27 @@ const getMonthlyCompanyIncome = (req, res) => __awaiter(void 0, void 0, void 0, 
     }
 });
 exports.getMonthlyCompanyIncome = getMonthlyCompanyIncome;
+const getDuePaymentsByShopController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const duePayments = yield (0, payment_1.getDuePaymentsByShop)();
+        return res.status(200).json(duePayments);
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: error.message,
+        });
+    }
+});
+exports.getDuePaymentsByShopController = getDuePaymentsByShopController;
+const getLastMonthCompanyPaymentsController = (req, res) => __awaiter(void 0, void 0, void 0, function* () {
+    try {
+        const payments = yield (0, payment_1.getLastMonthCompanyPayments)();
+        return res.status(200).json(payments);
+    }
+    catch (error) {
+        return res.status(500).json({
+            message: error.message,
+        });
+    }
+});
+exports.getLastMonthCompanyPaymentsController = getLastMonthCompanyPaymentsController;

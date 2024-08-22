@@ -14,5 +14,7 @@ router.get('/verify/:id', payment_1.verifyPaymentController);
 router.get('/invoice', payment_1.getInvoiceController);
 router.get('/company-income', payment_1.getMonthlyCompanyIncome);
 router.get('/all', payment_1.queryPaymentController);
+router.get('/due-payments-by-shop', payment_1.getDuePaymentsByShopController);
+router.get('/last-month-payments', payment_1.getLastMonthCompanyPaymentsController);
 router.get('/:id', payment_1.getSinglePaymentController);
 exports.default = router;

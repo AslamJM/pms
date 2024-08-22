@@ -65,6 +65,7 @@ const createPayment = (input: PaymentCreateInput) =>
 
 const getDuePayments = async () => {
   const response = await getAll<GetDuePaymentsResponse>(paymentRoutes.getDuePayments);
+  return response.duePayments
 };
 
 export const paymentClient = {
